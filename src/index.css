@@ -1,0 +1,77 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --swift-dark-bg: #0f1020;
+  --swift-purple: #b39cff;
+  --swift-text: #cfcbe9;
+  --paper-img: url("./imagens/paper-vintage.png");
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #fcfaf2;
+  background-image: var(--paper-img);
+  background-repeat: repeat;
+  background-size: 420px;
+  color: #2d3436;
+  
+  /* Animação de entrada */
+  opacity: 0;
+  transform: translateY(12px);
+  animation: pageEnter 1s ease-out forwards;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+@keyframes pageEnter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 2. CLASSES DE REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all 0.8s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ...existing code... */
+
+.sn-cursor-dot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9); /* ajuste cor */
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* essencial */
+  z-index: 9999;
+  transition: transform 0.08s linear, opacity 0.12s linear, background 0.12s linear;
+}
+
+.sn-star-particle {
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.95;
+  transform-origin: center;
+  transition: transform 0.7s cubic-bezier(.2,.8,.2,1), opacity 0.7s linear;
+  will-change: transform, opacity;
+}
+
+/* animação final se quiser fade via keyframes (opcional) */
+@keyframes sn-particle-fade {
+  to { opacity: 0; transform: translateY(-20px) scale(0.6); }
+}

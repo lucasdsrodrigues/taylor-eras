@@ -1,0 +1,74 @@
+.quote-section {
+    position: relative;
+    padding: 120px 20px;
+    text-align: center;
+
+    background-color: #f5f1eb;
+    background-image: url("../../imagens/paper-vintage.png"); /* mantém assim */
+    background-repeat: repeat;
+    background-size: 420px;
+}
+
+.quote-section blockquote {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 20px;
+
+    background: transparent;
+    box-shadow: none;
+
+    position: relative;
+    z-index: 1;
+
+    animation: floatQuote 7s ease-in-out infinite;
+}
+
+.quote-section blockquote p {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    line-height: 1.35;
+    color: #4b3b55;
+    margin-bottom: 25px;
+}
+
+.quote-section blockquote span {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #6c5ce7;
+}
+
+.quote-section blockquote::after {
+    content: "";
+    display: block;
+    width: 120px;
+    height: 4px;
+    margin: 35px auto 0;
+    border-radius: 2px;
+
+    background: linear-gradient(
+        90deg,
+        #a8d8ff,
+        #f7c948,
+        #c77dff,
+        #ffb6c1,
+        #1e3799
+    );
+}
+
+@keyframes floatQuote {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-12px); }
+    100% { transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .quote-section blockquote {
+        padding: 45px 30px;
+    }
+
+    .quote-section blockquote p {
+        font-size: 24px;
+    }
+}

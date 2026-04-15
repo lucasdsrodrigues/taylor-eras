@@ -1,0 +1,2217 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,700&family=Prata&family=Montserrat:wght@300;600&display=swap');
+
+:root {
+  --red-dark: #0a0a0a;
+  --red-accent: #8b0000;
+  --red-deep: #4a0404;
+  --red-text: #f4f1ea;
+}
+
+.red-page-container {
+  background: linear-gradient(135deg, var(--red-dark) 0%, var(--red-deep) 50%, var(--red-dark) 100%);
+  background-size: 200% 200%;
+  animation: red-bg-shift 20s ease infinite;
+  color: var(--red-text);
+  min-height: 100vh;
+  font-family: 'Prata', serif;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes red-bg-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.red-falling-leaf {
+  position: fixed;
+  pointer-events: none;
+  z-index: 20;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* ─────────────────── TEXTURA CINEMATIC GRAIN ─────────────────── */
+.red-texture-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://www.transparenttextures.com/patterns/black-paper.png');
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+
+/* ─────────────────── DYNAMIC WIND SWIRLS ─────────────────── */
+.red-wind-swirl {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 400px;
+  z-index: 0;
+  opacity: 0;
+  -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
+
+.red-wind-swirl--left { left: 0; }
+.red-wind-swirl--right { right: 0; }
+
+.red-loaded .red-wind-swirl {
+  animation: redWindFadeIn 3s ease forwards 0.5s;
+}
+
+@keyframes redWindFadeIn {
+  to { opacity: 1; }
+}
+
+.red-wind-swirl path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+}
+
+.red-loaded .red-wind-swirl path {
+  animation: redWindDraw 6s cubic-bezier(0.4, 0, 0.2, 1) forwards 1s, redWindSway 12s ease-in-out infinite 7s;
+}
+
+@keyframes redWindDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes redWindSway {
+  0%, 100% { transform: translateX(0) scaleX(1); opacity: 0.4; }
+  50% { transform: translateX(15px) scaleX(1.05); opacity: 0.7; filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.5)); }
+}
+
+.red-grain-texture {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://www.transparenttextures.com/patterns/stardust.png');
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* NAVBAR - FIX PARA EVITAR LINKS ROXOS E DESALINHADOS */
+.red-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 10%;
+  position: relative;
+  z-index: 100;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.red-nav-item {
+  text-decoration: none !important;
+  color: var(--red-text) !important;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  opacity: 0.6;
+  font-family: 'Montserrat', sans-serif;
+  transition: 0.3s;
+}
+
+.red-nav-item:hover {
+  opacity: 1;
+  color: var(--red-accent) !important;
+}
+
+.red-nav-center {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  color: var(--red-text);
+  text-align: center;
+}
+
+.red-nav-center span {
+  font-size: 0.6rem;
+  opacity: 0.5;
+  font-weight: 300;
+  margin-left: 5px;
+}
+
+/* HERO LAYOUT */
+.red-hero-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 40px 10% 120px;
+  gap: 80px;
+}
+
+/* VISUAL DA CAPA COM GLOW E OFFSET */
+.red-hero-visual {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  aspect-ratio: 1;
+  justify-self: center;
+}
+
+.red-glow-aura {
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  top: -10%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(139, 0, 0, 0.5) 0%, transparent 70%);
+  filter: blur(50px);
+  z-index: 1;
+  animation: pulseGlow 4s infinite alternate;
+}
+
+@keyframes pulseGlow {
+  from {
+    opacity: 0.3;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+.red-double-frame {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--red-accent);
+  z-index: 2;
+}
+
+.red-cover-wrapper {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  box-shadow: 25px 25px 60px rgba(0, 0, 0, 0.8);
+}
+
+/* Cover Glow Effect */
+.red-cover-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130%;
+  height: 130%;
+  background: radial-gradient(circle, rgba(139, 0, 0, 0.4) 0%, transparent 65%);
+  z-index: -1;
+  filter: blur(25px);
+  opacity: 0;
+}
+
+.red-loaded .red-cover-glow {
+  animation: redCoverGlowPulse 5s infinite alternate ease-in-out 1s;
+}
+
+@keyframes redCoverGlowPulse {
+  0% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.9); }
+  100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* ─────────────────── STAGED ENTRY ANIMATIONS ─────────────────── */
+.red-navigation,
+.red-text-content,
+.red-cover-wrapper,
+.red-vinyl-record {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.red-loaded .red-navigation {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+
+.red-loaded .red-text-content {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+.red-loaded .red-cover-wrapper {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.5s;
+}
+
+.red-loaded .red-vinyl-record {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.7s;
+}
+
+.red-image-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* TEXTOS */
+.red-main-title {
+  font-family: 'Playfair Display';
+  font-size: clamp(4rem, 10vw, 8rem);
+  line-height: 0.8;
+  margin: 0;
+}
+
+.red-title-slam {
+  display: inline-block;
+  color: var(--red-accent);
+  opacity: 0;
+  text-shadow: 0 0 30px rgba(139, 0, 0, 0.6);
+}
+
+.red-loaded .red-title-slam {
+  animation: redSlam 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.8s, redTitleGlow 3s infinite alternate ease-in-out 1.4s;
+}
+
+@keyframes redSlam {
+  0% { opacity: 0; transform: scale(2.5) translateY(-20px); filter: blur(8px); }
+  70% { opacity: 1; transform: scale(0.95) translateY(2px); filter: blur(0); }
+  100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
+
+@keyframes redTitleGlow {
+  0% { text-shadow: 0 0 20px rgba(139, 0, 0, 0.4); }
+  100% { text-shadow: 0 0 50px rgba(255, 77, 77, 0.8), 0 0 80px rgba(139, 0, 0, 0.4); }
+}
+
+.red-subtitle-tag {
+  font-family: 'Montserrat';
+  letter-spacing: 8px;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin: 10px 0 30px;
+}
+
+.red-version-switch {
+  display: flex;
+  margin-bottom: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: fit-content;
+}
+
+.red-version-switch button {
+  background: transparent;
+  border: none;
+  color: var(--red-text);
+  padding: 12px 25px;
+  font-family: 'Montserrat';
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.red-version-switch button.active {
+  background: var(--red-accent);
+}
+
+.red-lyrics-quote {
+  font-family: 'Montserrat';
+  font-style: italic;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  opacity: 0.5;
+  border-left: 1px solid var(--red-accent);
+  padding-left: 20px;
+  max-width: 450px;
+  min-height: 80px;
+}
+
+.red-quick-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.red-stat-item span {
+  display: block;
+  font-family: 'Montserrat';
+  font-size: 0.6rem;
+  opacity: 0.4;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+}
+
+.red-stat-item p {
+  font-family: 'Montserrat';
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.red-hero-visual::after {
+  content: 'Grammy Winner';
+  position: absolute;
+  bottom: -15px;
+  right: -15px;
+  background: var(--red-accent);
+  color: white;
+  padding: 8px 15px;
+  font-family: 'Montserrat';
+  font-size: 0.6rem;
+  font-weight: 900;
+  z-index: 10;
+  letter-spacing: 2px;
+}
+
+.red-vinyl-record {
+  position: absolute;
+  top: 5%;
+  right: -30%;
+  width: 90%;
+  height: 90%;
+  background: radial-gradient(circle, #1a1a1a 0%, #050505 100%);
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.5);
+  background-image: repeating-radial-gradient(rgba(255, 255, 255, 0.05) 0px,
+      transparent 1px,
+      transparent 4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: spinVinyl 20s linear infinite;
+  /* Rotação contínua */
+  transition: right 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.red-vinyl-center {
+  width: 30%;
+  height: 30%;
+  background: var(--red-accent);
+  border-radius: 50%;
+  border: 5px solid #111;
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.2), transparent);
+}
+
+@keyframes spinVinyl {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.red-hero-visual:hover .red-vinyl-record {
+  right: -45%;
+}
+
+@media (max-width: 1100px) {
+  .red-vinyl-record {
+    display: block;
+  }
+}
+
+/* CONTAINER COM GRADIENTE LATERAL */
+.red-tracklist-section {
+  padding: 60px 10%;
+  /* Reduzido para não sobrar tanto espaço */
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.4), transparent, rgba(0, 0, 0, 0.4));
+  position: relative;
+}
+
+/* TÍTULO DA SEÇÃO */
+.red-tracklist-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 12px;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 50px;
+  opacity: 0.8;
+}
+
+/* ESTRUTURA DA LINHA - EXATAMENTE IGUAL, SÓ MENOR */
+.red-track-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 100px;
+  padding: 15px 20px;
+  /* Reduzi o padding para encurtar a lista */
+  border-bottom: 1px solid rgba(139, 0, 0, 0.2);
+  align-items: center;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  position: relative;
+}
+
+.red-track-row:hover {
+  background: rgba(139, 0, 0, 0.15);
+  box-shadow: inset 5px 0 0 #ff0000;
+  transform: scale(1.01);
+  /* Um scale menor para não quebrar o layout */
+  z-index: 5;
+}
+
+/* O NÚMERO - GHOST STYLE */
+.track-id {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  /* Diminuído */
+  color: var(--red-accent);
+  opacity: 0.2;
+  transition: 0.4s;
+}
+
+.red-track-row:hover .track-id {
+  opacity: 1;
+  color: #ff4d4d;
+  transform: translateX(10px);
+}
+
+/* NOME DA MÚSICA */
+.track-name-text {
+  font-family: 'Prata', serif;
+  font-size: 1.1rem;
+  /* Diminuído de 1.4rem */
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* --- DETALHE DO SINGLE (★) --- */
+.is-single .track-name-text::before {
+  content: '★';
+  margin-right: 8px;
+  color: #ff0000;
+  font-size: 0.8rem;
+}
+
+/* OS FEATS - EXATAMENTE COMO VOCÊ GOSTOU (EMBAIXO) */
+.track-feat-name {
+  display: block;
+  /* Mantive embaixo como você pediu */
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.6rem;
+  /* Diminuído */
+  font-weight: 900;
+  color: #ff0000;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-top: 5px;
+  /* Menor distância */
+  background: rgba(255, 255, 255, 0.05);
+  width: fit-content;
+  padding: 2px 10px;
+  border-radius: 50px;
+  transition: 0.3s;
+}
+
+.red-track-row:hover .track-feat-name {
+  background: #fff;
+  color: #000;
+}
+
+/* BADGE DO VAULT - ESTILO CARIMBO */
+.track-vault-badge {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.5rem;
+  /* Diminuído */
+  font-weight: 800;
+  color: #000;
+  background: #fff;
+  padding: 3px 10px;
+  margin-left: 15px;
+  letter-spacing: 1px;
+  display: inline-block;
+  transform: rotate(-2deg);
+  box-shadow: 3px 3px 0 var(--red-accent);
+}
+
+/* DURAÇÃO */
+.track-time {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: #fff;
+  opacity: 0.4;
+  text-align: right;
+  letter-spacing: 1px;
+}
+
+.red-track-row:hover .track-time {
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* VAULT TEXT GRADIENT */
+.is-vault .track-name-text {
+  background: linear-gradient(90deg,
+      #fff 0%,
+      #ff4d4d 20%,
+      #8b0000 50%,
+      #ff4d4d 80%,
+      #fff 100%);
+  background-size: 200% auto;
+  /* Diminuí um pouco o tamanho para o brilho ficar mais focado */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  /* Garante que o gradiente se comporte bem com o texto */
+}
+
+.red-track-row.is-vault:hover .track-name-text {
+  animation: shineSlow 6s ease-in-out infinite;
+  letter-spacing: 3px;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.2));
+  transition: all 0.8s ease;
+}
+
+@keyframes shineSlow {
+  0% {
+    background-position: -100% center;
+  }
+
+  100% {
+    background-position: 100% center;
+  }
+}
+
+.red-track-row.is-vault:hover {
+  background: rgba(139, 0, 0, 0.2);
+  box-shadow: inset 8px 0 20px rgba(139, 0, 0, 0.3);
+}
+
+/* --- SEÇÃO GALERIA DE MEMÓRIAS (RED ERA) --- */
+.red-gallery-lyrics {
+  padding: 120px 10%;
+  position: relative;
+  /* O gradiente radial profundo que você pediu: Vermelho no centro, Preto nas bordas */
+  background: radial-gradient(circle at center, #2a0202 0%, #050000 85%);
+  overflow: hidden;
+  border-top: 1px solid rgba(139, 0, 0, 0.1);
+}
+
+/* Vinheta para suavizar a transição com a seção de cima */
+.red-vignette-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 150px #000;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.gallery-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* ITENS DA GALERIA */
+.gallery-item {
+  position: relative;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-photo-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  background: #111;
+  /* Cor de fundo caso a imagem demore a carregar */
+}
+
+/* A DIV QUE CARREGA A IMAGEM (CORREÇÃO) */
+.gallery-img-div {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  /* Filtro cinematográfico: Meio sépia e escurinho */
+  filter: sepia(0.4) contrast(1.1) brightness(0.5);
+  transition: 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-item:hover .gallery-img-div {
+  filter: sepia(0) contrast(1) brightness(1);
+  transform: scale(1.1);
+}
+
+/* POSICIONAMENTO ESTILO EDITORIAL (MIX DE TAMANHOS) */
+.item-large {
+  grid-column: 1 / 8;
+  height: 550px;
+}
+
+.item-text-only {
+  grid-column: 8 / 13;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 40px;
+}
+
+.item-small {
+  grid-column: 2 / 6;
+  height: 350px;
+  margin-top: -60px;
+  /* Sobreposição chic */
+  z-index: 3;
+}
+
+.item-quote {
+  grid-column: 7 / 12;
+  align-self: center;
+  padding: 40px;
+}
+
+/* TIPOGRAFIA E TEXTOS */
+.gallery-tag {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 6px;
+  color: var(--red-accent);
+  text-transform: uppercase;
+  margin-bottom: 25px;
+  display: block;
+}
+
+.gallery-big-lyric {
+  font-family: 'Prata', serif;
+  font-size: 2.8rem;
+  line-height: 1.1;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+}
+
+.photo-overlay-text {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.8rem;
+  color: #fff;
+  text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+}
+
+.quote-line {
+  width: 60px;
+  height: 1px;
+  background: var(--red-accent);
+  margin-bottom: 25px;
+}
+
+.quote-text {
+  font-family: 'Prata', serif;
+  font-size: 1.3rem;
+  color: #ddd;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.quote-song {
+  display: block;
+  margin-top: 15px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: var(--red-accent);
+}
+
+.item-caption {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 20px;
+  opacity: 0.4;
+  text-align: right;
+}
+
+/* RESPONSIVO PARA MOBILE */
+@media (max-width: 900px) {
+  .gallery-container {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+
+  .item-large,
+  .item-text-only,
+  .item-small,
+  .item-quote {
+    grid-column: 1 / -1;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+
+  .item-large {
+    height: 400px;
+  }
+
+  .item-small {
+    height: 300px;
+  }
+
+  .gallery-big-lyric {
+    font-size: 2rem;
+  }
+}
+
+/* --- SEÇÃO ALL TOO WELL: THE SHORT FILM (VERSÃO COM MOLDURA INFINITA) --- */
+.atw-cinematic-section {
+  padding: 100px 5% 150px;
+  /* Gradiente radial para continuidade visual com a galeria */
+  background: radial-gradient(circle at center top, #1a0101 0%, #050000 85%);
+  position: relative;
+  border-top: 1px solid rgba(139, 0, 0, 0.1);
+  overflow: hidden;
+  /* Garante que o brilho da borda não escape */
+}
+
+.atw-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 5;
+}
+
+.atw-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.atw-tag {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 5px;
+  color: var(--red-accent);
+  text-transform: uppercase;
+}
+
+.atw-title {
+  font-family: 'Prata', serif;
+  font-size: 3.8rem;
+  color: #fff;
+  margin: 10px 0;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+
+/* LAYOUT SUPERIOR: LATERAIS + PLAYER */
+.atw-cinematic-layout {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  margin-bottom: 80px;
+}
+
+.atw-side-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 45px;
+}
+
+.atw-side-info.left {
+  text-align: right;
+}
+
+.atw-side-info.right {
+  text-align: left;
+}
+
+.atw-main-visual {
+  flex: 2.5;
+  z-index: 10;
+  position: relative;
+  /* Importante para a moldura */
+}
+
+/* BLOCOS DE TEXTO LATERAIS */
+.info-block h3 {
+  font-family: 'Prata', serif;
+  font-size: 0.85rem;
+  color: var(--red-accent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.info-block p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #bbb;
+}
+
+/* --- A MOLDURA INFINITA (A MÁGICA TÁ AQUI) --- */
+.atw-player-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  /* Mantém proporção 16:9 */
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  /* Uma borda base quase invisível */
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.9);
+  display: block;
+  text-decoration: none;
+  overflow: hidden;
+  /* Corta a 'barra' rotativa */
+  cursor: pointer;
+}
+
+/* O elemento que cria a 'barra' rotativa vermelha */
+.atw-player-wrapper::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  /* Gradiente cônico que cria a 'barra' vermelha que se move */
+  background: conic-gradient(transparent,
+      transparent,
+      var(--red-accent),
+      transparent);
+  animation: rotateBorder 4s linear infinite;
+  /* Animação infinita */
+  z-index: 1;
+}
+
+/* O elemento que cria o fundo preto interno, cobrindo o centro da barra */
+.atw-player-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  /* Define a grossura da moldura (5px) */
+  background: #000;
+  /* Mesma cor de fundo do player */
+  border-radius: inherit;
+  z-index: 2;
+}
+
+/* ANIMAÇÃO DE ROTAÇÃO DA BORDA */
+@keyframes rotateBorder {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* AJUSTES NO CONTEÚDO PARA FICAR SOBRE A BORDA */
+.atw-video-thumbnail {
+  position: absolute;
+  top: 5px;
+  /* Empurra o conteúdo para dentro da borda */
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  width: calc(100% - 10px);
+  /* Ajusta o tamanho */
+  height: calc(100% - 10px);
+  z-index: 3;
+  /* Fica acima de tudo */
+  overflow: hidden;
+}
+
+.atw-video-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.5) contrast(1.1);
+  transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* BOTÃO DE PLAY (AGORA ACIMA DA MOLDURA) */
+.play-button-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: rgba(139, 0, 0, 0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.play-icon {
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 25px solid white;
+  margin-left: 5px;
+}
+
+.play-hint {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  font-family: 'Montserrat';
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  color: #fff;
+  opacity: 0;
+  /* Começa invisível */
+  transition: 0.3s;
+  z-index: 10;
+}
+
+/* HOVER EFFECTS NO PLAYER */
+.atw-player-wrapper:hover .atw-video-thumbnail img {
+  filter: brightness(0.8) scale(1.05);
+}
+
+.atw-player-wrapper:hover .play-button-overlay {
+  background: var(--red-accent);
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 0 30px rgba(139, 0, 0, 0.7);
+}
+
+/* O hint aparece no hover */
+.atw-player-wrapper:hover .play-hint {
+  opacity: 1;
+}
+
+/* A moldura fica mais intensa no hover */
+.atw-player-wrapper:hover::after {
+  animation: rotateBorder 1s linear infinite;
+  /* Acelera a moldura no hover */
+  filter: brightness(1.5) blur(2px);
+  /* Adiciona brilho e um leve blur neon */
+}
+
+/* GRID INFERIOR (CURIOSIDADES/TRIVIA) */
+.atw-trivia-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 60px;
+}
+
+.trivia-item {
+  position: relative;
+}
+
+.trivia-number {
+  font-family: 'Prata', serif;
+  font-size: 1.5rem;
+  color: var(--red-accent);
+  opacity: 0.4;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.trivia-item p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #eee;
+  font-weight: 300;
+}
+
+/* RESPONSIVO */
+@media (max-width: 1100px) {
+  .atw-cinematic-layout {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .atw-side-info.left {
+    text-align: left;
+    order: 2;
+  }
+
+  .atw-main-visual {
+    order: 1;
+    width: 100%;
+  }
+
+  .atw-side-info.right {
+    order: 3;
+  }
+
+  .atw-trivia-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .atw-title {
+    font-size: 2.5rem;
+  }
+
+  /* Ajuste da moldura infinita para mobile */
+  .atw-player-wrapper::after {
+    width: 300%;
+    height: 300%;
+  }
+}
+
+/* ============================================= */
+/* --- SEÇÃO: CLIPES DA ERA RED (CARROSSEL) --- */
+/* ============================================= */
+
+.red-mv-section {
+  padding: 120px 0 140px;
+  background: linear-gradient(to bottom, #050000 0%, #0d0101 30%, #1a0303 60%, #0a0000 100%);
+  position: relative;
+  border-top: none;
+  overflow: hidden;
+  perspective: 1200px;
+}
+
+/* GLOW AMBIENTE POR TRÁS DA SEÇÃO */
+.red-mv-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(139, 0, 0, 0.25) 0%, transparent 70%);
+  filter: blur(80px);
+  animation: mvAmbientPulse 5s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes mvAmbientPulse {
+  0% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+
+  100% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+}
+
+.red-mv-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 5;
+}
+
+.red-mv-tag {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 8px;
+  color: var(--red-accent);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 15px;
+  animation: mvTagFadeIn 1.2s ease forwards;
+  opacity: 0;
+}
+
+@keyframes mvTagFadeIn {
+  0% {
+    opacity: 0;
+    letter-spacing: 15px;
+  }
+
+  100% {
+    opacity: 1;
+    letter-spacing: 8px;
+  }
+}
+
+.red-mv-title {
+  font-family: 'Prata', serif;
+  font-size: 3.2rem;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  margin: 0 0 15px;
+  animation: mvTitleReveal 1s ease 0.3s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes mvTitleReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* LINHA DECORATIVA ANIMADA ABAIXO DO TÍTULO */
+.red-mv-title::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--red-accent), #ff4444, var(--red-accent), transparent);
+  margin: 20px auto 40px;
+  animation: mvLinePulse 3s ease-in-out infinite;
+}
+
+@keyframes mvLinePulse {
+
+  0%,
+  100% {
+    width: 80px;
+    opacity: 0.6;
+  }
+
+  50% {
+    width: 160px;
+    opacity: 1;
+  }
+}
+
+/* CAROUSEL WRAPPER */
+.red-mv-carousel-wrapper {
+  position: relative;
+  width: 100%;
+  padding: 0 5%;
+}
+
+/* GRID HORIZONTAL SCROLLÁVEL */
+.red-mv-grid {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  padding: 50px 0 110px 0;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+
+.red-mv-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* CARD INDIVIDUAL */
+.red-mv-card {
+  min-width: 100%;
+  width: 100%;
+  position: relative;
+  transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  scroll-snap-align: center;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: mvCardFloat 4s ease-in-out infinite alternate;
+}
+
+/* ANIMAÇÃO FLUTUANTE SUTIL */
+@keyframes mvCardFloat {
+  0% {
+    transform: translateY(0px);
+  }
+
+  100% {
+    transform: translateY(-8px);
+  }
+}
+
+/* REFLEXO SUTIL EMBAIXO */
+.red-mv-card::after {
+  content: "";
+  position: absolute;
+  top: 102%;
+  left: 5%;
+  width: 90%;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(139, 0, 0, 0.25), transparent);
+  transform: scaleY(-1);
+  opacity: 0.3;
+  mask-image: linear-gradient(to top, transparent, black);
+  -webkit-mask-image: linear-gradient(to top, transparent, black);
+  pointer-events: none;
+  filter: blur(8px);
+  transition: opacity 0.6s;
+}
+
+/* GLOW POR TRÁS DO CARD NO HOVER */
+.red-mv-card::before {
+  content: '';
+  position: absolute;
+  inset: -15px;
+  background: radial-gradient(circle, rgba(139, 0, 0, 0.4) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: -1;
+  filter: blur(20px);
+  border-radius: 8px;
+}
+
+.red-mv-card:hover::before {
+  opacity: 1;
+}
+
+/* HOVER DO CARD */
+.red-mv-card:hover {
+  transform: scale(1.03) translateY(-12px);
+  z-index: 100;
+  animation: none;
+}
+
+.red-mv-card:hover::after {
+  opacity: 0.5;
+}
+
+/* THUMBNAIL */
+.red-mv-thumb {
+  position: relative;
+  border: 1px solid rgba(139, 0, 0, 0.4);
+  padding: 6px;
+  background: #0a0a0a;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(139, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 650px;
+  width: 100%;
+}
+
+/* BORDAS BRILHANTES ANIMADAS NO HOVER */
+.red-mv-card:hover .red-mv-thumb {
+  border-color: rgba(255, 50, 50, 0.6);
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(139, 0, 0, 0.3),
+    inset 0 0 30px rgba(139, 0, 0, 0.05);
+}
+
+.red-mv-thumb img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  display: block;
+  filter: sepia(0.3) brightness(0.55) contrast(1.1) saturate(0.8);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.red-mv-card:hover .red-mv-thumb img {
+  filter: sepia(0) brightness(1.05) contrast(1.1) saturate(1.1);
+  transform: scale(1.08);
+}
+
+/* SCAN LINE ANIMADA SOBRE A THUMBNAIL (efeito VHS/cinema) */
+.red-mv-thumb::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom,
+      transparent 0%,
+      transparent 40%,
+      rgba(139, 0, 0, 0.08) 50%,
+      transparent 60%,
+      transparent 100%);
+  z-index: 5;
+  pointer-events: none;
+  animation: mvScanLine 4s linear infinite;
+}
+
+@keyframes mvScanLine {
+  0% {
+    top: -100%;
+  }
+
+  100% {
+    top: 200%;
+  }
+}
+
+/* PELÍCULA DE FILME NAS LATERAIS */
+.red-mv-thumb::after {
+  content: "■ ■ ■ ■ ■ ■ ■";
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  right: 6px;
+  font-size: 4px;
+  letter-spacing: 8px;
+  color: var(--red-accent);
+  opacity: 0.2;
+  text-align: center;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* PLAY OVERLAY */
+.red-mv-play-overlay {
+  position: absolute;
+  inset: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.2) 100%);
+  opacity: 0;
+  transition: all 0.5s ease;
+  z-index: 6;
+}
+
+.red-mv-card:hover .red-mv-play-overlay {
+  opacity: 1;
+}
+
+.red-mv-play-icon {
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 34px solid #fff;
+  margin-left: 6px;
+  filter: drop-shadow(0 0 15px rgba(139, 0, 0, 0.9));
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+}
+
+/* ANEL PULSANTE AO REDOR DO PLAY */
+.red-mv-play-overlay::after {
+  content: '';
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: mvPlayRing 2s ease-in-out infinite;
+}
+
+@keyframes mvPlayRing {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.red-mv-card:hover .red-mv-play-icon {
+  filter: drop-shadow(0 0 30px rgba(255, 50, 50, 0.8));
+  transform: scale(1.15);
+}
+
+/* TEXTO DO CARD */
+.red-mv-card h3 {
+  font-family: 'Prata', serif;
+  color: #fff;
+  font-size: 1.25rem;
+  margin-top: 22px;
+  text-align: center;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+}
+
+.red-mv-card:hover h3 {
+  color: #ff4d4d;
+  text-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+  letter-spacing: 3px;
+}
+
+.red-mv-card p {
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  font-size: 0.6rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  opacity: 0.35;
+  margin-top: 8px;
+  transition: opacity 0.4s;
+}
+
+.red-mv-card:hover p {
+  opacity: 0.7;
+}
+
+/* BOTÕES DE NAVEGAÇÃO */
+.red-mv-nav-btn {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(10, 0, 0, 0.8);
+  border: 1px solid var(--red-accent);
+  color: var(--red-accent);
+  font-size: 2.2rem;
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 20px rgba(139, 0, 0, 0.15);
+}
+
+.red-mv-nav-btn:hover {
+  background: var(--red-accent);
+  color: #fff;
+  box-shadow: 0 0 40px rgba(139, 0, 0, 0.6), 0 0 80px rgba(139, 0, 0, 0.2);
+  transform: translateY(-50%) scale(1.15);
+  border-color: #ff4444;
+}
+
+.red-mv-nav-btn.prev {
+  left: 20px;
+}
+
+.red-mv-nav-btn.next {
+  right: 20px;
+}
+
+/* FADE NAS BORDAS DO CARROSSEL */
+.red-mv-carousel-wrapper::before,
+.red-mv-carousel-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 10%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.red-mv-carousel-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, #050000, transparent);
+}
+
+.red-mv-carousel-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, #050000, transparent);
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+  .red-mv-section {
+    padding: 80px 0 100px;
+  }
+
+  .red-mv-title {
+    font-size: 2rem;
+  }
+
+  .red-mv-thumb {
+    max-width: 100%;
+  }
+
+  .red-mv-thumb img {
+    height: 200px;
+  }
+
+  .red-mv-nav-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 1.6rem;
+  }
+
+  .red-mv-nav-btn.prev {
+    left: 10px;
+  }
+
+  .red-mv-nav-btn.next {
+    right: 10px;
+  }
+
+  .red-mv-carousel-wrapper::before,
+  .red-mv-carousel-wrapper::after {
+    width: 5%;
+  }
+}
+
+/* ============================================= */
+/* --- SEÇÃO: THE RED TOUR                   --- */
+/* ============================================= */
+
+.red-tour-section {
+  padding: 120px 0 140px;
+  background: linear-gradient(to bottom, #0a0000 0%, #100202 20%, #180404 50%, #0e0101 80%, #050000 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* GLOW AMBIENTE */
+.red-tour-section::before {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 40%;
+  background: radial-gradient(circle, rgba(139, 0, 0, 0.2) 0%, transparent 70%);
+  filter: blur(100px);
+  pointer-events: none;
+  animation: tourGlow 6s ease-in-out infinite alternate;
+}
+
+@keyframes tourGlow {
+  0% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+
+  100% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+.red-tour-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.red-tour-tag {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 8px;
+  color: var(--red-accent);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 15px;
+  animation: mvTagFadeIn 1.2s ease forwards;
+  opacity: 0;
+}
+
+.red-tour-title {
+  font-family: 'Prata', serif;
+  font-size: 3.2rem;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  margin: 0 0 10px;
+  animation: mvTitleReveal 1s ease 0.3s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.red-tour-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 2px;
+  margin-bottom: 60px;
+  animation: mvTitleReveal 1s ease 0.5s forwards;
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+/* BARRA DE STATS */
+.red-tour-stats {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-bottom: 80px;
+  flex-wrap: wrap;
+}
+
+.tour-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.tour-stat::after {
+  content: '';
+  position: absolute;
+  right: -30px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, rgba(139, 0, 0, 0.4), transparent);
+}
+
+.tour-stat:last-child::after {
+  display: none;
+}
+
+.stat-number {
+  font-family: 'Prata', serif;
+  font-size: 2.8rem;
+  color: #fff;
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(139, 0, 0, 0.3);
+}
+
+.stat-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--red-accent);
+  opacity: 0.7;
+}
+
+/* GRID DE INFO CARDS */
+.red-tour-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-bottom: 100px;
+}
+
+.tour-info-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(139, 0, 0, 0.15);
+  border-radius: 4px;
+  padding: 40px 30px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.tour-info-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--red-accent), transparent);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.tour-info-card:hover {
+  background: rgba(139, 0, 0, 0.06);
+  border-color: rgba(139, 0, 0, 0.35);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(139, 0, 0, 0.1);
+}
+
+.tour-info-card:hover::before {
+  opacity: 1;
+}
+
+.info-card-icon {
+  font-size: 1.6rem;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.tour-info-card h3 {
+  font-family: 'Prata', serif;
+  font-size: 1.2rem;
+  color: #fff;
+  margin: 0 0 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tour-info-card p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.8;
+  margin: 0;
+}
+
+.tour-info-card p strong {
+  color: var(--red-accent);
+}
+
+.tour-info-card p em {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* SEÇÃO DE VÍDEOS */
+.red-tour-videos {
+  text-align: center;
+}
+
+.tour-videos-title {
+  font-family: 'Prata', serif;
+  font-size: 1.8rem;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.tour-videos-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: var(--red-accent);
+  margin: 15px auto 0;
+}
+
+.tour-videos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.tour-video-card {
+  position: relative;
+}
+
+.tour-video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  /* 16:9 */
+  height: 0;
+  overflow: hidden;
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  background: #0a0a0a;
+  transition: all 0.4s ease;
+}
+
+.tour-video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.tour-video-card:hover .tour-video-wrapper {
+  border-color: rgba(255, 50, 50, 0.5);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(139, 0, 0, 0.2);
+  transform: translateY(-5px);
+}
+
+.tour-video-caption {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 15px;
+}
+
+/* RESPONSIVO RED TOUR */
+@media (max-width: 900px) {
+  .red-tour-section {
+    padding: 80px 0 100px;
+  }
+
+  .red-tour-container {
+    padding: 0 20px;
+  }
+
+  .red-tour-title {
+    font-size: 2rem;
+  }
+
+  .red-tour-stats {
+    gap: 30px;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  .tour-stat::after {
+    display: none;
+  }
+
+  .red-tour-info-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .tour-videos-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* ============================================= */
+/* --- SEÇÃO: GALERIA DA ERA RED             --- */
+/* ============================================= */
+
+.red-gallery-section {
+  padding: 120px 0 140px;
+  background: linear-gradient(to bottom, #050000 0%, #0d0202 40%, #100303 60%, #050000 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.red-gallery-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 40px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* MASONRY GRID */
+.red-gallery-masonry {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 280px;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.red-gallery-item {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(139, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.red-gallery-item.tall {
+  grid-row: span 2;
+}
+
+.red-gallery-item.wide {
+  grid-column: span 2;
+}
+
+.red-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: brightness(0.7) saturate(0.8);
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.red-gallery-item:hover img {
+  filter: brightness(1) saturate(1.1);
+  transform: scale(1.08);
+}
+
+.red-gallery-item:hover {
+  border-color: rgba(255, 50, 50, 0.5);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(139, 0, 0, 0.2);
+  z-index: 10;
+}
+
+/* OVERLAY COM CAPTION */
+.red-gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 60%);
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.red-gallery-item:hover .red-gallery-overlay {
+  opacity: 1;
+}
+
+.red-gallery-caption {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* RESPONSIVO GALERIA */
+@media (max-width: 900px) {
+  .red-gallery-section {
+    padding: 80px 0 100px;
+  }
+
+  .red-gallery-container {
+    padding: 0 20px;
+  }
+
+  .red-gallery-masonry {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 180px;
+    gap: 10px;
+  }
+}
+
+/* ============================================= */
+/* --- SEÇÃO: OUTRAS ERAS                    --- */
+/* ============================================= */
+
+.red-eras-section {
+  padding: 100px 8%;
+  background: linear-gradient(to bottom, #050000 0%, #0a0101 50%, #050000 100%);
+  position: relative;
+  border-top: 1px solid rgba(139, 0, 0, 0.08);
+}
+
+.red-eras-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.red-eras-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 1024px) {
+  .red-eras-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .red-eras-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.red-era-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 24px 12px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.red-era-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--era-color, #8b0000);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.red-era-card:hover::before {
+  opacity: 0.12;
+}
+
+.red-era-card:hover {
+  border-color: var(--era-color, #8b0000);
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px color-mix(in srgb, var(--era-color, #8b0000) 30%, transparent);
+}
+
+.red-era-year {
+  font-family: 'Prata', serif;
+  font-size: 1.4rem;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.red-era-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s;
+}
+
+.red-era-card:hover .red-era-name {
+  color: var(--era-color, #8b0000);
+}
+
+/* ============================================= */
+/* --- FOOTER                                --- */
+/* ============================================= */
+
+.red-footer {
+  padding: 60px 0 40px;
+  background: #030000;
+  border-top: 1px solid rgba(139, 0, 0, 0.15);
+  text-align: center;
+}
+
+.red-footer-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.red-footer-cursive {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-style: italic;
+  color: var(--red-accent);
+  margin: 0 0 10px;
+  opacity: 0.6;
+}
+
+.red-footer-copy {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0 0 20px;
+}
+
+.red-footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.red-footer-links a {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.red-footer-links a:hover {
+  color: var(--red-accent);
+}
+
+.red-footer-links span {
+  color: rgba(255, 255, 255, 0.15);
+  font-size: 0.7rem;
+}
+
+/* ============================================= */
+/* --- BOTÃO VOLTAR AO TOPO                  --- */
+/* ============================================= */
+
+.red-top-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(139, 0, 0, 0.8);
+  border: 1px solid rgba(255, 50, 50, 0.3);
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 5px 20px rgba(139, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  animation: topBtnFadeIn 0.3s ease;
+}
+
+@keyframes topBtnFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.red-top-btn:hover {
+  background: var(--red-accent);
+  box-shadow: 0 5px 30px rgba(139, 0, 0, 0.7);
+  transform: translateY(-3px);
+}
+
+/* RESPONSIVO ERAS + FOOTER */
+@media (max-width: 900px) {
+  .red-footer-cursive {
+    font-size: 1.8rem;
+  }
+
+  .red-top-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 1.2rem;
+    bottom: 20px;
+    right: 20px;
+  }
+}

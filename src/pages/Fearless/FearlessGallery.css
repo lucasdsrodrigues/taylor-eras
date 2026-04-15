@@ -1,0 +1,116 @@
+.fg-container {
+    min-height: 100vh;
+    background-color: #000;
+    padding: 60px 5%;
+  }
+  
+  .fg-title {
+    font-family: 'Cinzel', serif;
+    color: #d4af37;
+    font-size: 3.5rem;
+    text-align: center;
+    letter-spacing: 12px;
+    margin-bottom: 60px;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+  }
+  
+  .fg-nav {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .fg-back {
+    color: #8b7332;
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    transition: 0.3s;
+  }
+  
+  .fg-back:hover { color: #fff; }
+  
+  /* Grid de Colunas para preencher tudo */
+  .fg-masonry-grid {
+    column-count: 4;
+    column-gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .fg-item {
+    break-inside: avoid;
+    margin-bottom: 30px;
+    position: relative;
+    cursor: pointer;
+    
+    /* A Moldura Dourada */
+    padding: 12px;
+    background: #0a0a0a;
+    border: 2px solid #d4af37;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    transition: all 0.4s ease;
+  }
+  
+  .fg-item::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    pointer-events: none;
+  }
+  
+  .fg-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .fg-item:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+  }
+  
+  /* LIGHTBOX CORRIGIDO (CENTRALIZADO) */
+  .fg-lightbox {
+    position: fixed; /* Fixa na tela, não no scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(10px);
+    cursor: zoom-out;
+  }
+  
+  .fg-modal-content {
+    position: relative;
+    max-width: 85%;
+    max-height: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .fg-modal-content img {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    border: 3px solid #d4af37;
+    box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
+  }
+  
+  .fg-close-hint {
+    color: #d4af37;
+    margin-top: 20px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 3px;
+    font-size: 0.7rem;
+  }
+  
+  @media (max-width: 1024px) { .fg-masonry-grid { column-count: 3; } }
+  @media (max-width: 768px) { .fg-masonry-grid { column-count: 2; } }
+  @media (max-width: 480px) { .fg-masonry-grid { column-count: 1; } }

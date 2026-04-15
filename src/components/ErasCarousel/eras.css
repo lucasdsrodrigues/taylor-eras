@@ -1,0 +1,209 @@
+.eras-section {
+  position: relative;
+  padding: 120px 0 160px;
+  overflow-x: hidden;
+  overflow-y: visible;
+  z-index: 5;
+}
+
+.eras-carousel {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 460px;
+  overflow: visible;
+  --active-era-color: #fff;
+}
+
+.carousel-track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 28px;
+  transition: transform 0.6s ease;
+  will-change: transform;
+}
+
+.carousel-slide {
+  min-width: 300px;
+  height: 380px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  opacity: 0.45;
+  transform: scale(0.82);
+  filter: saturate(0.6);
+  transform-origin: center bottom;
+  transition:
+      transform 0.5s ease,
+      opacity 0.5s ease,
+      filter 0.5s ease,
+      box-shadow 0.5s ease;
+}
+
+.carousel-slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.6),
+      rgba(0,0,0,0.2),
+      transparent
+  );
+  z-index: 1;
+}
+
+.era-content {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  width: 85%;
+  padding: 14px 18px;
+  border-radius: 14px;
+  backdrop-filter: blur(6px);
+}
+
+.era-content h3 {
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+.era-content p {
+  font-size: 1rem;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.carousel-slide.far {
+  opacity: 0.35;
+  transform: scale(0.78);
+  filter: saturate(0.5);
+  z-index: 2;
+}
+
+.carousel-slide.near {
+  opacity: 0.75;
+  transform: scale(0.9);
+  filter: saturate(0.8);
+  z-index: 4;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  transform: scale(1);
+  filter: saturate(1);
+  z-index: 5;
+  --active-era-color: var(--era-color);
+  box-shadow:
+      0 0 0 3px var(--era-color),
+      0 0 90px 35px color-mix(in srgb, var(--era-color) 55%, transparent),
+      0 45px 90px rgba(0,0,0,0.65);
+}
+
+.carousel-slide.active:hover {
+  transform: scale(1.02);
+  box-shadow:
+      0 0 0 4px var(--era-color),
+      0 0 100px 40px color-mix(in srgb, var(--era-color) 65%, transparent),
+      0 45px 90px rgba(0,0,0,0.7);
+}
+
+.carousel-controls {
+  position: relative;
+  margin: 60px auto 0;
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  align-items: center;
+  z-index: 10;
+}
+
+.prev,
+.next {
+  all: unset;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 1.6rem;
+  color: var(--active-era-color);
+  background:
+      radial-gradient(
+          circle at top,
+          color-mix(in srgb, var(--active-era-color) 45%, transparent),
+          rgba(0,0,0,0.75)
+      );
+  box-shadow:
+      0 0 25px color-mix(in srgb, var(--active-era-color) 45%, transparent),
+      0 12px 28px rgba(0,0,0,0.55);
+  transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      background 0.3s ease;
+}
+
+.prev:hover,
+.next:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow:
+      0 0 35px color-mix(in srgb, var(--active-era-color) 65%, transparent),
+      0 18px 40px rgba(0,0,0,0.7);
+}
+
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.carousel-indicators button {
+  all: unset;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-indicators button.active {
+  background: var(--active-era-color);
+  transform: scale(1.5);
+  box-shadow: 0 0 10px var(--active-era-color);
+}
+
+body.dark .era-content {
+  background-color: rgba(20, 20, 40, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark .carousel-slide.active {
+  box-shadow:
+      0 0 0 3px var(--era-color),
+      0 0 120px 40px color-mix(in srgb, var(--era-color) 40%, transparent);
+}
+
+.era-debut { --era-color: #6aebb4; }
+.era-fearless { --era-color: #f7c948; }
+.era-speak-now { --era-color: #c77dff; }
+.era-red { --era-color: #e74c3c; }
+.era-1989 { --era-color: #74b9ff; }
+.era-reputation { --era-color: #2d3436; }
+.era-lover { --era-color: #ffb6c1; }
+.era-folklore { --era-color: #b8cbb8; }
+.era-evermore { --era-color: #7d8f69; }
+.era-midnights { --era-color: #1e3799; }
+.era-tortured-poets-department { --era-color: #3d3d3d; }
+.era-the-life-of-a-showgirl { --era-color: #c75b12; }

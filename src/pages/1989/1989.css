@@ -1,0 +1,2796 @@
+/* ================================================
+   1989 ERA — "SEAGULLS & CITY LIGHTS"
+   Visual: NYC skyline neon + polaroid film + ocean blue
+   ================================================ */
+
+/* --- TEMAS OG vs TV --- */
+.theme-original {
+    --sky-top: #1d3557;
+    --sky-mid: #457b9d;
+    --sky-low: #a8dadc;
+    --neon: #87ceeb;
+    --neon-glow: rgba(135, 206, 235, 0.6);
+    --surface: #f1faee;
+    --card: rgba(255, 255, 255, 0.85);
+    --ink: #1d3557;
+    --ink-soft: #457b9d;
+}
+
+.theme-tv {
+    --sky-top: #1d3557;
+    --sky-mid: #457b9d;
+    --sky-low: #a8dadc;
+    --neon: #b8e2f2;
+    --neon-glow: rgba(184, 226, 242, 0.7);
+    --surface: #e0f0f5;
+    --card: rgba(255, 255, 255, 0.92);
+    --ink: #1d3557;
+    --ink-soft: #2a6f97;
+}
+
+/* --- PÁGINA: O Degradê de NYC Noturno ocupa TUDO --- */
+.era-1989-page {
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--ink);
+    background: linear-gradient(135deg,
+            var(--sky-top) 0%,
+            var(--sky-mid) 30%,
+            var(--sky-low) 50%,
+            #ffb7b2 75%,
+            var(--sky-top) 100%);
+    background-size: 300% 300%;
+    animation: sky-cycle 25s ease infinite;
+    transition: background 1s ease;
+}
+
+@keyframes sky-cycle {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.seagull-fly {
+    position: absolute;
+    width: 25px;
+    height: 10px;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: 0 -3px 0 0 rgba(255, 255, 255, 0.6);
+    pointer-events: none;
+    z-index: 15;
+    animation: flap 0.5s infinite alternate ease-in-out;
+}
+.seagull-fly::before,
+.seagull-fly::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 15px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: 0 -3px 0 0 rgba(255, 255, 255, 0.6);
+}
+.seagull-fly::before { left: -10px; transform: rotate(15deg); }
+.seagull-fly::after { right: -10px; transform: rotate(-15deg); }
+
+@keyframes flap {
+    0% { transform: scaleY(1); }
+    100% { transform: scaleY(0.4); }
+}
+
+/* Opcional: poeira estelar cobrindo tudo sutilmente */
+.era-1989-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.15;
+    background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+}
+
+/* --- HEADER (navegação simples entre eras) --- */
+.era-1989-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 5%;
+    z-index: 50;
+}
+
+.nav-1989-link {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 22px;
+    border-radius: 30px;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+}
+
+.nav-1989-link:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: var(--neon);
+    box-shadow: 0 0 20px var(--neon-glow);
+    transform: translateY(-2px);
+}
+
+/* --- TOGGLE OG ↔ TV --- */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 8px 20px;
+    border-radius: 30px;
+    transition: background 0.3s ease;
+}
+
+.toggle-container:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.toggle-container span {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.3s;
+}
+
+.toggle-container span.active {
+    color: #fff;
+}
+
+.toggle-switch {
+    width: 36px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    position: relative;
+    transition: background 0.4s;
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tv-active {
+    background: var(--neon) !important;
+}
+
+.tv-active::after {
+    transform: translateX(18px);
+}
+
+/* ============================================================
+   HERO — fullscreen skyline gradient + centralized layout
+   ============================================================ */
+.ninetene-eightynine-hero {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Os fundos foram movidos para a página pai (.era-1989-page) para cobrir o site todo de forma suave */
+.hero-1989-neon-bg {
+    display: none;
+}
+
+/* Textura Cinematic Grain / Bokeh Layer */
+.eightynine-texture-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://www.transparenttextures.com/patterns/black-scales.png');
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 2;
+    mix-blend-mode: overlay;
+}
+
+/* ─────────────────── DYNAMIC NEON STREAKS ─────────────────── */
+.eightynine-neon-streak {
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 300px;
+    z-index: 1;
+    opacity: 0;
+    -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+}
+
+.eightynine-neon-streak--left { left: 0; }
+.eightynine-neon-streak--right { right: 0; }
+
+.eightynine-loaded .eightynine-neon-streak {
+    animation: neonStreakFadeIn 2s ease forwards 0.5s;
+}
+
+@keyframes neonStreakFadeIn {
+    to { opacity: 1; filter: drop-shadow(0 0 15px var(--neon-glow, rgba(135, 206, 235, 0.4))); }
+}
+
+.eightynine-neon-streak path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+}
+
+.eightynine-loaded .eightynine-neon-streak path {
+    animation: neonStreakDraw 4s cubic-bezier(0.4, 0, 0.2, 1) forwards 1s, neonStreakGlow 6s ease-in-out infinite 5s;
+}
+
+@keyframes neonStreakDraw {
+    to { stroke-dashoffset: 0; }
+}
+
+@keyframes neonStreakGlow {
+    0%, 100% { opacity: 0.3; filter: drop-shadow(0 0 5px var(--neon-glow, rgba(135, 206, 235, 0.3))); }
+    50% { opacity: 0.8; filter: drop-shadow(0 0 20px var(--neon-glow, rgba(135, 206, 235, 0.8))); }
+}
+
+/* Album Aura */
+.eightynine-album-aura {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle, var(--neon-glow, rgba(135, 206, 235, 0.3)) 0%, transparent 60%);
+    z-index: -1;
+    filter: blur(30px);
+    opacity: 0;
+}
+
+.eightynine-loaded .eightynine-album-aura {
+    animation: neonAuraPulse 5s infinite alternate ease-in-out 1.5s;
+}
+
+@keyframes neonAuraPulse {
+    0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.9); }
+    100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* Conteúdo principal centralizado */
+.hero-1989-main-content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 1100px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 35px;
+    padding-top: 80px;
+}
+
+/* ---- TITULOS ---- */
+.hero-1989-titles {
+    text-align: center;
+}
+
+.hero-1989-artist {
+    font-family: 'Prata', serif;
+    font-weight: 400;
+    letter-spacing: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+}
+
+/* ─────────────────── TITLE FLICKER ─────────────────── */
+.eightynine-title-flicker {
+    display: inline-block;
+    color: #fff;
+    opacity: 0;
+}
+
+.eightynine-loaded .eightynine-title-flicker {
+    animation: neonPowerOn 1.5s steps(3) forwards 0.8s, neonTitlePulse 4s infinite alternate ease-in-out 2.3s;
+}
+
+@keyframes neonPowerOn {
+    0% { opacity: 0; text-shadow: none; }
+    20% { opacity: 1; text-shadow: 0 0 40px var(--neon-glow, rgba(135, 206, 235, 0.8)); }
+    40% { opacity: 0.2; text-shadow: none; }
+    60% { opacity: 1; text-shadow: 0 0 60px var(--neon-glow, rgba(135, 206, 235, 1)); }
+    80% { opacity: 0.5; text-shadow: none; }
+    100% { opacity: 1; text-shadow: 0 0 30px var(--neon-glow, rgba(135, 206, 235, 0.6)), 0 0 60px var(--neon-glow, rgba(135, 206, 235, 0.3)); }
+}
+
+@keyframes neonTitlePulse {
+    0% { text-shadow: 0 0 20px var(--neon-glow, rgba(135, 206, 235, 0.4)); }
+    100% { text-shadow: 0 0 50px var(--neon-glow, rgba(135, 206, 235, 0.9)), 0 0 80px var(--neon-glow, rgba(135, 206, 235, 0.4)); }
+}
+
+/* ─────────────────── STAGED ENTRY ANIMATIONS ─────────────────── */
+.era-1989-nav,
+.hero-1989-titles,
+.hero-1989-center-album,
+.hero-1989-info-strip,
+.hero-1989-action-row {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.eightynine-loaded .era-1989-nav {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+
+.eightynine-loaded .hero-1989-titles {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+.eightynine-loaded .hero-1989-center-album {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.5s;
+}
+
+.eightynine-loaded .hero-1989-info-strip {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.7s;
+}
+
+.eightynine-loaded .hero-1989-action-row {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.9s;
+}
+
+.hero-1989-album-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(7rem, 18vw, 14rem);
+    color: #fff;
+    line-height: 0.85;
+    margin: 0;
+    letter-spacing: -6px;
+    text-shadow:
+        0 0 30px var(--neon-glow),
+        0 0 60px var(--neon-glow),
+        0 4px 0 rgba(0, 0, 0, 0.12);
+    animation: titlePulse 4s ease-in-out infinite alternate;
+    transition: text-shadow 0.8s ease;
+}
+
+@keyframes titlePulse {
+    from {
+        text-shadow: 0 0 20px var(--neon-glow), 0 0 40px var(--neon-glow), 0 4px 0 rgba(0, 0, 0, 0.12);
+    }
+
+    to {
+        text-shadow: 0 0 40px var(--neon-glow), 0 0 80px var(--neon-glow), 0 4px 0 rgba(0, 0, 0, 0.12);
+    }
+}
+
+.hero-1989-quote {
+    font-family: 'Prata', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.6rem);
+    color: rgba(255, 255, 255, 0.65);
+    margin: 15px 0 0 0;
+}
+
+/* ---- ALBUM CENTRALIZADO ---- */
+.hero-1989-center-album {
+    cursor: pointer;
+}
+
+.album-showcase {
+    position: relative;
+    width: 360px;
+    animation: floatAlbum 6s ease-in-out infinite;
+}
+
+.album-showcase .album-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    border-radius: 6px;
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    z-index: 5;
+}
+
+/* Neon Tube Frame SVG */
+.eightynine-neon-frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    height: 400px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10;
+    filter: drop-shadow(0 0 10px rgba(135, 206, 235, 0.8));
+    animation: neonTubePulse 2s infinite alternate;
+}
+
+@keyframes neonTubePulse {
+    0% { filter: drop-shadow(0 0 10px rgba(135, 206, 235, 0.6)); }
+    100% { filter: drop-shadow(0 0 25px rgba(135, 206, 235, 1)); }
+}
+
+.album-showcase:hover .album-img {
+    transform: scale(1.04);
+}
+
+.album-glow {
+    position: absolute;
+    inset: -15px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--neon), var(--sky-mid), var(--neon));
+    background-size: 300% 300%;
+    opacity: 0.5;
+    filter: blur(25px);
+    z-index: -1;
+    animation: glowShift 5s ease infinite;
+}
+
+.album-showcase:hover .album-glow {
+    opacity: 0.8;
+    filter: blur(30px);
+}
+
+@keyframes floatAlbum {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes glowShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* ---- INFO STRIP (estilo letreiro metrô NYC) ---- */
+.hero-1989-info-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50px;
+    padding: 12px 10px;
+    max-width: 700px;
+    width: 100%;
+    animation: fadeSlideUp 1s ease 0.3s both;
+}
+
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.info-strip-item {
+    flex: 1;
+    text-align: center;
+    padding: 8px 15px;
+}
+
+.strip-label {
+    display: block;
+    font-size: 0.55rem;
+    letter-spacing: 3px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.strip-value {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.strip-divider {
+    width: 1px;
+    height: 35px;
+    background: linear-gradient(180deg, transparent, var(--neon), transparent);
+    flex-shrink: 0;
+}
+
+/* ---- BOTÕES ---- */
+.hero-1989-action-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn-1989-primary {
+    background: #fff;
+    color: var(--sky-top);
+    border: 2px solid #fff;
+    padding: 16px 45px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.15),
+        0 0 15px var(--neon-glow);
+    transition: all 0.35s ease;
+    animation: btnNeonPulse 3s ease-in-out infinite alternate;
+}
+
+.btn-1989-primary:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.2),
+        0 0 35px var(--neon-glow),
+        0 0 60px var(--neon-glow);
+}
+
+.btn-1989-play {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--neon);
+    color: var(--sky-top);
+    padding: 16px 35px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.35s ease;
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.1),
+        0 0 15px var(--neon-glow);
+    animation: btnNeonSoft 3s ease-in-out infinite alternate;
+}
+
+.btn-1989-play:hover {
+    background: #fff;
+    border-color: var(--neon);
+    transform: translateY(-4px);
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.15),
+        0 0 30px var(--neon-glow),
+        0 0 50px var(--neon-glow);
+}
+
+@keyframes btnNeonPulse {
+    from {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 0 10px var(--neon-glow);
+    }
+
+    to {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 0 25px var(--neon-glow), 0 0 50px rgba(135, 206, 235, 0.15);
+    }
+}
+
+@keyframes btnNeonSoft {
+    from {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1), 0 0 5px rgba(135, 206, 235, 0.1);
+    }
+
+    to {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(135, 206, 235, 0.3), 0 0 30px rgba(135, 206, 235, 0.1);
+    }
+}
+
+/* ---- RESPONSIVIDADE HERO ---- */
+@media (max-width: 900px) {
+    .hero-1989-info-strip {
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+        border-radius: 20px;
+        max-width: 90%;
+    }
+
+    .strip-divider {
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--neon), transparent);
+    }
+}
+
+@media (max-width: 600px) {
+    .hero-1989-action-row {
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+
+    .btn-1989-primary,
+    .btn-1989-play {
+        width: 80%;
+        text-align: center;
+    }
+
+    .era-1989-nav {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+        padding-top: 15px;
+    }
+}
+
+/* --- SEPARADOR DE SEÇÃO SUPER ELEGANTE --- */
+.section-divider-1989 {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon), transparent);
+    position: relative;
+    z-index: 5;
+    margin-top: 50px;
+    /* gruda no Hero */
+    box-shadow: 0 0 15px var(--neon-glow);
+}
+
+.section-divider-1989::before {
+    content: '✦';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--neon);
+    font-size: 1.5rem;
+    background: #020610;
+    padding: 0 15px;
+    text-shadow: 0 0 10px var(--neon), 0 0 20px #fff;
+    animation: diamondPulse 2.5s infinite alternate;
+}
+
+/* --- SEÇÃO TRACKLIST (TRANSPARÊNCIA E CONTINUIDADE) --- */
+.tracklist-1989-section {
+    padding: 120px 5% 150px;
+    position: relative;
+    z-index: 10;
+    background: transparent !important;
+}
+
+.tracklist-container {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.tracklist-title-main {
+    font-family: 'Prata', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    color: #fff;
+    text-align: center;
+    letter-spacing: 10px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-shadow: none;
+    position: relative;
+    overflow: hidden;
+}
+
+/* --- NEON SWEEP ANIMATION on THE SOUNDTRACK --- */
+.neon-sweep {
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(90deg,
+            #fff 0%,
+            #fff 40%,
+            #87ceeb 50%,
+            #00d4ff 55%,
+            #87ceeb 60%,
+            #fff 70%,
+            #fff 100%);
+    background-size: 300% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: neonSweepAnim 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(135, 206, 235, 0.4));
+}
+
+@keyframes neonSweepAnim {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+/* --- TRACKLIST SUBTITLE --- */
+.tracklist-subtitle {
+    text-align: center;
+    font-family: 'Prata', serif;
+    font-style: italic;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 3px;
+    margin: 0 0 70px 0;
+}
+
+.tracklist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+.column-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    color: #fff;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.4), 0 0 10px rgba(135, 206, 235, 0.5);
+}
+
+.column-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--neon), transparent);
+    opacity: 0.5;
+}
+
+/* --- COLUMN PHRASE (frases visíveis) --- */
+.column-phrase {
+    font-family: 'Prata', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 0 30px 0;
+    letter-spacing: 1px;
+    padding-left: 2px;
+    border-left: 2px solid rgba(135, 206, 235, 0.3);
+    padding: 5px 0 5px 15px;
+}
+
+/* --- GLASS CARDS (EFEITO LUXO 1989) --- */
+.track-card {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    margin-bottom: 10px;
+    padding: 16px 22px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    cursor: pointer;
+    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Faixa azul neon passando nos singles */
+.track-card.is-single::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 200, 255, 0.35), rgba(135, 206, 235, 0.25), transparent);
+    animation: singleSweep 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes singleSweep {
+    0% {
+        left: -60%;
+    }
+
+    100% {
+        left: 120%;
+    }
+}
+
+.track-card:hover {
+    background: rgba(255, 255, 255, 0.09);
+    transform: translateX(8px) scale(1.015);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.4),
+        -4px 0 20px rgba(135, 206, 235, 0.15);
+}
+
+.track-card.playing {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: #fff;
+    transform: translateX(12px) scale(1.02);
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.4),
+        0 0 35px var(--neon-glow),
+        0 0 60px rgba(135, 206, 235, 0.15);
+}
+
+.t-num {
+    font-family: 'Prata', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: var(--neon);
+    opacity: 0.6;
+    width: 45px;
+    transition: 0.3s;
+}
+
+.track-card:hover .t-num {
+    opacity: 1;
+    transform: translateX(3px);
+}
+
+.track-card.playing .t-num {
+    color: var(--ink);
+    opacity: 0.8;
+}
+
+/* --- T-INFO container --- */
+.t-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+}
+
+.t-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #e0f0f5;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: 0.3s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.track-card:hover .t-name {
+    color: #fff;
+}
+
+.track-card.playing .t-name {
+    color: var(--ink);
+    font-weight: 800;
+}
+
+/* --- SINGLE BADGE (destaque visual premium) --- */
+.t-single {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    width: fit-content;
+    background: linear-gradient(135deg, #00c8ff, #0099cc);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    border: none;
+    box-shadow: 0 0 14px rgba(0, 200, 255, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    animation: singleGlow 3s ease-in-out infinite alternate;
+}
+
+.single-star {
+    font-size: 0.65rem;
+    color: #fff;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+}
+
+@keyframes singleGlow {
+    0% {
+        border-color: rgba(135, 206, 235, 0.2);
+        box-shadow: none;
+    }
+
+    100% {
+        border-color: rgba(135, 206, 235, 0.5);
+        box-shadow: 0 0 12px rgba(135, 206, 235, 0.15);
+    }
+}
+
+.track-card.playing .t-single {
+    background: linear-gradient(135deg, var(--ink), #2a6f97);
+    color: #fff;
+    text-shadow: none;
+    box-shadow: 0 2px 10px rgba(29, 53, 87, 0.3);
+}
+
+.track-card.playing .single-star {
+    color: #87ceeb;
+    filter: none;
+}
+
+/* --- PLAY BUTTON (clean icon, sem fundo) --- */
+.t-play-btn {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: auto;
+    height: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 0;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 1.2rem;
+    margin-left: auto;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.t-play-btn::before {
+    content: '▶';
+}
+
+.t-play-btn:hover {
+    color: #fff;
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 8px rgba(135, 206, 235, 0.5));
+}
+
+.track-card:hover .t-play-btn {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.track-card.playing .t-play-btn {
+    color: var(--ink);
+    filter: none;
+    animation: none;
+}
+
+.track-card.playing .t-play-btn::before {
+    content: '⏸';
+}
+
+/* O EQUALIZADOR (4 barras) */
+.t-eq {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 20px;
+    width: 22px;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.playing .t-eq {
+    opacity: 1;
+}
+
+.t-eq span {
+    width: 3px;
+    background: var(--ink);
+    border-radius: 3px;
+    display: none;
+}
+
+.playing .t-eq span {
+    display: block;
+    animation: eqBounce 0.5s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate;
+}
+
+.playing .t-eq span:nth-child(1) {
+    animation-delay: 0s;
+    height: 8px;
+}
+
+.playing .t-eq span:nth-child(2) {
+    animation-delay: 0.15s;
+    height: 14px;
+}
+
+.playing .t-eq span:nth-child(3) {
+    animation-delay: 0.3s;
+    height: 6px;
+}
+
+.playing .t-eq span:nth-child(4) {
+    animation-delay: 0.45s;
+    height: 10px;
+}
+
+@keyframes eqBounce {
+    0% {
+        height: 4px;
+    }
+
+    100% {
+        height: 18px;
+    }
+}
+
+/* --- THE VAULT (Diferenciação Visual) --- */
+.vault-side {
+    transition: all 0.8s ease;
+}
+
+.vault-side.locked {
+    opacity: 1;
+    pointer-events: auto;
+    filter: none;
+}
+
+.vault-card .t-name {
+    background: linear-gradient(90deg, #fff 0%, var(--neon) 50%, #fff 100%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.vault-card:hover .t-name {
+    animation: shineSlow 4s linear infinite;
+}
+
+/* --- VAULT PLACEHOLDER (visual chamativo) --- */
+.vault-placeholder {
+    height: 100%;
+    min-height: 400px;
+    border: 2px solid rgba(135, 206, 235, 0.25);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    cursor: pointer;
+    background: linear-gradient(135deg, rgba(135, 206, 235, 0.08), rgba(0, 200, 255, 0.04), rgba(135, 206, 235, 0.08));
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), inset 0 0 30px rgba(135, 206, 235, 0.05);
+}
+
+/* Borda animada brilhante */
+.vault-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 22px;
+    background: linear-gradient(90deg, transparent, var(--neon), #00d4ff, var(--neon), transparent);
+    background-size: 300% 100%;
+    animation: vaultBorderSweep 4s linear infinite;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+@keyframes vaultBorderSweep {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+.vault-placeholder:hover {
+    background: linear-gradient(135deg, rgba(135, 206, 235, 0.15), rgba(0, 200, 255, 0.08), rgba(135, 206, 235, 0.15));
+    border-color: var(--neon);
+    transform: scale(1.03);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3), 0 0 40px rgba(135, 206, 235, 0.15), inset 0 0 30px rgba(135, 206, 235, 0.1);
+}
+
+.vault-placeholder:hover::before {
+    opacity: 0.9;
+}
+
+.lock-icon {
+    font-size: 4rem;
+    margin-bottom: 25px;
+    filter: drop-shadow(0 0 15px var(--neon-glow));
+    pointer-events: none;
+    animation: lockFloat 3s ease-in-out infinite;
+}
+
+@keyframes lockFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.vault-placeholder p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 5px;
+    pointer-events: none;
+    color: var(--neon);
+    text-transform: uppercase;
+    text-shadow: 0 0 15px rgba(135, 206, 235, 0.5);
+}
+
+@media (max-width: 900px) {
+    .tracklist-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ========================================= */
+/* THE VAULT - DECODE THE CODE (PREMIUM)     */
+/* ========================================= */
+.vault-1989-section {
+    padding: 100px 20px 350px 20px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.vault-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.vault-section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: transparent;
+    background: linear-gradient(90deg, #ffffff, var(--neon), #ffffff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: blueShine 4s linear infinite;
+    letter-spacing: 12px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 30px rgba(135, 206, 235, 0.4);
+}
+
+@keyframes blueShine {
+    to {
+        background-position: 200% center;
+    }
+}
+
+.vault-section-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--neon);
+    letter-spacing: 4px;
+    text-shadow: 0 0 10px rgba(135, 206, 235, 0.4);
+}
+
+.vault-container {
+    perspective: 2000px;
+    width: 420px;
+    height: 420px;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.8));
+}
+
+.bank-vault {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+/* Vault Inside */
+.vault-inside {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(0, 212, 255, 0.15), rgba(13, 27, 42, 0.95)),
+        linear-gradient(135deg, #0d1b2a, #000);
+    border-radius: 50%;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(0, 212, 255, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.5s ease 1s;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.bank-vault.is-open .vault-inside {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.inside-title {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--neon);
+    font-size: 1.1rem;
+    letter-spacing: 4px;
+    margin-bottom: 25px;
+    text-shadow: 0 0 15px var(--neon-glow);
+}
+
+.vault-tracks-scattered {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 50;
+    transform: translateZ(150px);
+    /* Ensures tracks pop out over the swinging door */
+}
+
+.scatter-track-item {
+    position: absolute;
+    background: rgba(13, 27, 42, 0.85);
+    border: 1px solid var(--neon);
+    padding: 10px 18px;
+    border-radius: 30px;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 0 15px rgba(135, 206, 235, 0.4);
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(8px);
+    white-space: nowrap;
+}
+
+.st-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.st-song {
+    font-size: 0.7rem;
+    color: var(--neon);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.scatter-track-item:hover {
+    background: rgba(135, 206, 235, 0.2);
+    box-shadow: 0 0 25px var(--neon-glow);
+    transform: scale(1.1) !important;
+}
+
+.scatter-track-item.is-visible {
+    opacity: 1;
+    transform: scale(1);
+    animation: floatLetters 4s ease-in-out infinite alternate;
+}
+
+@keyframes floatLetters {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        transform: translateY(-10px) scale(1.05);
+    }
+}
+
+.lock-again-btn {
+    margin-top: 25px;
+    background: rgba(135, 206, 235, 0.05);
+    border: 1px solid rgba(135, 206, 235, 0.3);
+    color: var(--neon);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lock-again-btn:hover {
+    background: var(--neon);
+    color: #111;
+    box-shadow: 0 0 15px var(--neon-glow);
+}
+
+/* Vault Door Premium */
+.vault-door {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: conic-gradient(from 45deg, #1c2833, #0d1b2a, #212f3c, #0d1b2a, #1c2833);
+    border-radius: 50%;
+    box-shadow:
+        inset 0 0 40px rgba(0, 0, 0, 0.9),
+        inset 0 0 15px rgba(135, 206, 235, 0.15),
+        25px 25px 50px rgba(0, 0, 0, 0.9);
+    border: 22px solid #0c1218;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: left center;
+    transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 5;
+}
+
+.vault-door::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border: 2px dashed rgba(135, 206, 235, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.bank-vault.is-open .vault-door {
+    transform: rotateY(-115deg) scale(0.5);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Wheel Premium */
+.vault-wheel {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #e0e0e0, #87ceeb, #ffffff, #87ceeb, #e0e0e0);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), inset 0 4px 10px rgba(255, 255, 255, 0.4);
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bank-vault:hover:not(.is-open) .vault-wheel {
+    transform: rotate(60deg) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), inset 0 4px 15px rgba(255, 255, 255, 0.6);
+}
+
+.bank-vault.is-open .vault-wheel {
+    transform: rotate(720deg);
+}
+
+.wheel-handle {
+    position: absolute;
+    width: 14px;
+    height: 240px;
+    background: linear-gradient(to right, #e0e0e0, #87ceeb, #e0e0e0);
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+}
+
+.wheel-handle.h1 {
+    transform: rotate(0deg);
+}
+
+.wheel-handle.h2 {
+    transform: rotate(45deg);
+}
+
+.wheel-handle.h3 {
+    transform: rotate(90deg);
+}
+
+.wheel-handle.h4 {
+    transform: rotate(135deg);
+}
+
+.wheel-center {
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at top left, #2c3e50, #1a252f);
+    border-radius: 50%;
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9), 0 5px 15px rgba(0, 0, 0, 0.6);
+    border: 4px solid #87ceeb;
+}
+
+.wheel-center .ts-logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: 1.8rem;
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(135, 206, 235, 0.7);
+    letter-spacing: 2px;
+}
+
+/* Combination Lock Premium */
+.vault-combination {
+    position: absolute;
+    top: 60px;
+    display: flex;
+    gap: 8px;
+    background: #000;
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: 3px solid #b8860b;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 1), 0 5px 15px rgba(0, 0, 0, 0.6);
+}
+
+.vault-combination span {
+    color: var(--neon);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-shadow: 0 0 12px var(--neon-glow);
+}
+
+.bank-vault.is-open .vault-combination span {
+    color: #00ff66;
+    text-shadow: 0 0 12px rgba(0, 255, 102, 0.8);
+}
+
+.click-to-open {
+    position: absolute;
+    bottom: 50px;
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 5px;
+    opacity: 0.9;
+    animation: flashBlue 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    text-shadow: 0 0 15px rgba(135, 206, 235, 0.6);
+}
+
+@keyframes flashBlue {
+
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Smoke particles sequence */
+.vault-smoke {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1px;
+    height: 1px;
+    z-index: 4;
+    pointer-events: none;
+}
+
+.bank-vault.is-open .vault-smoke::before,
+.bank-vault.is-open .vault-smoke::after {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: -200px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(135, 206, 235, 0.5) 0%, transparent 60%);
+    border-radius: 50%;
+    opacity: 0;
+    animation: smokeBurst 1.5s ease-out;
+}
+
+.bank-vault.is-open .vault-smoke::after {
+    animation-delay: 0.2s;
+    background: radial-gradient(circle, rgba(135, 206, 235, 0.3) 0%, transparent 70%);
+    transform: scale(0.6);
+}
+
+@keyframes smokeBurst {
+    0% {
+        transform: scale(0.1);
+        opacity: 0.9;
+    }
+
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* ========================================= */
+/* TIMELINE SECTION (Replaces NYC Map)       */
+/* ========================================= */
+.timeline-1989-section {
+    padding: 100px 20px 150px 20px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-header {
+    text-align: center;
+    margin-bottom: 70px;
+    z-index: 2;
+}
+
+.timeline-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 8px;
+    text-shadow: 0 0 20px rgba(135, 206, 235, 0.6);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.timeline-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--neon);
+    letter-spacing: 3px;
+    font-style: italic;
+}
+
+.timeline-1989-container {
+    width: 100%;
+    max-width: 900px;
+    position: relative;
+    padding-bottom: 50px;
+}
+
+/* The vertical neon line */
+.timeline-1989-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, transparent 0%, var(--neon) 15%, #fff 50%, var(--neon) 85%, transparent 100%);
+    box-shadow: 0 0 15px var(--neon-glow);
+    z-index: 1;
+}
+
+/* Container for each event */
+.timeline-1989-item {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 50%;
+    padding-right: 40px;
+    position: relative;
+    margin-bottom: 50px;
+    z-index: 2;
+}
+
+.timeline-1989-item:nth-child(even) {
+    align-self: flex-end;
+    justify-content: flex-start;
+    padding-left: 40px;
+    padding-right: 0;
+    margin-left: 50%;
+}
+
+/* The shiny dot on the timeline */
+.timeline-1989-dot {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 15px var(--neon), 0 0 30px rgba(255, 255, 255, 0.8);
+    z-index: 3;
+    transition: all 0.3s ease;
+}
+
+.timeline-1989-item:nth-child(even) .timeline-1989-dot {
+    left: -10px;
+    right: auto;
+}
+
+/* The card displaying event info */
+.timeline-1989-content {
+    background: rgba(13, 27, 42, 0.65);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(135, 206, 235, 0.3);
+    padding: 25px 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(135, 206, 235, 0.1);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+}
+
+.timeline-1989-item:hover .timeline-1989-content {
+    transform: translateY(-5px);
+    background: rgba(13, 27, 42, 0.8);
+    border-color: var(--neon);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 25px var(--neon-glow);
+}
+
+.timeline-1989-item:hover .timeline-1989-dot {
+    transform: translateY(-50%) scale(1.4);
+    box-shadow: 0 0 25px var(--neon), 0 0 40px rgba(255, 255, 255, 1);
+}
+
+.timeline-1989-date {
+    display: inline-block;
+    font-family: 'Prata', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--neon);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.timeline-1989-event {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+.timeline-1989-desc {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.6;
+}
+
+/* Timeline Responsiveness */
+@media (max-width: 768px) {
+    .vault-container {
+        width: 300px;
+        height: 300px;
+    }
+
+    .timeline-1989-line {
+        left: 20px;
+        transform: none;
+    }
+
+    .timeline-1989-item,
+    .timeline-1989-item:nth-child(even) {
+        width: 100%;
+        margin-left: 0;
+        padding-left: 50px;
+        padding-right: 0;
+        justify-content: flex-start;
+    }
+
+    .timeline-1989-dot,
+    .timeline-1989-item:nth-child(even) .timeline-1989-dot {
+        left: 10px;
+        right: auto;
+    }
+}
+
+/* ========================================= */
+/* SECRET MESSAGE DECODER SECTION            */
+/* ========================================= */
+.decoder-1989-section,
+.clips-1989-section,
+.tour-1989-section,
+.gallery-1989-section {
+    padding: 100px 20px 150px 20px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.decoder-header,
+.clips-header,
+.gallery-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.decoder-title,
+.clips-title,
+.gallery-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 8px;
+    text-shadow: 0 0 20px rgba(135, 206, 235, 0.6);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.decoder-subtitle,
+.clips-subtitle,
+.gallery-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--neon);
+    letter-spacing: 3px;
+    font-style: italic;
+}
+
+/* Decoder Game styling */
+.decoder-game-container {
+    max-width: 800px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+}
+
+.decoder-text-box {
+    background: rgba(13, 27, 42, 0.65);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(135, 206, 235, 0.2);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    line-height: 2;
+    text-align: center;
+}
+
+.decoder-char {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.decoder-char.is-target {
+    cursor: pointer;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.decoder-char.is-target:hover {
+    color: var(--neon);
+    transform: translateY(-2px) scale(1.1);
+}
+
+.decoder-char.is-found {
+    color: var(--neon);
+    text-shadow: 0 0 15px var(--neon-glow);
+    animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(1.3);
+    }
+
+    50% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.decoded-board {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px dashed rgba(135, 206, 235, 0.4);
+}
+
+.board-slot {
+    width: 30px;
+    height: 40px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: transparent;
+    transition: all 0.5s ease;
+}
+
+.board-slot.filled {
+    color: var(--neon);
+    border-bottom-color: var(--neon);
+    text-shadow: 0 0 15px var(--neon-glow);
+}
+
+.decoder-success {
+    margin-top: 30px;
+    text-align: center;
+    animation: fadeSlideUp 1s ease forwards;
+}
+
+.decoder-success h3 {
+    color: #00ff66;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 5px;
+    text-shadow: 0 0 20px rgba(0, 255, 102, 0.5);
+}
+
+.decoder-success p {
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.decoder-play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 30px;
+    background: linear-gradient(135deg, var(--neon), #00d4ff);
+    color: #111;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(135, 206, 235, 0.4);
+}
+
+.decoder-play-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(135, 206, 235, 0.6);
+}
+
+/* ========================================= */
+/* MUSIC VIDEOS — HORIZONTAL CAROUSEL        */
+/* ========================================= */
+.mv-carousel-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2px;
+}
+
+/* Arrow buttons */
+.mv-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: 300;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.1);
+    padding-bottom: 4px;
+}
+
+.mv-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--sky-top);
+    border-color: #fff;
+    box-shadow: 0 0 35px var(--neon-glow), 0 0 15px #fff;
+    transform: translateY(-50%) scale(1.15);
+}
+
+.mv-nav-btn.prev {
+    left: -75px;
+}
+
+.mv-nav-btn.next {
+    right: -75px;
+}
+
+/* Track — horizontal scroll with snap */
+.mv-carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    gap: 0;
+    padding: 20px 0;
+}
+
+.mv-carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+/* Each slide = full width */
+.mv-slide {
+    min-width: 100%;
+    scroll-snap-align: center;
+    flex-shrink: 0;
+    padding: 0 10px;
+    /* spacing off the edges so shadow is visible */
+}
+
+/* Thumbnail state */
+.mv-slide-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    cursor: pointer;
+    overflow: hidden;
+    background: #050505;
+    border-radius: 16px;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mv-slide-thumb:hover {
+    transform: translateY(-5px);
+}
+
+/* O elemento que cria a 'barra' rotativa */
+.mv-slide-thumb::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    /* Gradiente cônico que cria a 'barra' que se move */
+    background: conic-gradient(
+        transparent 0%,
+        transparent 60%,
+        #00aaff 85%,
+        #0033ff 100%
+    );
+    animation: rotateBorder 4s linear infinite; /* Animação infinita */
+    z-index: 1;
+}
+
+/* O fundo escuro interno, cobrindo o centro da barra */
+.mv-slide-thumb::before {
+    content: '';
+    position: absolute;
+    inset: 4px; /* Define a grossura da moldura (4px) */
+    background: #050505; 
+    border-radius: inherit;
+    z-index: 2;
+}
+
+@keyframes rotateBorder {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.mv-slide-thumb img {
+    position: relative;
+    z-index: 3;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    margin: 4px; /* acompanha o inset:4px */
+    object-fit: contain;
+    /* Centralizada sem cortar */
+    object-position: center;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+    filter: brightness(0.95);
+    border-radius: 12px;
+}
+
+.mv-slide-thumb:hover img {
+    transform: scale(1.05); /* Slight zoom, perfectly fine with contain */
+    filter: brightness(0.8);
+}
+
+/* A moldura fica mais intensa no hover */
+.mv-slide-thumb:hover::after {
+    animation: rotateBorder 1s linear infinite;
+    /* Acelera a moldura no hover */
+    filter: brightness(1.5) blur(2px);
+    /* Adiciona brilho e um leve blur neon */
+}
+
+/* Overlay gradient */
+.mv-slide-overlay {
+    position: absolute;
+    inset: 4px; /* mesmo inset da imagem e do fundo pra nao cobrir a borda rotativa */
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.3) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+    z-index: 4;
+    pointer-events: none;
+    border-radius: 12px;
+    /* Let clicks pass to thumb so we don't block interactions */
+}
+
+.mv-slide-thumb:hover .mv-slide-overlay {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+/* Play button */
+.mv-slide-play {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    padding-left: 6px;
+    color: #fff;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+    /* Play button visible and interactive */
+}
+
+.mv-slide-thumb:hover .mv-slide-play {
+    background: var(--neon);
+    color: #111;
+    border-color: var(--neon);
+    box-shadow: 0 0 40px var(--neon-glow);
+    transform: scale(1.1);
+}
+
+/* Info at bottom */
+.mv-slide-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 25px 30px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.mv-slide-year {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--neon);
+    letter-spacing: 3px;
+}
+
+.mv-slide-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 5px 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.mv-slide-desc {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.5px;
+}
+
+/* Inline YouTube player */
+.mv-slide-player {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #050505;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.mv-slide-player::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    /* Mesmo gradiente forte da thumb */
+    background: conic-gradient(
+        transparent 0%,
+        transparent 60%,
+        #00aaff 85%,
+        #0033ff 100%
+    );
+    animation: rotateBorder 4s linear infinite;
+    z-index: 1;
+}
+
+.mv-slide-player::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    background: #050505;
+    border-radius: inherit;
+    z-index: 2;
+}
+
+.mv-slide-player iframe {
+    position: relative;
+    z-index: 3;
+    border-radius: 12px;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    margin: 4px;
+    display: block;
+}
+
+.mv-close-inline {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mv-close-inline:hover {
+    background: var(--neon);
+    color: #111;
+    border-color: var(--neon);
+}
+
+@media (max-width: 768px) {
+    .mv-nav-btn {
+        display: none;
+    }
+
+    .mv-slide-title {
+        font-size: 1.3rem;
+    }
+
+    .mv-slide-info {
+        padding: 15px 20px;
+    }
+
+    .mv-slide-play {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+}
+
+/* ========================================= */
+/* VIDEO MODAL OVERLAY                       */
+/* ========================================= */
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.video-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.video-modal {
+    width: 90%;
+    max-width: 900px;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(135, 206, 235, 0.2);
+    overflow: hidden;
+}
+
+.close-video {
+    position: absolute;
+    top: -45px;
+    right: 0;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2.5rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.3s ease;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    z-index: 10;
+}
+
+.close-video:hover {
+    color: var(--neon);
+}
+
+/* ========================================= */
+/* THE 1989 WORLD TOUR                       */
+/* ========================================= */
+.tour-1989-section {
+    background: linear-gradient(180deg, transparent, rgba(0, 200, 255, 0.05), transparent);
+}
+
+.tour-content {
+    text-align: center;
+    max-width: 1100px;
+    width: 100%;
+}
+
+.tour-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+    background: url('https://www.transparenttextures.com/patterns/stardust.png'), linear-gradient(90deg, #fff, var(--neon), #fff);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: blueShine 5s linear infinite;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+}
+
+.tour-desc {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin-bottom: 50px;
+}
+
+.tour-video-embed {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 50px auto;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--neon-glow);
+    border: 1px solid rgba(135, 206, 235, 0.2);
+}
+
+/* Tour Detail Cards */
+.tour-details-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 50px;
+    width: 100%;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tour-detail-card {
+    background: rgba(13, 27, 42, 0.65);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(135, 206, 235, 0.2);
+    border-radius: 12px;
+    padding: 25px;
+    text-align: left;
+    transition: all 0.4s ease;
+}
+
+.tour-detail-card:hover {
+    border-color: var(--neon);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px var(--neon-glow);
+    transform: translateY(-5px);
+}
+
+.tour-detail-card h4 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--neon);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+.tour-detail-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tour-detail-card li {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tour-detail-card li:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+    .tour-details-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.tour-stats {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    font-weight: 700;
+}
+
+.stat span {
+    font-size: 3.5rem;
+    color: #fff;
+    font-weight: 900;
+    text-shadow: 0 0 20px var(--neon-glow);
+    margin-bottom: 5px;
+}
+
+/* ========================================= */
+/* ERA GALLERY — HORIZONTAL SCROLL           */
+/* ========================================= */
+.gallery-1989-scroll {
+    width: 100vw;
+    overflow-x: auto;
+    padding: 20px 5%;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.gallery-1989-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.gallery-1989-track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+}
+
+.gallery-1989-photo {
+    position: relative;
+    min-width: 350px;
+    height: 250px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    cursor: pointer;
+}
+
+.gallery-1989-photo:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--neon-glow);
+    z-index: 2;
+}
+
+.gallery-1989-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #000;
+    display: block;
+}
+
+.gallery-1989-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .gallery-1989-photo {
+        min-width: 280px;
+        height: 200px;
+    }
+}
+
+/* ============================================= */
+/* --- SEÇÃO: OUTRAS ERAS (Estilo 1989)      --- */
+/* ============================================= */
+
+.nineteen-eras-section {
+    padding: 100px 5%;
+    background: transparent;
+    position: relative;
+    border-top: 1px solid rgba(135, 206, 235, 0.15); /* Linha celeste suave */
+  }
+  
+  .nineteen-eras-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .nineteen-eras-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+  }
+  
+  @media (max-width: 1024px) {
+    .nineteen-eras-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .nineteen-eras-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  .nineteen-era-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 30px 15px;
+    text-decoration: none;
+    border: 1px solid rgba(135, 206, 235, 0.2);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .nineteen-era-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, var(--era-color, #87ceeb), transparent);
+    background-size: 200% 200%;
+    background-position: -100% -100%;
+    opacity: 0.1;
+    transition: all 0.5s ease;
+    z-index: 0;
+  }
+  
+  .nineteen-era-card:hover {
+    border-color: var(--era-color, #87ceeb);
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px color-mix(in srgb, var(--era-color, #87ceeb) 40%, transparent);
+  }
+
+  .nineteen-era-card:hover::before {
+    background-position: 100% 100%;
+    opacity: 0.2;
+  }
+  
+  .nineteen-era-year {
+    font-family: 'Prata', serif;
+    font-size: 1.6rem;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+    color: var(--era-color, #fff);
+  }
+  
+  .nineteen-era-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s, text-shadow 0.3s;
+  }
+  
+  .nineteen-era-card:hover .nineteen-era-name {
+    color: var(--era-color, #87ceeb);
+    text-shadow: 0 0 10px var(--era-color, #87ceeb);
+  }
+  
+  .nineteen-tour-tag {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 5px;
+    color: var(--neon);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px var(--neon-glow);
+  }
+  
+  .nineteen-tour-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 0 0 50px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* ============================================= */
+  /* --- FOOTER                                --- */
+  /* ============================================= */
+  
+  .nineteen-footer {
+    padding: 60px 0 40px;
+    background: transparent;
+    border-top: 1px solid rgba(135, 206, 235, 0.2); 
+    text-align: center;
+    position: relative;
+  }
+  
+  .nineteen-footer-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .nineteen-footer-cursive {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-style: italic;
+    color: var(--neon);
+    margin: 0 0 15px;
+    text-shadow: 0 0 15px var(--neon-glow);
+  }
+  
+  .nineteen-footer-copy {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 0 25px;
+  }
+  
+  .nineteen-footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .nineteen-footer-links a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  
+  .nineteen-footer-links a:hover {
+    color: var(--neon);
+    text-shadow: 0 0 8px var(--neon-glow);
+  }
+  
+  .nineteen-footer-links span {
+    color: var(--neon);
+    font-size: 0.8rem;
+    opacity: 0.5;
+  }
+  
+  /* ============================================= */
+  /* --- BOTÃO VOLTAR AO TOPO                  --- */
+  /* ============================================= */
+  
+  .nineteen-top-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1); 
+    border: 2px solid rgba(255, 255, 255, 0.3); 
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); 
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: topBtnFadeIn 0.5s ease;
+  }
+  
+  @keyframes topBtnFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+  
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .nineteen-top-btn:hover {
+    background: var(--neon);
+    color: #000;
+    border-color: var(--neon);
+    box-shadow: 0 0 35px var(--neon-glow);
+    transform: translateY(-5px) scale(1.1);
+  }
+  
+  /* RESPONSIVO ERAS + FOOTER */
+  @media (max-width: 900px) {
+    .nineteen-footer-cursive {
+      font-size: 2.2rem;
+    }
+  
+    .nineteen-top-btn {
+      width: 50px;
+      height: 50px;
+      font-size: 1.2rem;
+      bottom: 20px;
+      right: 20px;
+    }
+  }

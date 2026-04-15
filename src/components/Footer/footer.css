@@ -1,0 +1,92 @@
+.footer {
+    margin-top: 140px;
+    padding: 60px 0 50px;
+
+    background-color: #f5f1eb;
+    background-image: url("../../imagens/paper-vintage.png");
+    background-repeat: repeat;
+    background-size: 420px;
+
+    border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer p {
+    font-size: 13px;
+    color: #6b4a5f;
+}
+
+.footer-links {
+    display: flex;
+    gap: 24px;
+}
+
+.footer-links a {
+    font-size: 13px;
+    text-decoration: none;
+    color: #6c5ce7;
+}
+
+.footer-icons {
+    display: flex;
+    gap: 22px;
+}
+
+.footer-icons a {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: rgba(255,255,255,0.45);
+
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.footer-icons a:hover {
+    transform: translateY(-3px);
+    background: rgba(108,92,231,0.15);
+}
+
+.footer-icons svg {
+    width: 18px;
+    height: 18px;
+    fill: #6c5ce7;
+}
+
+/* easter */
+.footer-easter-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.footer-default {
+    transition: opacity 0.6s ease;
+}
+
+.footer-easter {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease 0.8s;
+}
+
+.footer-easter-wrap:hover .footer-default {
+    opacity: 0;
+}
+
+.footer-easter-wrap:hover .footer-easter {
+    opacity: 0.6;
+}

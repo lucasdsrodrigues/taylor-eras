@@ -1,0 +1,78 @@
+.topbar {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 25px 0;
+    z-index: 10;
+}
+
+.nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #6c5ce7;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-size: 14px;
+    color: #6b4a5f;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: #6c5ce7;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-cta {
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #a8d8ff, #ffb6c1);
+    color: #2e2e2e;
+    font-size: 13px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.dark-toggle {
+    background: rgba(255,255,255,0.6);
+    border: none;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: all 0.3s ease;
+}
+
+.dark-toggle:hover {
+    transform: translateY(-2px);
+}
