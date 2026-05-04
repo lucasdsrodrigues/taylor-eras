@@ -1,6 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap');
-
-/* ═══ BASE ═══ */
 .era-folk-page {
     min-height: 100vh;
     overflow-x: hidden;
@@ -13,12 +11,9 @@
     opacity: 0;
     transition: opacity 0.8s;
 }
-
 .era-folk-page.folk-loaded {
     opacity: 1;
 }
-
-/* Grain overlay */
 .folk-grain {
     position: fixed;
     inset: 0;
@@ -27,8 +22,6 @@
     opacity: 0.03;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-
-/* ═══ FALLING LEAVES ═══ */
 .folk-leaves {
     position: fixed;
     inset: 0;
@@ -36,34 +29,27 @@
     z-index: 1;
     overflow: hidden;
 }
-
 .folk-leaf {
     position: absolute;
     top: -40px;
     animation: folkLeafFall linear infinite;
 }
-
 @keyframes folkLeafFall {
     0% {
         transform: translateY(-40px) rotate(0deg) translateX(0);
         opacity: 0;
     }
-
     10% {
         opacity: 1;
     }
-
     90% {
         opacity: 1;
     }
-
     100% {
         transform: translateY(110vh) rotate(360deg) translateX(80px);
         opacity: 0;
     }
 }
-
-/* ═══ VINES SVG ═══ */
 .folk-vine {
     position: fixed;
     z-index: 2;
@@ -73,17 +59,13 @@
     top: 0;
     opacity: 0.7;
 }
-
 .folk-vine--l {
     left: 0;
 }
-
 .folk-vine--r {
     right: 0;
     transform: scaleX(-1);
 }
-
-/* ═══ SHARED LABELS ═══ */
 .folk-notebook-label {
     display: inline-block;
     font-family: 'Inter', sans-serif;
@@ -94,7 +76,6 @@
     color: #6b7b5e;
     margin-bottom: 8px;
 }
-
 .folk-visible .folk-tracklist-notebook,
 .folk-visible .folk-triangle-header,
 .folk-visible .folk-triangle-web,
@@ -103,8 +84,6 @@
     opacity: 1;
     transform: translateY(0);
 }
-
-/* ═══ NAV ═══ */
 .folk-nav {
     position: fixed;
     top: 0;
@@ -118,7 +97,6 @@
     background: linear-gradient(180deg, rgba(238, 238, 238, 0.95) 0%, transparent 100%);
     backdrop-filter: blur(10px);
 }
-
 .folk-nav-link {
     text-decoration: none;
     font-size: 0.65rem;
@@ -127,28 +105,22 @@
     color: #6b7b5e;
     transition: color 0.3s;
 }
-
 .folk-nav-link:hover {
     color: #3a4a35;
 }
-
 .folk-nav-link span {
     display: inline-block;
     transition: transform 0.3s;
 }
-
 .folk-nav-link:hover span:first-child {
     transform: translateX(-4px);
 }
-
 .folk-nav-link:hover span:last-child {
     transform: translateX(4px);
 }
-
 .folk-nav-center {
     text-align: center;
 }
-
 .folk-nav-logo {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.3rem;
@@ -157,8 +129,6 @@
     color: #3a3a3a;
     letter-spacing: 4px;
 }
-
-/* ═══ HERO — #eeeeee → #cccccc ═══ */
 .folk-hero {
     position: relative;
     min-height: 100vh;
@@ -169,7 +139,6 @@
     background: linear-gradient(180deg, #eeeeee 0%, #cccccc 100%);
     overflow: hidden;
 }
-
 .folk-hero-mist {
     position: absolute;
     inset: 0;
@@ -177,7 +146,6 @@
     background: radial-gradient(ellipse at 30% 70%, rgba(107, 123, 94, 0.06) 0%, transparent 50%),
         radial-gradient(ellipse at 70% 30%, rgba(184, 168, 138, 0.05) 0%, transparent 40%);
 }
-
 .folk-hero-content {
     position: relative;
     z-index: 2;
@@ -186,11 +154,9 @@
     gap: 60px;
     max-width: 1100px;
 }
-
 .folk-hero-text {
     flex: 1;
 }
-
 .folk-hero-tag {
     font-size: 0.55rem;
     font-weight: 600;
@@ -198,15 +164,12 @@
     color: #6b7b5e;
     margin: 0 0 20px;
 }
-
-/* Album cover (no polaroid) */
 .folk-hero-cover {
     position: relative;
     flex-shrink: 0;
     opacity: 0;
     animation: folkFadeUp 1s ease forwards 0.5s;
 }
-
 .folk-cover-glow {
     position: absolute;
     inset: -30px;
@@ -215,21 +178,17 @@
     filter: blur(20px);
     animation: folkGlowPulse 4s ease-in-out infinite;
 }
-
 @keyframes folkGlowPulse {
-
     0%,
     100% {
         opacity: 0.5;
         transform: scale(0.95);
     }
-
     50% {
         opacity: 1;
         transform: scale(1.05);
     }
 }
-
 .folk-cover-img {
     width: 320px;
     height: auto;
@@ -241,15 +200,12 @@
     transition: transform 0.5s;
     filter: saturate(0.9) contrast(1.05);
 }
-
 .folk-cover-img:hover {
     transform: scale(1.02) translateY(-4px);
 }
-
 .folk-hero-title {
     margin: 0 0 20px;
 }
-
 .folk-hero-title-line {
     display: block;
     font-family: 'Cormorant Garamond', serif;
@@ -261,11 +217,9 @@
     opacity: 0;
     animation: folkFadeUp 0.8s ease forwards;
 }
-
 .folk-hero-title-line:nth-child(2) {
     animation-delay: 0.15s;
 }
-
 .folk-hero-title-accent {
     display: block;
     font-family: 'Cormorant Garamond', serif;
@@ -277,14 +231,12 @@
     opacity: 0;
     animation: folkFadeUp 0.8s ease forwards 0.3s;
 }
-
 .folk-hero-divider {
     width: 120px;
     margin: 24px 0;
     opacity: 0;
     animation: folkFadeUp 0.6s ease forwards 0.5s;
 }
-
 .folk-hero-quote {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.1rem;
@@ -296,8 +248,6 @@
     opacity: 0;
     animation: folkFadeUp 0.8s ease forwards 0.6s;
 }
-
-/* Scroll cue */
 .folk-scroll-cue {
     position: absolute;
     bottom: 30px;
@@ -308,43 +258,35 @@
     align-items: center;
     gap: 8px;
 }
-
 .folk-scroll-cue-line {
     width: 1px;
     height: 40px;
     background: linear-gradient(180deg, transparent, #6b7b5e);
     animation: folkScrollPulse 2s ease-in-out infinite;
 }
-
 @keyframes folkScrollPulse {
-
     0%,
     100% {
         opacity: 0.3;
         height: 40px;
     }
-
     50% {
         opacity: 0.7;
         height: 55px;
     }
 }
-
 .folk-scroll-cue span {
     font-size: 0.5rem;
     letter-spacing: 4px;
     color: #6b7b5e;
     text-transform: uppercase;
 }
-
-/* ═══ TRACKLIST — #cccccc → #abaaaa ═══ */
 .folk-tracklist {
     position: relative;
     z-index: 2;
     padding: 100px 5%;
     background: linear-gradient(180deg, #cccccc 0%, #abaaaa 100%);
 }
-
 .folk-tracklist-notebook {
     max-width: 700px;
     margin: 0 auto;
@@ -357,12 +299,10 @@
     transform: translateY(30px);
     transition: all 1s;
 }
-
 .folk-notebook-header {
     text-align: center;
     margin-bottom: 30px;
 }
-
 .folk-notebook-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2.5rem;
@@ -371,14 +311,12 @@
     color: #3a3a3a;
     margin: 0;
 }
-
 .folk-notebook-sub {
     font-size: 0.7rem;
     letter-spacing: 2px;
     color: #888;
     margin: 8px 0 0;
 }
-
 .folk-notebook-spine {
     position: absolute;
     left: 40px;
@@ -387,13 +325,10 @@
     width: 1px;
     background: linear-gradient(180deg, transparent, rgba(107, 123, 94, 0.2), transparent);
 }
-
-/* Tracks */
 .folk-tracks-list {
     display: flex;
     flex-direction: column;
 }
-
 .folk-track {
     display: flex;
     align-items: center;
@@ -405,16 +340,13 @@
     animation: folkFadeUp 0.3s ease forwards;
     animation-delay: calc(var(--i) * 0.03s);
 }
-
 .folk-track:hover {
     background: rgba(107, 123, 94, 0.04);
     padding-left: 14px;
 }
-
 .folk-track.is-playing {
     background: rgba(107, 123, 94, 0.08);
 }
-
 .folk-track-num {
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.8rem;
@@ -422,7 +354,6 @@
     width: 22px;
     text-align: center;
 }
-
 .folk-track-btn {
     width: 28px;
     height: 28px;
@@ -438,18 +369,15 @@
     transition: all 0.3s;
     position: relative;
 }
-
 .folk-track-btn:hover {
     background: rgba(107, 123, 94, 0.1);
     border-color: #6b7b5e;
 }
-
 .folk-track-btn.active {
     background: #6b7b5e;
     color: #fff;
     border-color: #6b7b5e;
 }
-
 .folk-waves {
     position: absolute;
     bottom: -8px;
@@ -460,69 +388,57 @@
     align-items: flex-end;
     height: 8px;
 }
-
 .folk-waves span {
     width: 2px;
     background: #6b7b5e;
     border-radius: 1px;
     animation: folkWave 0.5s ease-in-out infinite alternate;
 }
-
 .folk-waves span:nth-child(1) {
     height: 3px;
     animation-delay: 0s;
 }
-
 .folk-waves span:nth-child(2) {
     height: 6px;
     animation-delay: 0.1s;
 }
-
 .folk-waves span:nth-child(3) {
     height: 4px;
     animation-delay: 0.2s;
 }
-
 .folk-waves span:nth-child(4) {
     height: 7px;
     animation-delay: 0.15s;
 }
-
 .folk-waves span:nth-child(5) {
     height: 3px;
     animation-delay: 0.05s;
 }
-
 @keyframes folkWave {
     0% {
         height: 2px;
     }
-
     100% {
         height: 8px;
     }
 }
-
 .folk-track-info {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
-
 .folk-track-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1rem;
     font-style: italic;
     color: #3a3a3a;
 }
-
 .folk-track-feat {
     font-size: 0.7rem;
     color: #999;
     font-style: italic;
 }
-
 .folk-badge {
     font-size: 0.45rem;
     letter-spacing: 3px;
@@ -531,18 +447,14 @@
     font-weight: 600;
     flex-shrink: 0;
 }
-
 .folk-badge--single {
     background: rgba(107, 123, 94, 0.15);
     color: #5a6e4e;
 }
-
 .folk-badge--bonus {
     background: rgba(184, 168, 138, 0.2);
     color: #8a7a5e;
 }
-
-/* Stats */
 .folk-stats-row {
     display: flex;
     justify-content: center;
@@ -551,36 +463,30 @@
     padding-top: 20px;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
-
 .folk-stat {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
 }
-
 .folk-stat-val {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.3rem;
     font-weight: 600;
     color: #3a3a3a;
 }
-
 .folk-stat-lbl {
     font-size: 0.5rem;
     letter-spacing: 3px;
     color: #999;
     text-transform: uppercase;
 }
-
-/* ═══ TRIANGLE — #abaaaa → #929292 ═══ */
 .folk-triangle {
     position: relative;
     z-index: 2;
     padding: 100px 5%;
     background: linear-gradient(180deg, #abaaaa 0%, #929292 100%);
 }
-
 .folk-triangle-header {
     text-align: center;
     margin-bottom: 50px;
@@ -588,7 +494,6 @@
     transform: translateY(20px);
     transition: all 1s;
 }
-
 .folk-triangle-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2.5rem;
@@ -597,12 +502,10 @@
     color: #2a2a2a;
     margin: 0 0 8px;
 }
-
 .folk-triangle-sub {
     font-size: 0.8rem;
     color: #555;
 }
-
 .folk-triangle-web {
     position: relative;
     max-width: 600px;
@@ -612,19 +515,16 @@
     transform: translateY(20px);
     transition: all 1s 0.2s;
 }
-
 .folk-triangle-lines {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
 }
-
 .folk-triangle-nodes {
     position: absolute;
     inset: 0;
 }
-
 .folk-char-node {
     position: absolute;
     background: rgba(250, 248, 244, 0.7);
@@ -639,53 +539,44 @@
     transition: all 0.4s;
     backdrop-filter: blur(5px);
 }
-
 .folk-char-node:hover {
     transform: translateY(-4px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     border-color: var(--char-color);
 }
-
 .folk-char-node.is-active {
     background: rgba(250, 248, 244, 0.95);
     border-color: var(--char-color);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
-
 .folk-char-node--betty {
     top: 5%;
     left: 50%;
     transform: translateX(-50%);
 }
-
 .folk-char-node--augustine {
     bottom: 5%;
     left: 8%;
 }
-
 .folk-char-node--james {
     bottom: 5%;
     right: 8%;
 }
-
 .folk-char-icon {
     font-size: 1.5rem;
 }
-
 .folk-char-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1rem;
     font-weight: 600;
     color: #3a3a3a;
 }
-
 .folk-char-song {
     font-size: 0.55rem;
     letter-spacing: 2px;
     color: #999;
     text-transform: uppercase;
 }
-
 .folk-char-detail {
     max-width: 600px;
     margin: 30px auto 0;
@@ -695,7 +586,6 @@
     transition: all 0.6s;
     animation: folkFadeUp 0.5s ease forwards;
 }
-
 .folk-char-detail-inner {
     background: rgba(250, 248, 244, 0.7);
     border-radius: 12px;
@@ -703,7 +593,6 @@
     border: 1px solid color-mix(in srgb, var(--char-color) 30%, transparent);
     backdrop-filter: blur(5px);
 }
-
 .folk-char-detail-song {
     font-size: 0.55rem;
     letter-spacing: 4px;
@@ -711,7 +600,6 @@
     text-transform: uppercase;
     font-weight: 600;
 }
-
 .folk-char-detail-quote {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.2rem;
@@ -719,15 +607,12 @@
     color: #3a3a3a;
     margin: 12px 0;
 }
-
 .folk-char-detail-desc {
     font-size: 0.9rem;
     line-height: 1.7;
     color: #555;
     margin: 0;
 }
-
-/* ═══ DESK — #929292 → #4d4d4d (darkest) ═══ */
 .folk-desk {
     position: relative;
     z-index: 2;
@@ -735,13 +620,11 @@
     background: linear-gradient(180deg, #929292 0%, #4d4d4d 100%);
     overflow: hidden;
 }
-
 .folk-desk-bg {
     position: absolute;
     inset: 0;
     background: radial-gradient(ellipse at 50% 50%, rgba(107, 123, 94, 0.08) 0%, transparent 60%);
 }
-
 .folk-desk-content {
     position: relative;
     z-index: 2;
@@ -752,7 +635,6 @@
     transform: translateY(20px);
     transition: all 1s;
 }
-
 .folk-desk-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2.5rem;
@@ -761,13 +643,11 @@
     color: #e8e3d8;
     margin: 0 0 50px;
 }
-
 .folk-desk-papers {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
-
 .folk-paper {
     background: rgba(250, 248, 244, 0.85);
     border-radius: 4px;
@@ -779,12 +659,10 @@
     animation: folkFadeUp 0.5s ease forwards;
     animation-delay: var(--delay);
 }
-
 .folk-paper:hover {
     transform: rotate(0deg) translateY(-6px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
 }
-
 .folk-paper-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1rem;
@@ -794,7 +672,6 @@
     display: block;
     margin-bottom: 10px;
 }
-
 .folk-paper-lyric {
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.9rem;
@@ -803,8 +680,6 @@
     color: #555;
     margin: 0;
 }
-
-/* ═══ ABOUT — #4d4d4d → #5a5a5a ═══ */
 .folk-about {
     position: relative;
     z-index: 2;
@@ -812,7 +687,6 @@
     background: linear-gradient(180deg, #4d4d4d 0%, #5a5a5a 100%);
     color: #e8e3d8;
 }
-
 .folk-about-inner {
     max-width: 1000px;
     margin: 0 auto;
@@ -821,7 +695,6 @@
     gap: 60px;
     align-items: start;
 }
-
 .folk-about-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2.5rem;
@@ -830,19 +703,16 @@
     color: #e8e3d8;
     margin: 0 0 20px;
 }
-
 .folk-about-p {
     font-size: 1rem;
     line-height: 1.8;
     color: rgba(232, 227, 216, 0.6);
     margin: 0 0 14px;
 }
-
 .folk-about-p strong {
     color: #e8e3d8;
     font-weight: 500;
 }
-
 .folk-about-facts {
     display: flex;
     flex-direction: column;
@@ -853,23 +723,18 @@
     border-radius: 8px;
     min-width: 280px;
 }
-
 .folk-fact {
     display: flex;
     align-items: center;
     gap: 12px;
 }
-
 .folk-fact-icon {
     font-size: 1.2rem;
 }
-
 .folk-fact-text {
     font-size: 0.8rem;
     color: rgba(232, 227, 216, 0.5);
 }
-
-/* ═══ AWARDS — #5a5a5a → #6a6a6a ═══ */
 .folk-awards {
     position: relative;
     z-index: 2;
@@ -877,12 +742,10 @@
     background: linear-gradient(180deg, #5a5a5a 0%, #6a6a6a 100%);
     color: #e8e3d8;
 }
-
 .folk-awards-header {
     text-align: center;
     margin-bottom: 40px;
 }
-
 .folk-awards-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2.5rem;
@@ -891,7 +754,6 @@
     margin: 0;
     color: #e8e3d8;
 }
-
 .folk-awards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -899,7 +761,6 @@
     max-width: 900px;
     margin: 0 auto;
 }
-
 .folk-award-card {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -911,23 +772,19 @@
     animation: folkFadeUp 0.4s ease forwards;
     animation-delay: calc(var(--ai) * 0.08s);
 }
-
 .folk-award-card:hover {
     transform: translateY(-4px);
     border-color: rgba(107, 123, 94, 0.3);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
-
 .folk-award--highlight {
     border-color: rgba(107, 123, 94, 0.3);
     background: rgba(107, 123, 94, 0.08);
 }
-
 .folk-award-icon {
     font-size: 2rem;
     margin-bottom: 10px;
 }
-
 .folk-award-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.1rem;
@@ -935,14 +792,11 @@
     margin: 0 0 6px;
     color: #e8e3d8;
 }
-
 .folk-award-desc {
     font-size: 0.75rem;
     color: rgba(232, 227, 216, 0.4);
     margin: 0;
 }
-
-/* ═══ LONG POND — #6a6a6a → #929292 ═══ */
 .folk-longpond {
     position: relative;
     z-index: 2;
@@ -950,7 +804,6 @@
     background: linear-gradient(180deg, #6a6a6a 0%, #929292 100%);
     color: #e8e3d8;
 }
-
 .folk-longpond-inner {
     max-width: 1100px;
     margin: 0 auto;
@@ -959,11 +812,9 @@
     gap: 60px;
     align-items: center;
 }
-
 .folk-longpond-video {
     position: relative;
 }
-
 .folk-longpond-frame {
     position: relative;
     padding-bottom: 56.25%;
@@ -971,7 +822,6 @@
     overflow: hidden;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
-
 .folk-longpond-iframe {
     position: absolute;
     inset: 0;
@@ -979,7 +829,6 @@
     height: 100%;
     border: none;
 }
-
 .folk-longpond-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2rem;
@@ -988,19 +837,16 @@
     margin: 0 0 16px;
     color: #e8e3d8;
 }
-
 .folk-longpond-p {
     font-size: 0.95rem;
     line-height: 1.8;
     color: rgba(232, 227, 216, 0.55);
     margin: 0 0 12px;
 }
-
 .folk-longpond-p strong {
     color: #e8e3d8;
     font-weight: 500;
 }
-
 .folk-longpond-quote {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.3rem;
@@ -1013,20 +859,16 @@
     border-radius: 0 6px 6px 0;
     line-height: 1.7;
 }
-
-/* ═══ MUSIC VIDEOS — #929292 → #abaaaa ═══ */
 .folk-mv-section {
     position: relative;
     z-index: 2;
     padding: 100px 5%;
     background: linear-gradient(180deg, #929292 0%, #abaaaa 100%);
 }
-
 .folk-mv-header {
     text-align: center;
     margin-bottom: 40px;
 }
-
 .folk-mv-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2.5rem;
@@ -1035,14 +877,12 @@
     margin: 0;
     color: #2a2a2a;
 }
-
 .folk-mv-subtitle {
     font-size: 0.55rem;
     letter-spacing: 5px;
     color: #6b7b5e;
     margin: 6px 0 0;
 }
-
 .folk-mv-wrapper {
     display: flex;
     align-items: center;
@@ -1050,25 +890,21 @@
     max-width: 900px;
     margin: 0 auto;
 }
-
 .folk-mv-viewport {
     flex: 1;
     overflow: hidden;
     border-radius: 8px;
     padding: 12px 10px;
 }
-
 .folk-mv-track {
     display: flex;
     transition: transform 0.5s ease;
 }
-
 .folk-mv-slide {
     min-width: 100%;
     text-align: center;
     padding: 0 10px;
 }
-
 .folk-mv-frame {
     position: relative;
     padding-bottom: 56.25%;
@@ -1077,7 +913,6 @@
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
     background: #000;
 }
-
 .folk-mv-frame::before {
     content: '';
     position: absolute;
@@ -1089,7 +924,6 @@
     animation: folkBorderGlow 4s ease infinite;
     opacity: 0.8;
 }
-
 .folk-mv-frame::after {
     content: '';
     position: absolute;
@@ -1102,13 +936,11 @@
     filter: blur(18px);
     opacity: 0.5;
 }
-
 @keyframes folkBorderGlow {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
-
 .folk-mv-frame iframe,
 .folk-mv-iframe {
     position: absolute;
@@ -1119,7 +951,6 @@
     z-index: 1;
     border-radius: 8px;
 }
-
 .folk-mv-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.1rem;
@@ -1127,7 +958,6 @@
     color: #3a3a3a;
     margin: 16px 0 0;
 }
-
 .folk-mv-arrow {
     width: 44px;
     height: 44px;
@@ -1141,20 +971,17 @@
     flex-shrink: 0;
     backdrop-filter: blur(5px);
 }
-
 .folk-mv-arrow:hover {
     background: #6b7b5e;
     color: #faf8f4;
     border-color: #6b7b5e;
 }
-
 .folk-mv-dots {
     display: flex;
     justify-content: center;
     gap: 8px;
     margin-top: 20px;
 }
-
 .folk-mv-dot {
     width: 8px;
     height: 8px;
@@ -1164,25 +991,20 @@
     cursor: pointer;
     transition: all 0.3s;
 }
-
 .folk-mv-dot.active {
     background: #6b7b5e;
     border-color: #6b7b5e;
 }
-
-/* ═══ GALLERY — #abaaaa → #cccccc ═══ */
 .folk-gallery {
     position: relative;
     z-index: 2;
     padding: 100px 5%;
     background: linear-gradient(180deg, #abaaaa 0%, #cccccc 100%);
 }
-
 .folk-gallery-header {
     text-align: center;
     margin-bottom: 40px;
 }
-
 .folk-gallery-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2.5rem;
@@ -1191,14 +1013,12 @@
     margin: 0;
     color: #2a2a2a;
 }
-
 .folk-gallery-sub {
     font-size: 0.55rem;
     letter-spacing: 5px;
     color: #6b7b5e;
     margin: 6px 0 0;
 }
-
 .folk-gallery-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -1206,7 +1026,6 @@
     max-width: 1100px;
     margin: 0 auto;
 }
-
 .folk-gallery-item {
     overflow: hidden;
     border-radius: 6px;
@@ -1214,12 +1033,10 @@
     transition: all 0.4s;
     cursor: pointer;
 }
-
 .folk-gallery-item:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
-
 .folk-gallery-item img {
     width: 100%;
     height: 100%;
@@ -1227,13 +1044,10 @@
     filter: saturate(0.8);
     transition: all 0.5s;
 }
-
 .folk-gallery-item:hover img {
     filter: saturate(1.1);
     transform: scale(1.05);
 }
-
-/* ═══ ERAS NAV — #cccccc → #eeeeee ═══ */
 .folk-eras {
     position: relative;
     z-index: 2;
@@ -1241,7 +1055,6 @@
     background: linear-gradient(180deg, #cccccc 0%, #999999 100%);
     text-align: center;
 }
-
 .folk-eras-label {
     font-size: 0.55rem;
     font-weight: 600;
@@ -1249,7 +1062,6 @@
     color: #6b7b5e;
     text-transform: uppercase;
 }
-
 .folk-eras-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2rem;
@@ -1258,7 +1070,6 @@
     margin: 6px 0 30px;
     color: #3a3a3a;
 }
-
 .folk-eras-grid {
     display: flex;
     flex-wrap: wrap;
@@ -1267,7 +1078,6 @@
     max-width: 900px;
     margin: 0 auto;
 }
-
 .folk-era-card {
     text-decoration: none;
     display: flex;
@@ -1280,27 +1090,22 @@
     transition: all 0.35s;
     background: rgba(255, 255, 255, 0.4);
 }
-
 .folk-era-card:hover {
     border-color: var(--ea);
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
-
 .folk-era-year {
     font-size: 0.55rem;
     letter-spacing: 3px;
     font-weight: 600;
 }
-
 .folk-era-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.9rem;
     font-style: italic;
     color: #3a3a3a;
 }
-
-/* ═══ FOOTER — #999 solid ═══ */
 .folk-footer {
     position: relative;
     z-index: 2;
@@ -1311,7 +1116,6 @@
     justify-content: space-between;
     border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
-
 .folk-footer-logo {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.2rem;
@@ -1319,32 +1123,26 @@
     color: rgba(50, 50, 50, 0.6);
     margin: 0;
 }
-
 .folk-footer-copy {
     font-size: 0.55rem;
     color: rgba(30, 30, 30, 0.4);
     letter-spacing: 1px;
     margin: 0;
 }
-
 .folk-footer-links {
     display: flex;
     gap: 16px;
     align-items: center;
 }
-
 .folk-footer-links a {
     text-decoration: none;
     font-size: 0.7rem;
     color: rgba(30, 30, 30, 0.4);
     transition: color 0.3s;
 }
-
 .folk-footer-links a:hover {
     color: #3a4a35;
 }
-
-/* Top button — small, in footer corner */
 .folk-top-btn {
     width: 32px;
     height: 32px;
@@ -1360,103 +1158,81 @@
     align-items: center;
     justify-content: center;
 }
-
 .folk-top-btn:hover {
     background: #6b7b5e;
     color: #faf8f4;
     border-color: #6b7b5e;
     transform: translateY(-2px);
 }
-
-/* ═══ ANIMATIONS ═══ */
 @keyframes folkFadeUp {
     from {
         opacity: 0;
         transform: translateY(20px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
-
-/* ═══ RESPONSIVE ═══ */
 @media (max-width: 900px) {
     .folk-hero-content {
         flex-direction: column;
         text-align: center;
         gap: 40px;
     }
-
     .folk-hero-cover {
         display: flex;
         justify-content: center;
     }
-
     .folk-cover-img {
         width: 240px;
     }
-
     .folk-desk-papers {
         grid-template-columns: repeat(2, 1fr);
     }
-
     .folk-about-inner {
         grid-template-columns: 1fr;
     }
-
     .folk-longpond-inner {
         grid-template-columns: 1fr;
     }
-
     .folk-awards-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
     .folk-gallery-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
     .folk-triangle-web {
         aspect-ratio: auto;
         min-height: 400px;
     }
-
     .folk-char-node--betty {
         top: 0;
     }
-
     .folk-char-node--augustine {
         bottom: 0;
         left: 5%;
     }
-
     .folk-char-node--james {
         bottom: 0;
         right: 5%;
     }
 }
-
 @media (max-width: 500px) {
     .folk-desk-papers {
         grid-template-columns: 1fr;
     }
-
     .folk-awards-grid {
         grid-template-columns: 1fr;
     }
-
     .folk-gallery-grid {
         grid-template-columns: 1fr;
     }
-
     .folk-footer {
         flex-direction: column;
         gap: 10px;
         text-align: center;
     }
-
     .folk-vine {
         display: none;
     }

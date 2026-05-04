@@ -16,6 +16,8 @@ import TTPD from "./pages/TTPD";
 import Showgirl from "./pages/Showgirl";
 import FearlessGallery from "./pages/Fearless/FearlessGallery";
 
+import PainelAvaliacoes from "./components/PainelAvaliacoes/PainelAvaliacoes";
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -28,6 +30,7 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <PainelAvaliacoes />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/debut" element={<Debut />} />

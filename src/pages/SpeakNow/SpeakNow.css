@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Pinyon+Script&family=Unna:ital,wght@0,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&family=Pinyon+Script&display=swap');
-
 .sn-forest-root {
   background: linear-gradient(135deg, #0e0119 0%, #2f0a40 45%, #19052b 100%);
   background-size: 400% 400%;
@@ -13,13 +12,11 @@
   position: relative;
   z-index: 1;
 }
-
 @keyframes sn-sky-shift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-
 .sn-forest-root::after {
   content: "";
   position: absolute;
@@ -31,8 +28,6 @@
   z-index: 6;
   pointer-events: none;
 }
-
-/* ─────────────────── DYNAMIC MAGICAL WISPS ─────────────────── */
 .sn-magic-wisps {
   position: absolute;
   top: 0;
@@ -43,37 +38,28 @@
   -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
 }
-
 .sn-magic-wisps--left { left: -50px; }
 .sn-magic-wisps--right { right: -50px; }
-
 .sn-loaded .sn-magic-wisps {
   animation: snWispsFadeIn 3s ease forwards 0.5s;
 }
-
 @keyframes snWispsFadeIn {
   to { opacity: 1; filter: drop-shadow(0 0 15px rgba(219, 124, 165, 0.4)); }
 }
-
 .sn-magic-wisps path {
   stroke-dasharray: 2500;
   stroke-dashoffset: 2500;
 }
-
 .sn-loaded .sn-magic-wisps path {
   animation: snWispDraw 8s cubic-bezier(0.4, 0, 0.2, 1) forwards 1s, snWispFloat 10s ease-in-out infinite 9s;
 }
-
 @keyframes snWispDraw {
   to { stroke-dashoffset: 0; }
 }
-
 @keyframes snWispFloat {
   0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.5; filter: drop-shadow(0 0 10px rgba(219, 124, 165, 0.3)); }
   50% { transform: translateY(-30px) scaleY(1.05); opacity: 0.9; filter: drop-shadow(0 0 25px rgba(219, 124, 165, 0.8)); }
 }
-
-/* ─────────────────── STAGED ENTRY ANIMATIONS ─────────────────── */
 .sn-title-area,
 .sn-dynamic-grid,
 .sn-floor-quote,
@@ -82,32 +68,26 @@
   transform: translateY(20px);
   transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), transform 1s cubic-bezier(0.25, 1, 0.5, 1);
 }
-
 .sn-loaded .sn-title-area {
   opacity: 1;
   transform: translateY(0);
   transition-delay: 0.1s;
 }
-
 .sn-loaded .sn-dynamic-grid {
   opacity: 1;
   transform: translateY(0);
   transition-delay: 0.4s;
 }
-
 .sn-loaded .sn-floor-quote {
   opacity: 1;
   transform: translateY(0);
   transition-delay: 0.7s;
 }
-
 .sn-loaded .sn-button-row {
   opacity: 1;
   transform: translateY(0);
   transition-delay: 0.9s;
 }
-
-/* === LIGHT BEAM: ethereal shaft from above === */
 .sn-forest-root::before {
   content: '';
   position: absolute;
@@ -126,27 +106,22 @@
   z-index: 1;
   animation: sn-beam-pulse 7s ease-in-out infinite alternate;
 }
-
 @keyframes sn-beam-pulse {
   from {
     opacity: 0.6;
     transform: translateX(-50%) scaleX(0.9);
   }
-
   to {
     opacity: 1.0;
     transform: translateX(-50%) scaleX(1.4);
   }
 }
-
-/* === STAR PARTICLES (pure CSS box-shadow technique) === */
 .sn-stars-layer {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 2;
 }
-
 .sn-stars-sm::before,
 .sn-stars-md::before {
   content: '';
@@ -158,8 +133,6 @@
   background: transparent;
   border-radius: 50%;
 }
-
-/* Layer 1 — crisp white & tinted stars */
 .sn-stars-sm::before {
   box-shadow:
     420px 45px 0 1px rgba(255, 255, 255, 0.90),
@@ -194,8 +167,6 @@
     200px 30px 0 1px rgba(255, 255, 255, 0.50);
   animation: sn-twinkle-a 5s ease-in-out infinite alternate;
 }
-
-/* Layer 2 — slightly bigger, different rhythm */
 .sn-stars-md::before {
   width: 3px;
   height: 3px;
@@ -222,20 +193,16 @@
     250px 110px 0 1px rgba(255, 255, 255, 0.45);
   animation: sn-twinkle-b 7s ease-in-out infinite alternate;
 }
-
 @keyframes sn-twinkle-a {
   0% { opacity: 0.4; }
   50% { opacity: 1.0; }
   100% { opacity: 0.6; }
 }
-
 @keyframes sn-twinkle-b {
   0% { opacity: 0.7; }
   40% { opacity: 0.3; }
   100% { opacity: 0.9; }
 }
-
-/* === SHOOTING STARS === */
 .sn-shooting-stars {
   position: absolute;
   top: 0;
@@ -246,7 +213,6 @@
   z-index: 2;
   overflow: hidden;
 }
-
 .sn-shooting-star {
   position: absolute;
   background: linear-gradient(-45deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
@@ -255,7 +221,6 @@
   animation: sn-tail 4000ms ease-in-out infinite, sn-shooting 4000ms ease-in-out infinite;
   display: flex;
 }
-
 .sn-shooting-star::before {
   content: '';
   position: absolute;
@@ -268,25 +233,20 @@
   box-shadow: 0 0 10px 2px rgba(219, 124, 165, 0.8), 0 0 20px 4px rgba(255, 255, 255, 0.8);
   opacity: 1;
 }
-
 @keyframes sn-tail {
   0% { width: 0; }
   30% { width: 120px; }
   100% { width: 0; }
 }
-
 @keyframes sn-shooting {
   0% { transform: translateX(0) translateY(0) rotate(225deg); opacity: 1; }
   100% { transform: translateX(-800px) translateY(800px) rotate(225deg); opacity: 0; }
 }
-
 .sn-shooting-star:nth-child(1) { top: -10%; left: 90%; animation-delay: 0ms; }
 .sn-shooting-star:nth-child(2) { top: -20%; left: 60%; animation-delay: 1500ms; }
 .sn-shooting-star:nth-child(3) { top: -10%; left: 30%; animation-delay: 3700ms; }
 .sn-shooting-star:nth-child(4) { top: 30%; left: 110%; animation-delay: 5500ms; }
 .sn-shooting-star:nth-child(5) { top: 10%; left: 80%; animation-delay: 7000ms; }
-
-
 .sn-main-wrapper {
   position: relative;
   width: 95%;
@@ -296,21 +256,18 @@
   align-items: center;
   z-index: 1;
 }
-
 .sn-title-area {
   text-align: center;
   margin-top: -30px;
   margin-bottom: 20px;
   z-index: 20;
 }
-
 .sn-main-title {
   font-family: 'Cinzel Decorative', serif;
   font-size: 8.5rem;
   margin: 0;
   letter-spacing: -2px;
 }
-
 .sn-title-glow {
   position: relative;
   display: inline-block;
@@ -321,21 +278,17 @@
   filter: drop-shadow(0 0 35px rgba(219, 124, 165, 0.8));
   opacity: 0;
 }
-
 .sn-loaded .sn-title-glow {
   animation: snTitleRise 2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.5s, snTitlePulse 4s infinite alternate ease-in-out 2.5s;
 }
-
 @keyframes snTitleRise {
   0% { opacity: 0; transform: translateY(40px) scale(0.9); filter: drop-shadow(0 0 0 rgba(219, 124, 165, 0)); }
   100% { opacity: 1; transform: translateY(0) scale(1); filter: drop-shadow(0 0 35px rgba(219, 124, 165, 0.8)); }
 }
-
 @keyframes snTitlePulse {
   0% { filter: drop-shadow(0 0 25px rgba(219, 124, 165, 0.6)); }
   100% { filter: drop-shadow(0 0 50px rgba(219, 124, 165, 1)); }
 }
-
 .sn-artist-cursive {
   font-family: 'Pinyon Script', cursive;
   font-size: 5rem;
@@ -343,7 +296,6 @@
   margin-top: -65px;
   text-shadow: 0 0 25px rgba(146, 60, 129, 0.9), 2px 2px 5px #000;
 }
-
 .sn-dynamic-grid {
   position: relative;
   width: 100%;
@@ -352,7 +304,6 @@
   justify-content: center;
   align-items: center;
 }
-
 .sn-album-wrap {
   position: relative;
   width: 440px;
@@ -363,12 +314,10 @@
   cursor: pointer;
   transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
-
 .sn-album-wrap:hover {
   transform: scale(1.03) rotate(1deg);
   box-shadow: 0 0 100px rgba(219, 124, 165, 0.9);
 }
-
 .sn-magic-aura {
   position: absolute;
   top: 50%;
@@ -381,16 +330,13 @@
   filter: blur(25px);
   opacity: 0;
 }
-
 .sn-loaded .sn-magic-aura {
   animation: snAuraPulse 5s infinite alternate ease-in-out 1.5s;
 }
-
 @keyframes snAuraPulse {
   0% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.9); }
   100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
 }
-
 .sn-spinning-rays {
   position: absolute;
   top: 50%;
@@ -409,20 +355,16 @@
   -webkit-mask-image: radial-gradient(circle, black 30%, transparent 70%);
   mask-image: radial-gradient(circle, black 30%, transparent 70%);
 }
-
 .sn-loaded .sn-spinning-rays {
   animation: snRaysSpin 20s linear infinite, snRaysFadeIn 2s ease forwards 1s;
 }
-
 @keyframes snRaysFadeIn {
   to { opacity: 1; }
 }
-
 @keyframes snRaysSpin {
   from { transform: translate(-50%, -50%) rotate(0deg); }
   to { transform: translate(-50%, -50%) rotate(360deg); }
 }
-
 .sn-album-img {
   width: 100%;
   display: block;
@@ -430,7 +372,6 @@
   position: relative;
   z-index: 5;
 }
-
 .sn-widget {
   position: absolute;
   background: rgba(26, 5, 34, 0.7);
@@ -442,13 +383,11 @@
   transition: 0.4s;
   z-index: 15;
 }
-
 .sn-widget:hover {
   background: rgba(146, 60, 129, 0.4);
   transform: translateY(-5px) scale(1.05);
   border-color: #db7ca5;
 }
-
 .sn-widget h4 {
   font-family: 'Cinzel Decorative', serif;
   font-size: 0.65rem;
@@ -457,7 +396,6 @@
   letter-spacing: 3px;
   text-shadow: 0 0 10px rgba(219, 124, 165, 0.5);
 }
-
 .sn-widget p {
   font-family: 'Unna', serif;
   font-size: 1.4rem;
@@ -467,31 +405,26 @@
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-
 .pos-1 {
   top: 15%;
   left: 5%;
   transform: rotate(-3deg);
 }
-
 .pos-2 {
   bottom: 20%;
   left: 8%;
   transform: rotate(2deg);
 }
-
 .pos-3 {
   top: 10%;
   right: 5%;
   transform: rotate(4deg);
 }
-
 .pos-4 {
   bottom: 15%;
   right: 8%;
   transform: rotate(-2deg);
 }
-
 .sn-button-row {
   display: flex;
   align-items: center;
@@ -502,7 +435,6 @@
   position: relative;
   z-index: 100;
 }
-
 .sn-ticket-btn {
   flex: 0 1 200px;
   min-width: 180px;
@@ -525,14 +457,12 @@
   align-items: center;
   z-index: 10;
 }
-
 .sn-ticket-btn:hover {
   border-color: #db7ca5;
   color: #fff;
   transform: translateY(-2px);
   box-shadow: 0 0 20px rgba(219, 124, 165, 0.3);
 }
-
 .sn-cta-main {
   flex: 0 1 400px;
   height: 62px;
@@ -557,7 +487,6 @@
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px #db7ca5;
   backdrop-filter: blur(8px);
 }
-
 .sn-cta-main::before {
   content: '';
   position: absolute;
@@ -571,7 +500,6 @@
       transparent);
   transition: all 0.6s;
 }
-
 .sn-cta-main:hover {
   transform: translateY(-4px);
   background: rgba(219, 124, 165, 0.4);
@@ -579,11 +507,9 @@
   border-color: #fff;
   color: #fff;
 }
-
 .sn-cta-main:hover::before {
   left: 100%;
 }
-
 .sn-cta-main::after {
   content: '✦';
   position: absolute;
@@ -594,7 +520,6 @@
   opacity: 0.5;
   animation: star-blink 2s infinite alternate;
 }
-
 .sn-stage-light {
   position: absolute;
   bottom: -100px;
@@ -605,18 +530,14 @@
   z-index: 1;
   pointer-events: none;
 }
-
-/* ANIMAÇÕES */
 @keyframes title-glow {
   from {
     filter: drop-shadow(0 0 20px rgba(219, 124, 165, 0.5));
   }
-
   to {
     filter: drop-shadow(0 0 50px rgba(219, 124, 165, 1));
   }
 }
-
 .sn-quote {
   margin-top: 40px;
   color: rgba(226, 183, 206, 0.5);
@@ -624,7 +545,6 @@
   font-size: 2.2rem;
   text-align: center;
 }
-
 .sn-era-nav {
   position: absolute;
   top: 40px;
@@ -634,7 +554,6 @@
   z-index: 100;
   pointer-events: none;
 }
-
 .nav-era-link {
   pointer-events: auto;
   text-decoration: none;
@@ -647,31 +566,25 @@
   align-items: center;
   gap: 15px;
 }
-
 .nav-arrow {
   color: #db7ca5;
   font-size: 1.2rem;
   text-shadow: 0 0 10px #db7ca5;
 }
-
 .nav-era-link:hover {
   color: #fff;
   transform: scale(1.1);
   text-shadow: 0 0 20px rgba(219, 124, 165, 0.8);
 }
-
 .nav-era-link.left:hover {
   transform: scale(1.1) translateX(10px);
 }
-
 .nav-era-link.right:hover {
   transform: scale(1.1) translateX(-10px);
 }
-
 .sn-title-area {
   margin-top: 40px;
 }
-
 .sn-fog-layer {
   position: absolute;
   width: 200%;
@@ -682,13 +595,11 @@
   pointer-events: none;
   z-index: 10;
 }
-
 .sn-main-wrapper {
   position: relative;
   z-index: 50;
   filter: drop-shadow(0 0 50px rgba(0, 0, 0, 0.5));
 }
-
 .sn-album-wrap::before {
   content: '';
   position: absolute;
@@ -699,67 +610,53 @@
   animation: frame-glow 8s linear infinite;
   filter: blur(2px);
 }
-
 @keyframes frame-glow {
   0% {
     background-position: 0% 50%;
   }
-
   100% {
     background-position: 100% 50%;
   }
 }
-
 .sn-widget {
   animation: float-widget 6s ease-in-out infinite alternate;
 }
-
 .pos-1 {
   animation-delay: 0s;
 }
-
 .pos-2 {
   animation-delay: 1.5s;
 }
-
 .pos-3 {
   animation-delay: 0.7s;
 }
-
 .pos-4 {
   animation-delay: 2.2s;
 }
-
 @keyframes float-widget {
   from {
     transform: translateY(0) rotate(var(--rot-base));
   }
-
   to {
     transform: translateY(-15px) rotate(var(--rot-hover));
   }
 }
-
 .pos-1 {
   --rot-base: -3deg;
   --rot-hover: -1deg;
 }
-
 .pos-2 {
   --rot-base: 2deg;
   --rot-hover: 4deg;
 }
-
 .pos-3 {
   --rot-base: 4deg;
   --rot-hover: 2deg;
 }
-
 .pos-4 {
   --rot-base: -2deg;
   --rot-hover: -4deg;
 }
-
 .sn-story-section {
   padding: 100px 5%;
   background: linear-gradient(to bottom, transparent, #0a020c 20%, #050106 100%);
@@ -771,7 +668,6 @@
   margin-top: -2px;
   padding-top: 50px;
 }
-
 .sn-story-section::before {
   content: "";
   position: absolute;
@@ -783,7 +679,6 @@
   filter: blur(50px);
   pointer-events: none;
 }
-
 .sn-story-container {
   max-width: 1200px;
   display: grid;
@@ -791,7 +686,6 @@
   gap: 80px;
   align-items: center;
 }
-
 .sn-story-frame {
   position: relative;
   border: 1px solid #c0a060;
@@ -801,17 +695,14 @@
   box-shadow: 0 0 50px rgba(146, 60, 129, 0.2);
   transition: transform 0.5s ease;
 }
-
 .sn-story-frame:hover {
   transform: scale(1.02) rotate(1deg);
 }
-
 .sn-story-frame img {
   width: 100%;
   display: block;
   filter: sepia(0.2) contrast(1.1);
 }
-
 .sn-story-frame::after {
   content: '';
   position: absolute;
@@ -819,7 +710,6 @@
   border: 1px solid rgba(192, 160, 96, 0.3);
   pointer-events: none;
 }
-
 .sn-story-subtitle {
   color: #db7ca5;
   font-family: 'Cinzel Decorative', serif;
@@ -828,7 +718,6 @@
   display: block;
   margin-bottom: 20px;
 }
-
 .sn-story-title {
   color: #fff;
   font-family: 'Cinzel Decorative', serif;
@@ -844,13 +733,11 @@
   animation: shine-text 5s linear infinite;
   font-weight: 900;
 }
-
 @keyframes shine-text {
   to {
     background-position: 200% center;
   }
 }
-
 .sn-story-text {
   color: #e2b7ce;
   font-family: 'Cormorant Garamond', serif;
@@ -859,7 +746,6 @@
   opacity: 0.8;
   margin-bottom: 40px;
 }
-
 .sn-story-text::first-letter {
   font-family: 'Pinyon Script', cursive;
   font-size: 4rem;
@@ -868,7 +754,6 @@
   color: #c0a060;
   line-height: 0.8;
 }
-
 .sn-story-quote {
   font-family: 'Pinyon Script', cursive;
   color: #c0a060;
@@ -877,13 +762,11 @@
   padding-left: 25px;
   margin-top: 20px;
 }
-
 @media (max-width: 968px) {
   .sn-story-container {
     grid-template-columns: 1fr;
     text-align: center;
   }
-
   .sn-story-quote {
     border-left: none;
     border-top: 1px solid #db7ca5;
@@ -891,20 +774,17 @@
     padding-top: 20px;
   }
 }
-
 .sn-page-container {
   width: 100%;
   min-height: 100vh;
   background: #050106;
 }
-
 .sn-transition-divider {
   height: 100px;
   background: #050106;
   position: relative;
   overflow: hidden;
 }
-
 .sn-story-image-area::before {
   content: "SPEAK NOW";
   position: absolute;
@@ -917,7 +797,6 @@
   transform: translate(-50%, -50%) rotate(-90deg);
   white-space: nowrap;
 }
-
 .sn-transition-divider::before {
   content: "";
   position: absolute;
@@ -928,32 +807,27 @@
   filter: blur(20px);
   animation: fog-move 20s infinite linear;
 }
-
 @keyframes revealText {
   from {
     opacity: 0;
     transform: translateY(30px);
     filter: blur(10px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
     filter: blur(0);
   }
 }
-
 .sn-story-content {
   animation: revealText 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
-
 .sn-tracklist-section {
   padding: 100px 8%;
-  background-color: #050106;
+  background: linear-gradient(to bottom, transparent 0%, #050106 150px, #050106 100%);
   position: relative;
   overflow: hidden;
 }
-
 .sn-tracklist-title {
   font-family: 'Cinzel Decorative', serif;
   font-size: 4.5rem;
@@ -963,7 +837,6 @@
   margin-bottom: 80px;
   letter-spacing: 15px;
 }
-
 .sn-tracks-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -971,7 +844,6 @@
   position: relative;
   z-index: 1;
 }
-
 .sn-track-item {
   display: flex;
   align-items: center;
@@ -984,7 +856,6 @@
   overflow: hidden;
   cursor: pointer;
 }
-
 .sn-track-item::before {
   content: '';
   position: absolute;
@@ -995,18 +866,15 @@
   background: linear-gradient(90deg, transparent, rgba(219, 124, 165, 0.2), transparent);
   transition: 0.6s;
 }
-
 .sn-track-item:hover::before {
   left: 100%;
 }
-
 .sn-track-item:hover {
   background: rgba(219, 124, 165, 0.1);
   border-left: 4px solid #db7ca5;
   transform: translateX(15px);
   box-shadow: -10px 0 20px rgba(0, 0, 0, 0.5);
 }
-
 .track-number {
   font-family: 'Cinzel Decorative';
   color: #c0a060;
@@ -1014,7 +882,6 @@
   margin-right: 20px;
   opacity: 0.8;
 }
-
 .track-name {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.6rem;
@@ -1022,13 +889,11 @@
   flex-grow: 1;
   transition: 0.3s;
 }
-
 .is-single .track-name {
   color: #fff;
   font-weight: 600;
   text-shadow: 0 0 15px rgba(219, 124, 165, 0.6);
 }
-
 .single-star {
   color: #c0a060;
   font-size: 0.9rem;
@@ -1036,21 +901,17 @@
   display: inline-block;
   animation: starPulse 2s infinite ease-in-out;
 }
-
 @keyframes starPulse {
-
   0%,
   100% {
     opacity: 0.4;
     transform: scale(1);
   }
-
   50% {
     opacity: 1;
     transform: scale(1.3);
   }
 }
-
 .vault-header {
   font-family: 'Cinzel Decorative';
   color: #c0a060;
@@ -1059,21 +920,17 @@
   text-align: center;
   letter-spacing: 3px;
 }
-
 .vault-track {
   border-left-color: rgba(192, 160, 96, 0.2);
   background: linear-gradient(90deg, rgba(192, 160, 96, 0.05) 0%, transparent 100%);
 }
-
 .vault-track .track-name {
   color: #f3e5ab;
 }
-
 .vault-track:hover {
   border-left-color: #c0a060;
   background: rgba(192, 160, 96, 0.1);
 }
-
 .track-tag {
   font-family: 'Cinzel Decorative';
   font-size: 0.6rem;
@@ -1082,30 +939,25 @@
   border-radius: 4px;
   opacity: 0.6;
 }
-
 .track-tag.gold {
   border-color: #c0a060;
   color: #c0a060;
 }
-
 .sn-vault-image-container {
   margin-top: 50px;
   display: flex;
   justify-content: center;
 }
-
 .sn-vault-image {
   width: 100%;
   max-width: 450px;
   filter: drop-shadow(0 0 40px rgba(146, 60, 129, 0.3));
   transition: all 0.5s ease;
 }
-
 .sn-vault-image:hover {
   transform: translateY(-10px) scale(1.02);
   filter: drop-shadow(0 0 50px rgba(219, 124, 165, 0.5));
 }
-
 .track-feat {
   font-family: 'Mrs Saint Delafield', cursive;
   font-size: 1.8rem;
@@ -1115,18 +967,15 @@
   letter-spacing: 1px;
   text-shadow: 0 0 10px rgba(192, 160, 96, 0.4);
 }
-
 .sn-track-item:hover .track-feat {
   color: #fff;
   text-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
   transform: translateY(-2px);
 }
-
 .track-name {
   display: flex;
   align-items: baseline;
 }
-
 .sn-milestones-section {
   padding: 100px 8%;
   background: #050106;
@@ -1134,7 +983,6 @@
   flex-direction: column;
   align-items: center;
 }
-
 .sn-milestone-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1142,23 +990,19 @@
   width: 100%;
   margin-bottom: 100px;
 }
-
 .sn-milestone-card {
   background: rgba(255, 255, 255, 0.03);
   padding: 40px;
   border: 1px solid rgba(219, 124, 165, 0.1);
   border-radius: 4px;
-  /* Mantendo o estilo seco e chic */
   transition: 0.5s;
   position: relative;
 }
-
 .sn-milestone-card:hover {
   background: rgba(219, 124, 165, 0.05);
   border-color: #db7ca5;
   transform: translateY(-10px);
 }
-
 .milestone-number {
   font-family: 'Cinzel Decorative';
   color: #c0a060;
@@ -1168,39 +1012,33 @@
   top: 10px;
   right: 20px;
 }
-
 .sn-milestone-card h3 {
   font-family: 'Cinzel Decorative';
   color: #fff;
   letter-spacing: 3px;
   margin-bottom: 15px;
 }
-
 .sn-milestone-card p {
   font-family: 'Cormorant Garamond';
   color: #e2b7ce;
   font-size: 1.2rem;
   line-height: 1.6;
 }
-
 .sn-spotlight-section {
   padding: 100px 8%;
   background-color: #050106;
   border-top: 1px solid rgba(219, 124, 165, 0.1);
 }
-
 .sn-spotlight-header {
   margin-bottom: 60px;
   text-align: left;
 }
-
 .spotlight-label {
   font-family: 'Cinzel Decorative';
   color: #c0a060;
   font-size: 0.8rem;
   letter-spacing: 5px;
 }
-
 .spotlight-main-title {
   font-family: 'Cinzel Decorative';
   color: #fff;
@@ -1208,15 +1046,12 @@
   letter-spacing: 10px;
   margin-top: 10px;
 }
-
-/* Grid Assimétrica Profissional */
 .sn-spotlight-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 300px;
   gap: 20px;
 }
-
 .spotlight-item {
   position: relative;
   overflow: hidden;
@@ -1224,15 +1059,12 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
-
 .spotlight-item.tall {
   grid-row: span 2;
 }
-
 .spotlight-item.wide {
   grid-column: span 2;
 }
-
 .spotlight-item img {
   width: 100%;
   height: 100%;
@@ -1241,20 +1073,16 @@
   filter: grayscale(30%);
   transition: 0.8s;
 }
-
 .spotlight-item:hover {
   border-color: #db7ca5;
   box-shadow: 0 0 30px rgba(219, 124, 165, 0.2);
   z-index: 10;
 }
-
 .spotlight-item:hover img {
   opacity: 1;
   filter: grayscale(0%);
   transform: scale(1.05);
 }
-
-/* Caixa de Citação */
 .spotlight-quote-box {
   height: 100%;
   display: flex;
@@ -1263,7 +1091,6 @@
   padding: 40px;
   background: linear-gradient(45deg, #1a0a24, #050106);
 }
-
 .spotlight-quote-box p {
   font-family: 'Cormorant Garamond';
   font-style: italic;
@@ -1271,7 +1098,6 @@
   color: #fff;
   line-height: 1.2;
 }
-
 .quote-author {
   font-family: 'Cinzel Decorative';
   color: #c0a060;
@@ -1279,7 +1105,6 @@
   font-size: 0.7rem;
   letter-spacing: 3px;
 }
-
 .item-caption {
   position: absolute;
   bottom: 20px;
@@ -1291,12 +1116,10 @@
   opacity: 0;
   transition: 0.4s;
 }
-
 .spotlight-item:hover .item-caption {
   opacity: 1;
   transform: translateY(-5px);
 }
-
 .sn-tour-section {
   background-color: #050106 !important;
   padding: 100px 0;
@@ -1304,7 +1127,6 @@
   flex-direction: column;
   align-items: center;
 }
-
 .sn-tour-section .sn-section-title-alt {
   color: #ffffff !important;
   font-family: 'Cinzel Decorative', serif;
@@ -1314,14 +1136,12 @@
   padding-bottom: 10px;
   text-transform: uppercase;
 }
-
 .sn-ticket-wrapper {
   display: flex;
   justify-content: center;
   padding: 60px 20px;
   background: transparent;
 }
-
 .sn-ticket-body {
   background: #c8a2c8;
   color: #1a0f2e;
@@ -1334,7 +1154,6 @@
   mask: var(--mask);
   -webkit-mask: var(--mask);
 }
-
 .sn-ticket-body::after {
   content: "|| ||| || |||| ||| || ||||| ||";
   position: absolute;
@@ -1344,17 +1163,14 @@
   font-size: 30px;
   opacity: 0.7;
 }
-
 .sn-tour-scroll {
   display: flex;
   overflow-x: hidden;
   width: 100%;
 }
-
 .sn-tour-scroll::-webkit-scrollbar {
   display: none;
 }
-
 .tour-page {
   min-width: 100%;
   display: grid;
@@ -1363,19 +1179,16 @@
   gap: 10px 20px;
   padding: 20px;
 }
-
 .tour-col p {
   font-family: Arial, sans-serif;
   font-size: 0.85rem;
   margin: 8px 0;
   text-align: left;
 }
-
 .tour-col strong {
   font-weight: bold;
   color: #000;
 }
-
 .tour-pagination {
   display: flex;
   justify-content: center;
@@ -1384,29 +1197,23 @@
   position: relative;
   z-index: 10;
 }
-
 .dot {
   width: 10px;
   height: 10px;
   background-color: rgba(255, 255, 255, 0.3);
-  /* Cor apagada */
   border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
 .dot.active {
   background-color: #fff;
-  /* Cor acesa (ativa) */
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
 }
-
 .sn-photos-section {
   background-color: #d1a7cc !important;
   padding: 100px 0 150px;
   width: 100%;
 }
-
 .sn-photos-section .sn-section-title-alt.dark {
   color: #000000 !important;
   border-bottom: 2px solid #000000;
@@ -1417,24 +1224,20 @@
   padding-bottom: 10px;
   text-transform: uppercase;
 }
-
 .sn-photos-gallery {
   width: 100%;
   overflow-x: auto;
   white-space: nowrap;
   scrollbar-width: none;
 }
-
 .sn-photos-gallery::-webkit-scrollbar {
   display: none;
 }
-
 .photo-track {
   display: inline-flex;
   gap: 50px;
   padding: 40px 10%;
 }
-
 .official-photo {
   height: 400px;
   width: auto;
@@ -1442,30 +1245,22 @@
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.3);
   transition: 0.5s ease;
 }
-
 .official-photo:nth-child(even) {
   transform: translateY(40px);
 }
-
 .official-photo:nth-child(odd) {
   transform: translateY(-30px);
 }
-
 .official-photo:hover {
   transform: scale(1.05) translateY(0) !important;
   z-index: 10;
 }
-
-/* ──────────────────────────────────────────
-   SEÇÃO: VIDEOCLIPES OFICIAIS
-────────────────────────────────────────── */
 .sn-mv-section {
   padding: 100px 8%;
   background: #050106;
   position: relative;
   overflow: hidden;
 }
-
 .sn-mv-section::before {
   content: '';
   position: absolute;
@@ -1476,12 +1271,10 @@
   background: radial-gradient(circle, rgba(146, 60, 129, 0.12) 0%, transparent 70%);
   pointer-events: none;
 }
-
 .sn-mv-inner {
   max-width: 1300px;
   margin: 0 auto;
 }
-
 .sn-mv-label {
   display: block;
   font-family: 'Cinzel Decorative', serif;
@@ -1490,7 +1283,6 @@
   color: #c0a060;
   margin-bottom: 15px;
 }
-
 .sn-mv-title {
   font-family: 'Cinzel Decorative', serif;
   font-size: 3rem;
@@ -1499,25 +1291,21 @@
   margin-bottom: 70px;
   text-shadow: 0 0 30px rgba(219, 124, 165, 0.3);
 }
-
 .sn-mv-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
 }
-
 @media (max-width: 1024px) {
   .sn-mv-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 @media (max-width: 640px) {
   .sn-mv-grid {
     grid-template-columns: 1fr;
   }
 }
-
 .sn-mv-card {
   display: block;
   text-decoration: none;
@@ -1527,19 +1315,16 @@
   position: relative;
   overflow: hidden;
 }
-
 .sn-mv-card:hover {
   border-color: rgba(219, 124, 165, 0.5);
   transform: translateY(-8px);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(219, 124, 165, 0.15);
 }
-
 .sn-mv-thumb {
   position: relative;
   aspect-ratio: 16 / 9;
   overflow: hidden;
 }
-
 .sn-mv-thumb img {
   width: 100%;
   height: 100%;
@@ -1547,12 +1332,10 @@
   filter: brightness(0.6) saturate(0.8);
   transition: all 0.6s ease;
 }
-
 .sn-mv-card:hover .sn-mv-thumb img {
   filter: brightness(0.85) saturate(1.1);
   transform: scale(1.05);
 }
-
 .sn-mv-overlay {
   position: absolute;
   inset: 0;
@@ -1562,11 +1345,9 @@
   background: rgba(26, 5, 34, 0.4);
   transition: background 0.4s;
 }
-
 .sn-mv-card:hover .sn-mv-overlay {
   background: rgba(146, 60, 129, 0.3);
 }
-
 .sn-mv-play {
   width: 64px;
   height: 64px;
@@ -1582,24 +1363,20 @@
   transition: all 0.4s;
   padding-left: 4px;
 }
-
 .sn-mv-card:hover .sn-mv-play {
   background: rgba(219, 124, 165, 0.6);
   box-shadow: 0 0 30px rgba(219, 124, 165, 0.7);
   transform: scale(1.15);
 }
-
 .sn-mv-info {
   padding: 22px 25px;
 }
-
 .sn-mv-year {
   font-family: 'Cinzel Decorative', serif;
   font-size: 0.6rem;
   color: #c0a060;
   letter-spacing: 4px;
 }
-
 .sn-mv-name {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.5rem;
@@ -1608,11 +1385,9 @@
   font-weight: 600;
   transition: color 0.3s;
 }
-
 .sn-mv-card:hover .sn-mv-name {
   color: #db7ca5;
 }
-
 .sn-mv-desc {
   font-family: 'Cormorant Garamond', serif;
   font-size: 0.95rem;
@@ -1620,10 +1395,6 @@
   margin: 0;
   line-height: 1.5;
 }
-
-/* ──────────────────────────────────────────
-   SEÇÃO: CONCERTO FILMADO
-────────────────────────────────────────── */
 .sn-concert-section {
   padding: 100px 8%;
   background: #07010a;
@@ -1631,7 +1402,6 @@
   overflow: hidden;
   border-top: 1px solid rgba(219, 124, 165, 0.1);
 }
-
 .sn-concert-glow {
   position: absolute;
   top: 50%;
@@ -1642,7 +1412,6 @@
   background: radial-gradient(circle, rgba(146, 60, 129, 0.08) 0%, transparent 65%);
   pointer-events: none;
 }
-
 .sn-concert-inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -1651,13 +1420,11 @@
   gap: 80px;
   align-items: center;
 }
-
 @media (max-width: 968px) {
   .sn-concert-inner {
     grid-template-columns: 1fr;
   }
 }
-
 .sn-concert-title {
   font-family: 'Cinzel Decorative', serif;
   font-size: 3.2rem;
@@ -1672,7 +1439,6 @@
   background-size: 200% auto;
   animation: shine-text 5s linear infinite;
 }
-
 .sn-concert-desc {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.15rem;
@@ -1680,19 +1446,16 @@
   line-height: 1.9;
   margin-bottom: 35px;
 }
-
 .sn-concert-desc strong {
   color: #c0a060;
   font-weight: 700;
 }
-
 .sn-concert-badges {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 40px;
 }
-
 .sn-badge {
   font-family: 'Cinzel Decorative', serif;
   font-size: 0.6rem;
@@ -1703,13 +1466,11 @@
   background: rgba(219, 124, 165, 0.05);
   transition: all 0.3s;
 }
-
 .sn-badge:hover {
   border-color: #db7ca5;
   background: rgba(219, 124, 165, 0.15);
   color: #fff;
 }
-
 .sn-concert-btn {
   display: inline-flex;
   align-items: center;
@@ -1725,14 +1486,12 @@
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   box-shadow: 0 0 20px rgba(219, 124, 165, 0.2);
 }
-
 .sn-concert-btn:hover {
   background: rgba(219, 124, 165, 0.4);
   box-shadow: 0 0 50px rgba(219, 124, 165, 0.6);
   transform: translateY(-3px);
   border-color: #fff;
 }
-
 .sn-concert-frame {
   position: relative;
   border: 1px solid rgba(192, 160, 96, 0.4);
@@ -1741,22 +1500,18 @@
   box-shadow: 0 0 60px rgba(146, 60, 129, 0.25);
   transition: transform 0.5s ease;
 }
-
 .sn-concert-frame:hover {
   transform: scale(1.02) rotate(-1deg);
 }
-
 .sn-concert-frame img {
   width: 100%;
   display: block;
   filter: brightness(0.75) saturate(0.9);
   transition: filter 0.5s;
 }
-
 .sn-concert-frame:hover img {
   filter: brightness(0.9) saturate(1.1);
 }
-
 .sn-concert-frame::after {
   content: '';
   position: absolute;
@@ -1764,7 +1519,6 @@
   border: 1px solid rgba(192, 160, 96, 0.2);
   pointer-events: none;
 }
-
 .sn-concert-badge-overlay {
   position: absolute;
   bottom: 25px;
@@ -1778,24 +1532,15 @@
   padding: 8px 15px;
   backdrop-filter: blur(6px);
 }
-
-/* ──────────────────────────────────────────
-   ANIMAÇÕES DE SCROLL (IntersectionObserver)
-────────────────────────────────────────── */
 .scroll-reveal {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
 .scroll-reveal.in-view {
   opacity: 1;
   transform: translateY(0);
 }
-
-/* ──────────────────────────────────────────
-   PLAYER DE PRÉVIA — BOTÃO NAS TRACKS
-────────────────────────────────────────── */
 .track-play-btn {
   width: 28px;
   height: 28px;
@@ -1813,14 +1558,12 @@
   transition: all 0.3s ease;
   padding-left: 2px;
 }
-
 .track-play-btn:hover {
   background: rgba(219, 124, 165, 0.25);
   border-color: #db7ca5;
   box-shadow: 0 0 12px rgba(219, 124, 165, 0.4);
   transform: scale(1.15);
 }
-
 .track-play-btn.active {
   background: rgba(219, 124, 165, 0.3);
   border-color: #db7ca5;
@@ -1828,31 +1571,23 @@
   box-shadow: 0 0 18px rgba(219, 124, 165, 0.6);
   padding-left: 0;
 }
-
 .track-play-btn.loading {
   animation: spin-btn 1s linear infinite;
   border-style: dashed;
 }
-
 @keyframes spin-btn {
   to {
     transform: rotate(360deg);
   }
 }
-
 .sn-track-item.is-playing {
   background: rgba(219, 124, 165, 0.12) !important;
   border-left: 4px solid #db7ca5 !important;
 }
-
 .sn-track-item.is-playing .track-name {
   color: #fff !important;
   text-shadow: 0 0 15px rgba(219, 124, 165, 0.7) !important;
 }
-
-/* ──────────────────────────────────────────
-   SEÇÃO: TIMELINE DA ERA
-────────────────────────────────────────── */
 .sn-timeline-section {
   padding: 100px 8%;
   background: #050106;
@@ -1860,17 +1595,14 @@
   overflow: hidden;
   border-top: 1px solid rgba(219, 124, 165, 0.08);
 }
-
 .sn-timeline-inner {
   max-width: 1100px;
   margin: 0 auto;
 }
-
 .sn-timeline {
   position: relative;
   padding: 20px 0;
 }
-
 .sn-timeline-line {
   position: absolute;
   left: 50%;
@@ -1880,19 +1612,16 @@
   background: linear-gradient(to bottom, transparent, rgba(219, 124, 165, 0.5) 10%, rgba(192, 160, 96, 0.5) 50%, rgba(219, 124, 165, 0.5) 90%, transparent);
   transform: translateX(-50%);
 }
-
 .sn-timeline-item {
   display: flex;
   justify-content: flex-end;
   padding: 0 calc(50% + 50px) 60px 0;
   position: relative;
 }
-
 .sn-timeline-item.right {
   justify-content: flex-start;
   padding: 0 0 60px calc(50% + 50px);
 }
-
 .sn-timeline-node {
   position: absolute;
   left: 50%;
@@ -1911,13 +1640,11 @@
   box-shadow: 0 0 20px rgba(146, 60, 129, 0.3);
   transition: all 0.4s;
 }
-
 .sn-timeline-item:hover .sn-timeline-node {
   border-color: #db7ca5;
   box-shadow: 0 0 30px rgba(219, 124, 165, 0.6);
   transform: translateX(-50%) scale(1.15);
 }
-
 .sn-timeline-card {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(219, 124, 165, 0.1);
@@ -1926,22 +1653,18 @@
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   position: relative;
 }
-
 .sn-timeline-item.left .sn-timeline-card {
   border-right: 3px solid rgba(219, 124, 165, 0.3);
 }
-
 .sn-timeline-item.right .sn-timeline-card {
   border-left: 3px solid rgba(192, 160, 96, 0.4);
 }
-
 .sn-timeline-card:hover {
   border-color: rgba(219, 124, 165, 0.4);
   background: rgba(219, 124, 165, 0.05);
   transform: translateY(-4px);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
-
 .sn-timeline-year {
   display: block;
   font-family: 'Cinzel Decorative', serif;
@@ -1950,7 +1673,6 @@
   color: #c0a060;
   margin-bottom: 8px;
 }
-
 .sn-timeline-event {
   font-family: 'Cinzel Decorative', serif;
   font-size: 0.85rem;
@@ -1959,7 +1681,6 @@
   margin: 0 0 12px 0;
   line-height: 1.4;
 }
-
 .sn-timeline-desc {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1rem;
@@ -1967,65 +1688,50 @@
   line-height: 1.7;
   margin: 0;
 }
-
 @media (max-width: 768px) {
-
   .sn-timeline-item,
   .sn-timeline-item.right {
     justify-content: flex-start;
     padding: 0 0 50px 60px;
   }
-
   .sn-timeline-line {
     left: 21px;
   }
-
   .sn-timeline-node {
     left: 21px;
   }
-
   .sn-timeline-item.left .sn-timeline-card {
     border-right: none;
     border-left: 3px solid rgba(219, 124, 165, 0.3);
   }
-
   .sn-timeline-card {
     max-width: 100%;
   }
 }
-
-/* ──────────────────────────────────────────
-   SEÇÃO: AWARDS / PRÊMIOS
-────────────────────────────────────────── */
 .sn-awards-section {
   padding: 100px 8%;
   background: #07010a;
   border-top: 1px solid rgba(192, 160, 96, 0.1);
 }
-
 .sn-awards-inner {
   max-width: 1200px;
   margin: 0 auto;
 }
-
 .sn-awards-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;
 }
-
 @media (max-width: 1024px) {
   .sn-awards-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
 @media (max-width: 640px) {
   .sn-awards-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 .sn-award-card {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(192, 160, 96, 0.2);
@@ -2034,21 +1740,18 @@
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   position: relative;
 }
-
 .sn-award-card:hover {
   background: rgba(192, 160, 96, 0.07);
   border-color: #c0a060;
   transform: translateY(-8px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(192, 160, 96, 0.15);
 }
-
 .sn-award-icon {
   display: block;
   font-size: 2.5rem;
   margin-bottom: 12px;
   filter: drop-shadow(0 0 10px rgba(192, 160, 96, 0.4));
 }
-
 .sn-award-year {
   display: block;
   font-family: 'Cinzel Decorative', serif;
@@ -2057,7 +1760,6 @@
   color: #c0a060;
   margin-bottom: 10px;
 }
-
 .sn-award-title {
   font-family: 'Cinzel Decorative', serif;
   font-size: 0.65rem;
@@ -2066,7 +1768,6 @@
   margin: 0 0 10px;
   line-height: 1.5;
 }
-
 .sn-award-cat {
   font-family: 'Cormorant Garamond', serif;
   font-size: 0.9rem;
@@ -2074,33 +1775,25 @@
   margin: 0;
   line-height: 1.4;
 }
-
-/* ──────────────────────────────────────────
-   SEÇÃO: FUN FACTS
-────────────────────────────────────────── */
 .sn-facts-section {
   padding: 100px 8%;
   background: #050106;
   border-top: 1px solid rgba(219, 124, 165, 0.08);
 }
-
 .sn-facts-inner {
   max-width: 1200px;
   margin: 0 auto;
 }
-
 .sn-facts-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
-
 @media (max-width: 768px) {
   .sn-facts-grid {
     grid-template-columns: 1fr;
   }
 }
-
 .sn-fact-card {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(219, 124, 165, 0.1);
@@ -2112,13 +1805,11 @@
   flex-direction: column;
   gap: 12px;
 }
-
 .sn-fact-card:hover {
   background: rgba(219, 124, 165, 0.05);
   border-left-color: #db7ca5;
   transform: translateX(6px);
 }
-
 .sn-fact-num {
   font-family: 'Cinzel Decorative', serif;
   font-size: 3rem;
@@ -2128,12 +1819,10 @@
   right: 20px;
   line-height: 1;
 }
-
 .sn-fact-emoji {
   font-size: 1.8rem;
   display: block;
 }
-
 .sn-fact-text {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.15rem;
@@ -2141,39 +1830,30 @@
   line-height: 1.8;
   margin: 0;
 }
-
-/* ──────────────────────────────────────────
-   SEÇÃO: EXPLORAR OUTRAS ERAS
-────────────────────────────────────────── */
 .sn-eras-section {
   padding: 100px 8%;
   background: #07010a;
   border-top: 1px solid rgba(219, 124, 165, 0.08);
 }
-
 .sn-eras-inner {
   max-width: 1200px;
   margin: 0 auto;
 }
-
 .sn-eras-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
 }
-
 @media (max-width: 1024px) {
   .sn-eras-grid {
     grid-template-columns: repeat(4, 1fr);
   }
 }
-
 @media (max-width: 640px) {
   .sn-eras-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 .sn-era-card {
   display: flex;
   flex-direction: column;
@@ -2188,7 +1868,6 @@
   position: relative;
   overflow: hidden;
 }
-
 .sn-era-card::before {
   content: '';
   position: absolute;
@@ -2197,17 +1876,14 @@
   opacity: 0;
   transition: opacity 0.4s;
 }
-
 .sn-era-card:hover::before {
   opacity: 0.12;
 }
-
 .sn-era-card:hover {
   border-color: var(--era-color, #db7ca5);
   transform: translateY(-6px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px color-mix(in srgb, var(--era-color, #db7ca5) 30%, transparent);
 }
-
 .sn-era-year {
   font-family: 'Cinzel Decorative', serif;
   font-size: 0.55rem;
@@ -2215,7 +1891,6 @@
   color: rgba(255, 255, 255, 0.4);
   position: relative;
 }
-
 .sn-era-name {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.1rem;
@@ -2225,21 +1900,15 @@
   position: relative;
   transition: color 0.3s;
 }
-
 .sn-era-card:hover .sn-era-name {
   color: var(--era-color, #db7ca5);
 }
-
-/* ──────────────────────────────────────────
-   FOOTER
-────────────────────────────────────────── */
 .sn-footer {
   background: #020003;
   border-top: 1px solid rgba(219, 124, 165, 0.15);
   padding: 60px 8%;
   text-align: center;
 }
-
 .sn-footer-inner {
   max-width: 800px;
   margin: 0 auto;
@@ -2248,7 +1917,6 @@
   align-items: center;
   gap: 16px;
 }
-
 .sn-footer-cursive {
   font-family: 'Pinyon Script', cursive;
   font-size: 3.5rem;
@@ -2256,7 +1924,6 @@
   margin: 0;
   text-shadow: 0 0 20px rgba(219, 124, 165, 0.4);
 }
-
 .sn-footer-copy {
   font-family: 'Cormorant Garamond', serif;
   font-size: 0.9rem;
@@ -2264,13 +1931,11 @@
   margin: 0;
   letter-spacing: 1px;
 }
-
 .sn-footer-links {
   display: flex;
   align-items: center;
   gap: 14px;
 }
-
 .sn-footer-links a {
   font-family: 'Cinzel Decorative', serif;
   font-size: 0.6rem;
@@ -2279,18 +1944,12 @@
   text-decoration: none;
   transition: color 0.3s;
 }
-
 .sn-footer-links a:hover {
   color: #db7ca5;
 }
-
 .sn-footer-links span {
   color: rgba(219, 124, 165, 0.25);
 }
-
-/* ──────────────────────────────────────────
-   BOTÃO VOLTAR AO TOPO
-────────────────────────────────────────── */
 .sn-top-btn {
   position: fixed;
   bottom: 36px;
@@ -2312,29 +1971,22 @@
   box-shadow: 0 0 20px rgba(219, 124, 165, 0.2);
   animation: fade-in-up 0.3s ease;
 }
-
 .sn-top-btn:hover {
   background: rgba(219, 124, 165, 0.3);
   border-color: #db7ca5;
   box-shadow: 0 0 30px rgba(219, 124, 165, 0.5);
   transform: translateY(-4px);
 }
-
 @keyframes fade-in-up {
   from {
     opacity: 0;
     transform: translateY(20px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
-/* ──────────────────────────────────────────
-   FRASE ABAIXO DA CAPA DO ÁLBUM
-────────────────────────────────────────── */
 .sn-floor-quote {
   font-family: 'Pinyon Script', cursive;
   font-size: 2rem;
@@ -2351,7 +2003,6 @@
   text-shadow: none;
   filter: drop-shadow(0 0 12px rgba(219, 124, 165, 0.35));
 }
-
 .sn-floor-quote::before,
 .sn-floor-quote::after {
   content: '✦';
@@ -2362,11 +2013,9 @@
   color: rgba(192, 160, 96, 0.6);
   -webkit-text-fill-color: rgba(192, 160, 96, 0.6);
 }
-
 .db-era-year {
   font-family: 'Cinzel', serif;
   font-size: 0.7rem;
-  /* Removi o color: #ccc; daqui para o style do JS mandar */
   margin-bottom: 5px;
-  opacity: 0.8; /* Um pouco de transparência para ficar elegante */
+  opacity: 0.8; 
 }

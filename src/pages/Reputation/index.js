@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import './Reputation.css';
-
+import RatingSection from '../../components/RatingSection/RatingSection';
+import { eraThemes } from '../../utils/eraThemes';
 import reputationcover from '../../imagens/reputationcover.webp';
-
-// Hook para animações de scroll
 const useInView = (options = {}) => {
     const ref = useRef(null);
     const [inView, setInView] = useState(false);
@@ -20,23 +19,12 @@ const useInView = (options = {}) => {
     }, []);
     return [ref, inView];
 };
-
 const Reputation = () => {
     const [loaded, setLoaded] = useState(false);
     const [playingTrack, setPlayingTrack] = useState(null);
-    const [showTopBtn, setShowTopBtn] = useState(false);
     const audioRef = useRef(null);
     const [tracklistRef, tracklistInView] = useInView();
-
-    useEffect(() => {
-        const handleScroll = () => setShowTopBtn(window.scrollY > 400);
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    // MV Carousel State
     const [activeMv, setActiveMv] = useState(0);
-
     const musicVideos = [
         {
             id: "3tmd-ClpJxA",
@@ -59,46 +47,33 @@ const Reputation = () => {
             thumb: "https://img.youtube.com/vi/tCXGJQYZ9JA/sddefault.jpg"
         }
     ];
-
     const goToMv = (index) => {
         setActiveMv(index);
     };
-
     const prevMv = () => goToMv((activeMv - 1 + musicVideos.length) % musicVideos.length);
     const nextMv = () => goToMv((activeMv + 1) % musicVideos.length);
-
-    // Timeline Scroll State
     const timelineRef = useRef(null);
     const [timelineProgress, setTimelineProgress] = useState(0);
-
     useEffect(() => {
         const handleScroll = () => {
             if (!timelineRef.current) return;
             const rect = timelineRef.current.getBoundingClientRect();
             const windowHeight = window.innerHeight;
-
             const startScroll = windowHeight / 1.5;
             const totalScroll = rect.height;
-
             let progress = (startScroll - rect.top) / totalScroll;
             progress = Math.max(0, Math.min(1, progress));
-
             setTimelineProgress(prev => Math.max(prev, progress));
         };
-
         window.addEventListener('scroll', handleScroll);
-        // Initial check
         handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-
-    // Previews do iTunes
     const [previews, setPreviews] = useState({});
     useEffect(() => {
         const timer = setTimeout(() => setLoaded(true), 100);
         return () => clearTimeout(timer);
     }, []);
-
     useEffect(() => {
         const fetchPreviews = async () => {
             try {
@@ -119,14 +94,12 @@ const Reputation = () => {
         };
         fetchPreviews();
     }, []);
-
     const findPreview = (trackName) => {
         const key = trackName.toLowerCase();
         return previews[key]
             || Object.entries(previews).find(([k]) => k.includes(key) || key.includes(k))?.[1]
             || null;
     };
-
     const handlePlay = useCallback((trackName) => {
         if (playingTrack === trackName) {
             audioRef.current?.pause();
@@ -144,7 +117,6 @@ const Reputation = () => {
         }
         setPlayingTrack(trackName);
     }, [playingTrack, previews]);
-
     const tracks = [
         { name: "...Ready for It?", single: true },
         { name: "End Game", feat: "feat. Ed Sheeran & Future", single: true },
@@ -162,49 +134,15 @@ const Reputation = () => {
         { name: "Call It What You Want", single: true },
         { name: "New Year's Day", single: false },
     ];
-
     return (
         <main className={`era-rep-page ${loaded ? 'rep-loaded' : ''}`}>
             <audio ref={audioRef} style={{ display: 'none' }} />
-
-            {/* ═══ CAMADAS DE TEXTURA DE FUNDO ═══ */}
             <div className="rep-noise-overlay"></div>
             <div className="rep-newspaper-overlay"></div>
-
-            {/* ═══ COBRAS SVG DECORATIVAS ao fundo ═══ */}
-            <svg className="rep-snake-bg rep-snake-bg--left" viewBox="0 0 200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M100 0 C60 80, 150 160, 80 240 C10 320, 160 400, 100 480 C40 560, 150 640, 100 720 L100 800"
-                    stroke="url(#snakeGrad1)" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.3"
-                />
-                <defs>
-                    <linearGradient id="snakeGrad1" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#6b8e23" />
-                        <stop offset="50%" stopColor="#c0392b" />
-                        <stop offset="100%" stopColor="#2c3e50" />
-                    </linearGradient>
-                </defs>
-            </svg>
-            <svg className="rep-snake-bg rep-snake-bg--right" viewBox="0 0 200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M100 0 C140 100, 50 200, 120 300 C190 400, 40 500, 100 600 C160 700, 80 750, 100 800"
-                    stroke="url(#snakeGrad2)" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.25"
-                />
-                <defs>
-                    <linearGradient id="snakeGrad2" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#8e44ad" />
-                        <stop offset="50%" stopColor="#d4af37" />
-                        <stop offset="100%" stopColor="#1abc9c" />
-                    </linearGradient>
-                </defs>
-            </svg>
-
-            {/* ═══ HEADER / NAVEGAÇÃO ═══ */}
             <header className="era-rep-nav">
                 <Link to="/1989" className="nav-rep-link">
                     <span className="nav-rep-arrow">←</span> 1989
                 </Link>
-
                 <div className="rep-logo-group">
                     <svg className="rep-logo-snake" viewBox="0 0 60 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2 18 C8 4, 18 20, 26 8 C34 -4, 44 20, 52 10 L56 6" stroke="url(#logoSnakeG)" strokeWidth="2" strokeLinecap="round" />
@@ -218,22 +156,43 @@ const Reputation = () => {
                     </svg>
                     <div className="rep-logo">reputation</div>
                 </div>
-
                 <Link to="/lover" className="nav-rep-link">
                     LOVER <span className="nav-rep-arrow">→</span>
                 </Link>
             </header>
-
-            {/* ═══ HERO SECTION ═══ */}
             <section className="rep-hero">
+                <svg className="rep-snake-bg rep-snake-bg--left" viewBox="0 0 200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M100 0 C60 80, 150 160, 80 240 C10 320, 160 400, 100 480 C40 560, 150 640, 100 720 L100 800"
+                        stroke="url(#snakeGrad1)" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.3"
+                    />
+                    <defs>
+                        <linearGradient id="snakeGrad1" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#6b8e23" />
+                            <stop offset="50%" stopColor="#c0392b" />
+                            <stop offset="100%" stopColor="#2c3e50" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <svg className="rep-snake-bg rep-snake-bg--right" viewBox="0 0 200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M100 0 C140 100, 50 200, 120 300 C190 400, 40 500, 100 600 C160 700, 80 750, 100 800"
+                        stroke="url(#snakeGrad2)" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.25"
+                    />
+                    <defs>
+                        <linearGradient id="snakeGrad2" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#8e44ad" />
+                            <stop offset="50%" stopColor="#d4af37" />
+                            <stop offset="100%" stopColor="#1abc9c" />
+                        </linearGradient>
+                    </defs>
+                </svg>
                 <div className="rep-hero-gradient"></div>
-
                 <div className="rep-clipping rep-clipping--1">BREAKING NEWS</div>
                 <div className="rep-clipping rep-clipping--2">EXCLUSIVE</div>
                 <div className="rep-clipping rep-clipping--3">SCANDAL</div>
                 <div className="rep-clipping rep-clipping--4">EXPOSED</div>
                 <div className="rep-clipping rep-clipping--5">THE TRUTH</div>
-
                 <div className="rep-hero-container">
                     <div className="rep-titles-box">
                         <div className="rep-glitch-line"></div>
@@ -248,7 +207,6 @@ const Reputation = () => {
                             <span className="rep-title-accent">REPUTATION</span>
                         </h1>
                         <div className="rep-glitch-line"></div>
-
                         <svg className="rep-title-snake" viewBox="0 0 200 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M0 15 C20 5, 40 25, 60 15 C80 5, 100 25, 120 15 C140 5, 160 25, 180 15 L200 15"
                                 stroke="url(#titleSnakeG)" strokeWidth="1.5" strokeLinecap="round" />
@@ -262,7 +220,6 @@ const Reputation = () => {
                             </defs>
                         </svg>
                     </div>
-
                     <div className="rep-album-display">
                         <div className="rep-album-glow"></div>
                         <div className="rep-album-glow rep-album-glow--accent"></div>
@@ -294,7 +251,6 @@ const Reputation = () => {
                                 </defs>
                             </svg>
                         </div>
-
                         <div className="rep-album-meta">
                             <span className="rep-meta-date">NOV 10, 2017</span>
                             <span className="rep-meta-divider">|</span>
@@ -302,7 +258,6 @@ const Reputation = () => {
                         </div>
                     </div>
                 </div>
-
                 <div className="rep-hero-quote-wrapper">
                     <div className="rep-quote-line"></div>
                     <p className="rep-hero-quote">
@@ -311,19 +266,13 @@ const Reputation = () => {
                     </p>
                     <div className="rep-quote-line"></div>
                 </div>
-
                 <div className="rep-scroll-indicator">
                     <div className="rep-scroll-line"></div>
                     <span>SCROLL</span>
                 </div>
             </section>
-
-            {/* ═══ TRACKLIST SECTION ═══ */}
             <section className={`rep-tracklist-section ${tracklistInView ? 'rep-in-view' : ''}`} ref={tracklistRef}>
-
-
                 <div className="rep-tracklist-inner">
-                    {/* Cabeçalho da seção */}
                     <div className="rep-tracklist-header">
                         <span className="rep-section-label">THE SETLIST</span>
                         <h2 className="rep-tracklist-title">TRACKLIST</h2>
@@ -331,10 +280,7 @@ const Reputation = () => {
                             15 TRACKS · 55:38 MIN · POP / ELECTROPOP
                         </p>
                     </div>
-
-                    {/* Grade principal de tracks */}
                     <div className="rep-tracks-grid">
-                        {/* Recorte decorativo de jornal no fundo */}
                         <div className="rep-tracks-newspaper-bg">
                             <span>LOOK WHAT YOU MADE ME DO</span>
                             <span>THE OLD TAYLOR IS DEAD</span>
@@ -342,22 +288,16 @@ const Reputation = () => {
                             <span>DELICATE</span>
                             <span>END GAME</span>
                         </div>
-
                         {tracks.map((track, index) => (
                             <div
                                 key={index}
                                 className={`rep-track-item ${track.single ? 'is-single' : ''} ${playingTrack === track.name ? 'is-playing' : ''}`}
                                 style={{ '--delay': `${index * 0.07}s`, '--track-index': index }}
                             >
-                                {/* Efeito shimmer ao hover — luz que passa */}
                                 <div className="rep-track-shimmer"></div>
-
-                                {/* Número da track */}
                                 <span className="rep-track-number">
                                     {String(index + 1).padStart(2, '0')}
                                 </span>
-
-                                {/* Botão play */}
                                 <button
                                     className={`rep-track-play ${playingTrack === track.name ? 'active' : ''}`}
                                     onClick={() => handlePlay(track.name)}
@@ -371,13 +311,10 @@ const Reputation = () => {
                                             <span></span><span></span><span></span><span></span><span></span>
                                         </div>
                                     )}
-                                    {/* Círculo pulsante quando tocando */}
                                     {playingTrack === track.name && (
                                         <div className="rep-play-pulse"></div>
                                     )}
                                 </button>
-
-                                {/* Info da track */}
                                 <div className="rep-track-info">
                                     <span className="rep-track-name">{track.name}</span>
                                     {track.feat && (
@@ -387,8 +324,6 @@ const Reputation = () => {
                                         </span>
                                     )}
                                 </div>
-
-                                {/* Tags */}
                                 <div className="rep-track-tags">
                                     {track.single && (
                                         <span className="rep-tag-single">
@@ -397,19 +332,13 @@ const Reputation = () => {
                                         </span>
                                     )}
                                 </div>
-
-                                {/* Linha de gradiente lateral ao hover */}
                                 <div className="rep-track-glow-line"></div>
-
-                                {/* Fragmento de letra no fundo (apenas singles) */}
                                 {track.single && (
                                     <div className="rep-track-lyric-ghost">{track.name}</div>
                                 )}
                             </div>
                         ))}
                     </div>
-
-                    {/* Rodapé da tracklist com stats */}
                     <div className="rep-tracklist-footer">
                         <div className="rep-stat-box">
                             <span className="rep-stat-number">4.5M</span>
@@ -436,8 +365,6 @@ const Reputation = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ THE OLD TAYLOR IS DEAD (TIMELINE) ═══ */}
             <section
                 className="rep-timeline-section"
                 ref={timelineRef}
@@ -446,14 +373,11 @@ const Reputation = () => {
                     '--theme-blend': `rgba(10, 10, 10, ${timelineProgress})`
                 }}
             >
-                {/* Dynamic background overlay that darkens based on scroll */}
                 <div className="rep-timeline-bg-transition"></div>
-
                 <div className="rep-timeline-container">
                     <div className="rep-timeline-line">
                         <div className="rep-timeline-line-fill" style={{ height: `${timelineProgress * 100}%` }}></div>
                     </div>
-
                     <div className={`rep-time-item ${timelineProgress > 0.1 ? 'is-active' : ''}`}>
                         <div className="rep-time-dot rep-dot-pastel"></div>
                         <div className="rep-time-content rep-content-pastel">
@@ -461,7 +385,6 @@ const Reputation = () => {
                             <p>America's sweetheart. Bright colors, perfect polaroids, and a flawless public image.</p>
                         </div>
                     </div>
-
                     <div className={`rep-time-item ${timelineProgress > 0.4 ? 'is-active' : ''}`}>
                         <div className="rep-time-dot rep-dot-glitch"></div>
                         <div className="rep-time-content rep-content-glitch">
@@ -469,7 +392,6 @@ const Reputation = () => {
                             <p>The media turns. Overexposure. Edited phone calls. <span className="rep-snake-emoji">🐍</span></p>
                         </div>
                     </div>
-
                     <div className={`rep-time-item ${timelineProgress > 0.75 ? 'is-active' : ''}`}>
                         <div className="rep-time-dot rep-dot-dark"></div>
                         <div className="rep-time-content rep-content-dark">
@@ -478,19 +400,15 @@ const Reputation = () => {
                         </div>
                     </div>
                 </div>
-
                 <div className={`rep-timeline-climax ${timelineProgress > 0.85 ? 'is-revealed' : ''}`}>
                     <h2 className="rep-climax-text">THE OLD TAYLOR CAN'T COME TO THE PHONE.</h2>
                 </div>
             </section>
-
-            {/* ═══ NEWSPAPER HEADLINES SECTION ═══ */}
             <section className="rep-headlines-section">
                 <div className="rep-headlines-header">
                     <h2 className="rep-headlines-title">THE GOSSIP</h2>
                     <p className="rep-headlines-subtitle">HOVER TO REVEAL THE TRUTH</p>
                 </div>
-
                 <div className="rep-headlines-grid">
                     {[
                         {
@@ -525,7 +443,6 @@ const Reputation = () => {
                                 <p className="rep-headline-card-text">{item.text}</p>
                                 <span className="rep-headline-readmore">READ FULL STORY ↘</span>
                             </div>
-
                             <div className={`rep-headline-reveal ${item.revealType === 'lyric' ? 'is-lyric' : 'is-image'}`}>
                                 {item.revealType === 'image' ? (
                                     <div className="rep-reveal-image-container">
@@ -542,29 +459,23 @@ const Reputation = () => {
                     ))}
                 </div>
             </section>
-
-            {/* ═══ SECRET MESSAGES & LYRIC GLITCH SECTION ═══ */}
             <section className="rep-secret-messages-section">
                 <div className="rep-secret-bg-text rep-secret-bg-text--1">TAYLOR TAYLOR TAYLOR TAYLOR TAYLOR TAYLOR</div>
                 <div className="rep-secret-bg-text rep-secret-bg-text--2">TAYLOR TAYLOR TAYLOR TAYLOR TAYLOR TAYLOR</div>
                 <div className="rep-secret-bg-text rep-secret-bg-text--3">TAYLOR TAYLOR TAYLOR TAYLOR TAYLOR TAYLOR</div>
                 <div className="rep-secret-bg-text rep-secret-bg-text--4">TAYLOR TAYLOR TAYLOR TAYLOR TAYLOR TAYLOR</div>
                 <div className="rep-secret-bg-text rep-secret-bg-text--5">TAYLOR TAYLOR TAYLOR TAYLOR TAYLOR TAYLOR</div>
-
                 <div className="rep-secret-center-content">
                     <h2 className="rep-secret-main-title" data-text="REPUTATION">REPUTATION</h2>
                     <p className="rep-secret-sub">THERE WILL BE NO EXPLANATION.</p>
                 </div>
             </section>
-
-            {/* ═══ THE REPUTATION STADIUM TOUR ═══ */}
             <section className="rep-tour-section">
                 <div className="rep-tour-content">
                     <div className="rep-tour-header">
                         <h2 className="rep-tour-title">THE REPUTATION STADIUM TOUR</h2>
                         <h3 className="rep-tour-subtitle">THE BIGGEST TOUR IN US HISTORY</h3>
                     </div>
-
                     <div className="rep-tour-grid">
                         <div className="rep-tour-text-box">
                             <p>
@@ -588,7 +499,6 @@ const Reputation = () => {
                                 </div>
                             </div>
                         </div>
-
                         <div className="rep-tour-video-wrapper">
                             <svg className="rep-tour-snake-bg" viewBox="0 0 500 300" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -627,19 +537,15 @@ const Reputation = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ MUSIC VIDEOS CAROUSEL ═══ */}
             <section className="rep-music-videos-section">
                 <div className="rep-mv-header">
                     <h2 className="rep-mv-title">THE VISUALS</h2>
                     <p className="rep-mv-subtitle">MUSIC VIDEOS</p>
                 </div>
-
                 <div className="rep-mv-slider-wrapper">
                     <button className="rep-mv-arrow rep-mv-arrow--left" onClick={prevMv} aria-label="Previous">
                         <span>‹</span>
                     </button>
-
                     <div className="rep-mv-slider-viewport">
                         <div
                             className="rep-mv-slider-track"
@@ -662,12 +568,10 @@ const Reputation = () => {
                             ))}
                         </div>
                     </div>
-
                     <button className="rep-mv-arrow rep-mv-arrow--right" onClick={nextMv} aria-label="Next">
                         <span>›</span>
                     </button>
                 </div>
-
                 <div className="rep-mv-dots">
                     {musicVideos.map((_, index) => (
                         <button
@@ -679,8 +583,6 @@ const Reputation = () => {
                     ))}
                 </div>
             </section>
-
-            {/* ═══ ERA GALLERY ═══ */}
             <section className="rep-gallery-section">
                 <div className="rep-gallery-header">
                     <h2 className="rep-gallery-title">THE ERA</h2>
@@ -710,8 +612,6 @@ const Reputation = () => {
                     ))}
                 </div>
             </section>
-
-            {/* ═══ NAVEGUE ENTRE AS ERAS ═══ */}
             <section className="rep-eras-section">
                 <div className="rep-eras-inner">
                     <span className="rep-eras-label">NAVEGUE</span>
@@ -738,8 +638,7 @@ const Reputation = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ FOOTER ═══ */}
+            <RatingSection era="reputation" tracks={tracks} theme={eraThemes.reputation} />
             <footer className="rep-footer">
                 <div className="rep-footer-inner">
                     <p className="rep-footer-logo">reputation</p>
@@ -755,20 +654,7 @@ const Reputation = () => {
                     </div>
                 </div>
             </footer>
-
-            {/* ═══ BACK TO TOP ═══ */}
-            {showTopBtn && (
-                <button
-                    className="rep-top-btn"
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    aria-label="Voltar ao topo"
-                >
-                    ↑
-                </button>
-            )}
-
         </main>
     );
 };
-
 export default Reputation;

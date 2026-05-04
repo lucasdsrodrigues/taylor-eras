@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Debut.css';
-
+import RatingSection from '../../components/RatingSection/RatingSection';
+import { eraThemes } from '../../utils/eraThemes';
 import imgTimMcGraw from '../../imagens/tim-mcgraw.webp';
 import imgTeardrops from '../../imagens/teardrops.jpg';
 import imgOurSong from '../../imagens/our-song.jpg';
 import imgPictureToBurn from '../../imagens/picture-to-burn.jpg';
 import imgShouldveSaidNo from '../../imagens/shouldve-said-no.webp';
-
 import shoot1 from '../../imagens/shoot1.webp';
 import shoot2 from '../../imagens/shoot2.webp';
 import shoot3 from '../../imagens/shoot3.webp';
@@ -28,45 +28,25 @@ import shoot17 from '../../imagens/shoot17.webp';
 import shoot18 from '../../imagens/shoot18.webp';
 import shoot19 from '../../imagens/shoot19.webp';
 import shoot20 from '../../imagens/shoot20.webp';
-
 const Debut = () => {
   const [easterEggAtivo, setEasterEggAtivo] = useState(false);
   const [galeriaAberta, setGaleriaAberta] = useState(false);
-  const [showTopBtn, setShowTopBtn] = useState(false);
   const [loaded, setLoaded] = useState(false);
-
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 100);
     return () => clearTimeout(timer);
   }, []);
-
-  /* 1. EFEITO DO BOTÃO VOLTAR AO TOPO */
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 400) {
-        setShowTopBtn(true);
-      } else {
-        setShowTopBtn(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-  /* 2. EFEITO DA NATUREZA (VAGALUMES) */
   useEffect(() => {
     let active = true;
     const launchNatureEffects = () => {
       if (!active) return;
-
       const amount = 20;
       const colors = ['#eaffd0', '#f4ffaa', '#d4ffb2', '#ffffff', '#a8e4a0'];
-
       for (let i = 0; i < amount; i++) {
         setTimeout(() => {
           if (!active) return;
           const element = document.createElement('div');
           element.className = 'nature-firefly';
-
           element.style.left = (Math.random() * 100) + 'vw';
           element.style.top = (Math.random() * 100) + 'vh';
           element.style.background = colors[Math.floor(Math.random() * colors.length)];
@@ -74,32 +54,25 @@ const Debut = () => {
           element.style.width = size;
           element.style.height = size;
           document.body.appendChild(element);
-
           const animation = element.animate([
             { transform: 'translate(0, 0)', opacity: 0 },
             { opacity: Math.random() * 0.8 + 0.5, offset: 0.5 },
             { transform: `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`, opacity: 0 }
           ], { duration: Math.random() * 6000 + 4000, easing: 'ease-in-out' });
-
           animation.onfinish = () => { if (document.body.contains(element)) element.remove(); };
         }, i * 200);
       }
     };
-
-    // Initial burst
+    // eslint-disable-next-line no-loop-func
     launchNatureEffects();
-
-    // Continuous spawning
     const interval = setInterval(() => {
       launchNatureEffects();
     }, 8000);
-
     return () => {
       active = false;
       clearInterval(interval);
     };
   }, []);
-
   const musicVideos = [
     { titulo: "Tim McGraw", ano: "2006", diretor: "Trey Fanjoy", thumb: imgTimMcGraw, url: "https://www.youtube.com/watch?v=GkD20ajVxnY" },
     { titulo: "Teardrops On My Guitar", ano: "2007", diretor: "Trey Fanjoy", thumb: imgTeardrops, url: "https://www.youtube.com/watch?v=xKCek6ndSA0" },
@@ -107,7 +80,6 @@ const Debut = () => {
     { titulo: "Picture To Burn", ano: "2008", diretor: "Trey Fanjoy", thumb: imgPictureToBurn, url: "https://www.youtube.com/watch?v=yBCP26Ti6nY" },
     { titulo: "Should've Said No", ano: "2008", diretor: "ACM Awards", thumb: imgShouldveSaidNo, url: "https://www.youtube.com/watch?v=mE9O9uY_kRk" }
   ];
-
   const photoshootImages = [
     { src: shoot1, rot: "-2deg", text: "He said the way my blue eyes shined" },
     { src: shoot2, rot: "3deg", text: "When you think Tim McGraw" },
@@ -130,7 +102,6 @@ const Debut = () => {
     { src: shoot19, rot: "2deg", text: "Friday night beneath the stars" },
     { src: shoot20, rot: "-2deg", text: "It's the first time for everything" }
   ];
-
   const trilhasCompletas = [
     { no: "01", titulo: "Tim McGraw", tema: "Nostalgia", nota: "Escrita na aula de mAtEMática.", rot: "-2deg" },
     { no: "02", titulo: "Picture To Burn", tema: "Vingança", nota: "QUeimei as fotos.", rot: "3deg" },
@@ -144,19 +115,15 @@ const Debut = () => {
     { no: "10", titulo: "Mary's Song", tema: "Amor Eterno", nota: "HiStória real.", rot: "3deg" },
     { no: "11", titulo: "Our Song", tema: "Amor Jovem", nota: "MúsiCa do show de talentos.", rot: "-2deg" }
   ];
-
   return (
     <div className={`debut-ultra-archive ${easterEggAtivo ? 'show-secret' : ''} ${loaded ? 'debut-loaded' : ''}`}>
       <div className="grain-overlay"></div>
       <div className="debut-texture-overlay"></div>
-
-      {/* Cinematic SVGs at the Background */}
       <svg className="debut-slither-bg debut-slither-bg--left" viewBox="0 0 200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M 150 0 C 80 100, 180 200, 100 300 C 20 400, 150 500, 80 600 C 10 700, 140 800, 100 900"
           stroke="url(#vineGradientL)" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.4"
         />
-        {/* Extra tendril */}
         <path
           d="M 100 300 C 60 350, 80 420, 40 450"
           stroke="url(#vineGradientL)" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.25"
@@ -165,7 +132,6 @@ const Debut = () => {
           d="M 80 600 C 130 640, 100 680, 140 720"
           stroke="url(#vineGradientL)" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.2"
         />
-        {/* Small leaf dots */}
         <circle cx="40" cy="450" r="3" fill="#50c878" opacity="0.4" />
         <circle cx="140" cy="720" r="2.5" fill="#8fbc8f" opacity="0.3" />
         <circle cx="100" cy="300" r="2" fill="#d4af37" opacity="0.3" />
@@ -177,7 +143,6 @@ const Debut = () => {
           </linearGradient>
         </defs>
       </svg>
-
       <svg className="debut-slither-bg debut-slither-bg--right" viewBox="0 0 200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M 50 0 C 120 150, 40 250, 150 350 C 260 450, 80 550, 160 650 C 240 750, 100 850, 150 950"
@@ -201,7 +166,6 @@ const Debut = () => {
           </linearGradient>
         </defs>
       </svg>
-
       {galeriaAberta && (
         <div className="photo-overlay" onClick={() => setGaleriaAberta(false)}>
           <div className="photo-content" onClick={e => e.stopPropagation()}>
@@ -222,7 +186,6 @@ const Debut = () => {
           </div>
         </div>
       )}
-
       <nav className="binder-nav">
         <Link to="/" className="tab-link">ÍNDICE DE ERAS</Link>
         <div className="current-era-badge" onClick={() => setEasterEggAtivo(!easterEggAtivo)}>
@@ -230,13 +193,11 @@ const Debut = () => {
         </div>
         <Link to="/fearless" className="tab-link gold-tab">PRÓXIMO: FEARLESS →</Link>
       </nav>
-
       <section className="hero-archive">
         <div className="hero-layout">
           <div className="cover-box">
             <img src="https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png" alt="Debut" />
             <div className="debut-album-glow"></div>
-
             <div className="label-sticker">7x PLATINA</div>
           </div>
           <div className="hero-info">
@@ -257,7 +218,6 @@ const Debut = () => {
           </div>
         </div>
       </section>
-
       <section className="memory-box-dark">
         <h2 className="glitter-title">A CAIXA DE MEMÓRIAS</h2>
         <div className="cards-wrapper">
@@ -278,7 +238,6 @@ const Debut = () => {
           </div>
         </div>
       </section>
-
       <section className="spotify-preview-section">
         <div className="spotify-container">
           <h2 className="glitter-title">OUÇA O ÁLBUM</h2>
@@ -295,7 +254,6 @@ const Debut = () => {
           ></iframe>
         </div>
       </section>
-
       <section className="film-vault">
         <h2 className="section-subtitle">O COFRE DE FILMES (CLIPES)</h2>
         <div className="video-scroll">
@@ -318,7 +276,6 @@ const Debut = () => {
           ))}
         </div>
       </section>
-
       <section className="lyricist-den">
         <h2 className="handwritten-heading">O Processo de Composição</h2>
         <div className="scraps-wall">
@@ -340,7 +297,6 @@ const Debut = () => {
           ))}
         </div>
       </section>
-
       <section className="debut-achievements">
         <div className="achievement-overlay">
           <h2 className="glitter-title">AWARDS & MILESTONES</h2>
@@ -385,7 +341,6 @@ const Debut = () => {
           </div>
         </div>
       </section>
-
       <section className="db-eras-section">
         <div className="db-eras-inner">
           <span className="db-mv-label">NAVEGUE</span>
@@ -413,7 +368,7 @@ const Debut = () => {
           </div>
         </div>
       </section>
-
+      <RatingSection era="debut" tracks={trilhasCompletas} theme={eraThemes.debut} />
       <footer className="db-footer">
         <div className="db-footer-inner">
           <p className="db-footer-cursive">Taylor Swift</p>
@@ -427,18 +382,7 @@ const Debut = () => {
           </div>
         </div>
       </footer>
-
-      {showTopBtn && (
-        <button
-          className="db-top-btn"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          aria-label="Voltar ao topo"
-        >
-          ↑
-        </button>
-      )}
     </div>
   );
 };
-
 export default Debut;

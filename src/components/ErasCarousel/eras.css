@@ -4,6 +4,18 @@
   overflow-x: hidden;
   overflow-y: visible;
   z-index: 5;
+  transition: background 0.8s ease;
+}
+
+.eras-section-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center 60%,
+      color-mix(in srgb, var(--section-era-color, #fff) 12%, transparent),
+      transparent 70%);
+  transition: background 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .eras-carousel {
@@ -13,6 +25,7 @@
   height: 460px;
   overflow: visible;
   --active-era-color: #fff;
+  z-index: 1;
 }
 
 .carousel-track {
@@ -20,101 +33,158 @@
   align-items: center;
   height: 100%;
   gap: 28px;
-  transition: transform 0.6s ease;
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
 }
 
 .carousel-slide {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --parallax-bg: 0px;
   min-width: 300px;
   height: 380px;
   background-size: cover;
-  background-position: center;
+  background-position: calc(50% + var(--parallax-bg)) center;
   position: relative;
   flex-shrink: 0;
   border-radius: 22px;
   overflow: hidden;
   opacity: 0.45;
-  transform: scale(0.82);
+  transform: scale(0.82) perspective(800px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
   filter: saturate(0.6);
   transform-origin: center bottom;
+  transform-style: preserve-3d;
   transition:
-      transform 0.5s ease,
-      opacity 0.5s ease,
-      filter 0.5s ease,
-      box-shadow 0.5s ease;
+    transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    filter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    background-position 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform, opacity, filter;
 }
 
 .carousel-slide::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-      to top,
-      rgba(0,0,0,0.6),
-      rgba(0,0,0,0.2),
-      transparent
-  );
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.2),
+      transparent);
   z-index: 1;
 }
 
 .era-content {
+  --parallax-text: 0px;
   position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: translateX(var(--parallax-text));
   z-index: 2;
   text-align: center;
   color: #fff;
-  width: 85%;
-  padding: 14px 18px;
-  border-radius: 14px;
-  backdrop-filter: blur(6px);
+  width: 100%;
+  padding: 32px 22px 22px;
+  border-radius: 0 0 22px 22px;
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.75) 0%,
+      rgba(0, 0, 0, 0.45) 55%,
+      transparent 100%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition:
+    transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 0.5s ease;
+  will-change: transform;
+  opacity: 0.7;
+}
+
+.carousel-slide.active .era-content {
+  opacity: 1;
 }
 
 .era-content h3 {
-  font-size: 1.6rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
   margin-bottom: 6px;
-  letter-spacing: 1px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  line-height: 1.2;
+}
+
+.carousel-slide.active .era-content h3 {
+  text-shadow:
+    0 0 18px color-mix(in srgb, var(--era-color) 50%, transparent),
+    0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .era-content p {
-  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
   font-style: italic;
+  font-weight: 300;
+  opacity: 0.75;
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.carousel-slide.active .era-content p {
   opacity: 0.9;
 }
 
 .carousel-slide.far {
   opacity: 0.35;
-  transform: scale(0.78);
-  filter: saturate(0.5);
+  transform: scale(0.78) perspective(800px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  filter: saturate(0.5) blur(3px);
   z-index: 2;
 }
 
 .carousel-slide.near {
   opacity: 0.75;
-  transform: scale(0.9);
-  filter: saturate(0.8);
+  transform: scale(0.9) perspective(800px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  filter: saturate(0.8) blur(0.5px);
   z-index: 4;
 }
 
 .carousel-slide.active {
   opacity: 1;
-  transform: scale(1);
-  filter: saturate(1);
+  transform: scale(1) perspective(800px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  filter: saturate(1) blur(0px);
   z-index: 5;
   --active-era-color: var(--era-color);
-  box-shadow:
-      0 0 0 3px var(--era-color),
-      0 0 90px 35px color-mix(in srgb, var(--era-color) 55%, transparent),
-      0 45px 90px rgba(0,0,0,0.65);
+  animation: glowPulse 3s ease-in-out infinite;
 }
 
 .carousel-slide.active:hover {
-  transform: scale(1.02);
-  box-shadow:
-      0 0 0 4px var(--era-color),
-      0 0 100px 40px color-mix(in srgb, var(--era-color) 65%, transparent),
-      0 45px 90px rgba(0,0,0,0.7);
+  transform: scale(1.02) perspective(800px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+}
+
+@keyframes glowPulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 3px var(--era-color),
+      0 0 90px 35px color-mix(in srgb, var(--era-color) 55%, transparent),
+      0 45px 90px rgba(0, 0, 0, 0.65);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 3px var(--era-color),
+      0 0 115px 48px color-mix(in srgb, var(--era-color) 65%, transparent),
+      0 45px 90px rgba(0, 0, 0, 0.65);
+  }
+}
+
+.carousel-slide.pressing {
+  transform: scale(0.97) perspective(800px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) !important;
+  transition: transform 0.1s ease !important;
 }
 
 .carousel-controls {
@@ -139,26 +209,32 @@
   font-size: 1.6rem;
   color: var(--active-era-color);
   background:
-      radial-gradient(
-          circle at top,
-          color-mix(in srgb, var(--active-era-color) 45%, transparent),
-          rgba(0,0,0,0.75)
-      );
+    radial-gradient(circle at top,
+      color-mix(in srgb, var(--active-era-color) 45%, transparent),
+      rgba(0, 0, 0, 0.75));
   box-shadow:
-      0 0 25px color-mix(in srgb, var(--active-era-color) 45%, transparent),
-      0 12px 28px rgba(0,0,0,0.55);
+    0 0 25px color-mix(in srgb, var(--active-era-color) 45%, transparent),
+    0 12px 28px rgba(0, 0, 0, 0.55);
   transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease,
-      background 0.3s ease;
+    transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+  will-change: transform, box-shadow;
 }
 
 .prev:hover,
 .next:hover {
-  transform: translateY(-3px) scale(1.05);
+  transform: translateY(-4px) scale(1.1);
   box-shadow:
-      0 0 35px color-mix(in srgb, var(--active-era-color) 65%, transparent),
-      0 18px 40px rgba(0,0,0,0.7);
+    0 0 40px color-mix(in srgb, var(--active-era-color) 70%, transparent),
+    0 0 15px color-mix(in srgb, var(--active-era-color) 40%, transparent),
+    0 20px 44px rgba(0, 0, 0, 0.7);
+}
+
+.prev:active,
+.next:active {
+  transform: translateY(-1px) scale(0.96);
+  transition: transform 0.1s ease;
 }
 
 .carousel-indicators {
@@ -191,19 +267,54 @@ body.dark .era-content {
 
 body.dark .carousel-slide.active {
   box-shadow:
-      0 0 0 3px var(--era-color),
-      0 0 120px 40px color-mix(in srgb, var(--era-color) 40%, transparent);
+    0 0 0 3px var(--era-color),
+    0 0 120px 40px color-mix(in srgb, var(--era-color) 40%, transparent);
 }
 
-.era-debut { --era-color: #6aebb4; }
-.era-fearless { --era-color: #f7c948; }
-.era-speak-now { --era-color: #c77dff; }
-.era-red { --era-color: #e74c3c; }
-.era-1989 { --era-color: #74b9ff; }
-.era-reputation { --era-color: #2d3436; }
-.era-lover { --era-color: #ffb6c1; }
-.era-folklore { --era-color: #b8cbb8; }
-.era-evermore { --era-color: #7d8f69; }
-.era-midnights { --era-color: #1e3799; }
-.era-tortured-poets-department { --era-color: #3d3d3d; }
-.era-the-life-of-a-showgirl { --era-color: #c75b12; }
+.era-debut {
+  --era-color: #6aebb4;
+}
+
+.era-fearless {
+  --era-color: #f7c948;
+}
+
+.era-speak-now {
+  --era-color: #c77dff;
+}
+
+.era-red {
+  --era-color: #e74c3c;
+}
+
+.era-1989 {
+  --era-color: #74b9ff;
+}
+
+.era-reputation {
+  --era-color: #2d3436;
+}
+
+.era-lover {
+  --era-color: #ffb6c1;
+}
+
+.era-folklore {
+  --era-color: #b8cbb8;
+}
+
+.era-evermore {
+  --era-color: #7d8f69;
+}
+
+.era-midnights {
+  --era-color: #1e3799;
+}
+
+.era-tortured-poets-department {
+  --era-color: #3d3d3d;
+}
+
+.era-the-life-of-a-showgirl {
+  --era-color: #c75b12;
+}

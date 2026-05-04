@@ -1,0 +1,274 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
+
+.rv-root {
+  max-width: 720px;
+  margin: 60px auto 40px;
+  padding: 0 24px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.rv-root.rv-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rv-era-label {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--rv-text, #fff);
+  opacity: 0.5;
+  margin-bottom: 10px;
+}
+
+.rv-era-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.6rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--rv-color, #fff);
+  margin: 0 0 8px;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.rv-album-block {
+  margin: 24px 0 20px;
+}
+
+.rv-album-label,
+.rv-tracks-label {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 3.5px;
+  color: var(--rv-text, #fff);
+  opacity: 0.6;
+  margin-bottom: 14px;
+}
+
+.rv-album-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rv-album-nota {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-left: 12px;
+  color: var(--rv-color, #fff);
+  opacity: 0.8;
+  animation: rvFade 0.3s ease;
+}
+
+.rv-star {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  color: var(--rv-star-off, rgba(255, 255, 255, 0.15));
+  transition: color 0.25s ease,
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    text-shadow 0.3s ease;
+}
+
+.rv-star--lg {
+  font-size: 2.4rem;
+}
+
+.rv-star--sm {
+  font-size: 1.15rem;
+}
+
+.rv-star--active {
+  color: var(--rv-color, #fff);
+  text-shadow: 0 0 12px var(--rv-color, #fff);
+}
+
+.rv-star:hover {
+  transform: scale(1.2);
+  color: var(--rv-color, #fff);
+  text-shadow: 0 0 18px var(--rv-color, #fff);
+}
+
+.rv-star:active {
+  transform: scale(0.9);
+}
+
+.rv-divider {
+  margin: 28px auto;
+  width: 200px;
+}
+
+.rv-divider svg {
+  width: 100%;
+  height: 8px;
+}
+
+.rv-tracks-block {
+  margin: 0 0 30px;
+  text-align: left;
+}
+
+.rv-tracks-block .rv-tracks-label {
+  text-align: center;
+}
+
+.rv-track-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rv-track-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--rv-text, #fff) 8%, transparent);
+  transition: background 0.2s ease;
+
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.rv-visible .rv-track-row {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition-delay: calc(0.05s * var(--row-i, 0));
+}
+
+.rv-track-row:hover {
+  background: color-mix(in srgb, var(--rv-text, #fff) 4%, transparent);
+}
+
+.rv-track-row:last-child {
+  border-bottom: none;
+}
+
+.rv-track-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--rv-text, #888);
+  opacity: 0.35;
+  min-width: 22px;
+  text-align: right;
+}
+
+.rv-track-name {
+  flex: 1;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--rv-text, #fff);
+  letter-spacing: 0.15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rv-song-stars {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.rv-submit {
+  display: inline-block;
+  margin: 10px 0 0;
+  padding: 13px 40px;
+  border: 1px solid var(--rv-color, #fff);
+  border-radius: 50px;
+  background: transparent;
+  color: var(--rv-color, #fff);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+}
+
+.rv-submit:hover {
+  background: var(--rv-color, #fff);
+  color: #0a0a0a;
+  box-shadow: 0 4px 25px rgba(255, 255, 255, 0.1);
+}
+
+.rv-submit:active {
+  transform: scale(0.97);
+}
+
+.rv-submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.rv-feedback {
+  margin-top: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 400;
+  opacity: 0.8;
+  animation: rvFade 0.4s ease;
+}
+
+@keyframes rvFade {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .rv-root {
+    margin: 40px auto 30px;
+    padding: 0 16px;
+  }
+
+  .rv-era-title {
+    font-size: 1.8rem;
+  }
+
+  .rv-star--lg {
+    font-size: 2rem;
+  }
+
+  .rv-star--sm {
+    font-size: 1rem;
+  }
+
+  .rv-track-name {
+    font-size: 0.78rem;
+  }
+
+  .rv-submit {
+    padding: 11px 32px;
+    font-size: 0.75rem;
+  }
+}

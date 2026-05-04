@@ -43,8 +43,8 @@ const FearlessGallery = () => {
 
       <div className="fg-masonry-grid">
         {photos.map((photo) => (
-          <div 
-            key={photo.id} 
+          <div
+            key={photo.id}
             className="fg-item"
             onClick={() => setSelectedImg(photo.url)}
           >

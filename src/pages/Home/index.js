@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import ErasCarousel from "../../components/ErasCarousel/ErasCarousel";
 import Timeline from "../../components/Timeline/Timeline";
 import './home.css';
-
-/* ═══ DATA ═══ */
 const ERA_COLORS = [
     { name: "Debut", color: "#7ec8a0" },
     { name: "Fearless", color: "#c9a227" },
@@ -18,7 +16,6 @@ const ERA_COLORS = [
     { name: "TTPD", color: "#a79e8f" },
     { name: "Showgirl", color: "#e46c32" },
 ];
-
 const STATS = [
     { icon: "💿", big: "200M+", desc: "Discos vendidos mundialmente", color: "#c9a227" },
     { icon: "🏆", big: "14", desc: "Grammy Awards", color: "#a855f7" },
@@ -27,29 +24,23 @@ const STATS = [
     { icon: "🥇", big: "4", desc: "Album of the Year (recorde)", color: "#7b8aff" },
     { icon: "🎧", big: "100B+", desc: "Streams globais", color: "#87ceeb" },
 ];
-
 const JOURNEY = [
     { year: "2006 — 2010", title: "A Ascensão Country", desc: "De uma adolescente de 16 anos em Nashville que escrevia músicas no caderno ao fenômeno que redefiniu o country-pop com Fearless — o álbum mais jovem a ganhar o Grammy de Álbum do Ano.", color: "#7ec8a0" },
     { year: "2014 — 2017", title: "A Transição Pop", desc: "1989 marcou a reinvenção total: de Nashville para Nova York, de country para synth-pop. Reputation respondeu ao mundo que tentou cancelá-la — e ela voltou mais forte que nunca.", color: "#87ceeb" },
     { year: "2019 — 2020", title: "Queda e Renascimento", desc: "Lover trouxe liberdade criativa. Depois, em plena pandemia, Folklore e Evermore nasceram como cartas de amor à introspecção — provando que Taylor poderia dominar qualquer gênero.", color: "#8a9a8a" },
-    { year: "2022 — 2024", title: "A Poeta Torturada", desc: "Midnights quebrou recordes na primeira semana. A Eras Tour se tornou a maior turnê da história. TTPD revelou a poeta por trás dos holofotes, vendendo 2 milhões na primeira semana.", color: "#7b8aff" },
+    { year: "2022 — 2024", title: "A Poeta Torturada", desc: "Midnights quebrou recordes na primeira semana. A The Eras Tour se tornou a maior turnê da história. TTPD quebrou mais recordes, vendendo 2 milhões na primeira semana.", color: "#7b8aff" },
     { year: "2025", title: "A Showgirl", desc: "The Life of a Showgirl encerrou uma era e abriu um novo capítulo — o álbum mais teatral, visceral e confessional de sua carreira. O palco é dela, sempre foi.", color: "#e46c32" },
 ];
-
 const PARTICLE_COUNT = 30;
-
-/* ═══ COMPONENT ═══ */
 function Home() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [loaded, setLoaded] = useState(false);
-
     useEffect(() => {
         setTimeout(() => setLoaded(true), 100);
         document.body.style.backgroundColor = '#0a0a0f';
         document.body.style.backgroundImage = 'none';
         return () => { document.body.style.backgroundColor = ''; document.body.style.backgroundImage = ''; };
     }, []);
-
     useEffect(() => {
         const els = document.querySelectorAll('.home-about, .home-stats, .home-journey');
         const obs = new IntersectionObserver((entries) => {
@@ -58,8 +49,6 @@ function Home() {
         els.forEach(el => obs.observe(el));
         return () => obs.disconnect();
     }, []);
-
-    /* Particles */
     const particles = Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
         left: `${Math.random() * 100}%`,
         color: ERA_COLORS[i % ERA_COLORS.length].color,
@@ -67,11 +56,8 @@ function Home() {
         dur: `${6 + Math.random() * 10}s`,
         delay: `${Math.random() * 12}s`,
     }));
-
     return (
         <main className={`home-page ${loaded ? 'home-loaded' : ''}`}>
-
-            {/* ═══ PARTICLES ═══ */}
             <div className="home-particles">
                 {particles.map((p, i) => (
                     <div key={i} className="home-particle" style={{
@@ -83,10 +69,7 @@ function Home() {
                     }} />
                 ))}
             </div>
-
-            {/* ═══ HERO ═══ */}
             <header className="home-hero">
-                {/* SVG spotlights from each era */}
                 <svg className="home-hero-svg" viewBox="0 0 1200 800" preserveAspectRatio="none">
                     <polygon points="100,0 0,800 200,800" fill="url(#hsp0)" opacity="0.03" />
                     <polygon points="300,0 200,800 400,800" fill="url(#hsp1)" opacity="0.025" />
@@ -103,26 +86,19 @@ function Home() {
                         <radialGradient id="hsp5" cx="50%" cy="0%" r="80%"><stop offset="0%" stopColor="#e46c32" /><stop offset="100%" stopColor="transparent" /></radialGradient>
                     </defs>
                 </svg>
-
                 <span className="home-hero-tag">12 ÁLBUNS · 18 ANOS · 1 LENDA</span>
                 <h1 className="home-hero-title">Taylor Swift</h1>
                 <p className="home-hero-sub">The story of the greatest musical phenomenon of our generation</p>
-
-                {/* Era color strip */}
                 <div className="home-era-strip">
                     {ERA_COLORS.map((e, i) => (
                         <div key={i} className="home-era-bar" style={{ background: e.color, '--eb': e.color }} title={e.name} />
                     ))}
                 </div>
-
-                {/* Scroll cue */}
                 <div className="home-scroll-cue">
                     <div className="home-scroll-line" />
                     <span>SCROLL</span>
                 </div>
             </header>
-
-            {/* ═══ ABOUT ═══ */}
             <section className="home-about">
                 <div className="home-about-inner">
                     <div className="home-about-photo">
@@ -143,7 +119,7 @@ function Home() {
                         </p>
                         <p className="home-about-p">
                             Compositora desde os 12 anos, ela é a <strong>única artista na história a ganhar 4 Grammys
-                            de Álbum do Ano</strong> — e a primeira a ter 5 álbuns vendendo mais de 1 milhão de cópias
+                                de Álbum do Ano</strong> — e a primeira a ter 5 álbuns vendendo mais de 1 milhão de cópias
                             na primeira semana.
                         </p>
                         <div className="home-about-facts">
@@ -163,8 +139,6 @@ function Home() {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ STATS ═══ */}
             <section className="home-stats">
                 <div className="home-stats-header">
                     <span className="home-label">os números</span>
@@ -180,8 +154,6 @@ function Home() {
                     ))}
                 </div>
             </section>
-
-            {/* ═══ JOURNEY ═══ */}
             <section className="home-journey">
                 <div className="home-journey-inner">
                     <div className="home-journey-header">
@@ -199,8 +171,6 @@ function Home() {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ CAROUSEL & TIMELINE ═══ */}
             <div className="home-carousel-wrap">
                 <ErasCarousel
                     currentIndex={currentIndex}
@@ -211,8 +181,6 @@ function Home() {
                     onSelectEra={(index) => setCurrentIndex(index)}
                 />
             </div>
-
-            {/* ═══ FOOTER ═══ */}
             <footer className="home-footer">
                 <div className="home-footer-left">
                     <p className="home-footer-logo">Taylor Swift — Eras</p>
@@ -223,11 +191,9 @@ function Home() {
                     <a href="https://www.taylorswift.com" target="_blank" rel="noopener noreferrer">Site Oficial</a>
                     <a href="https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02" target="_blank" rel="noopener noreferrer">Spotify</a>
                     <a href="https://music.apple.com/us/artist/taylor-swift/159260351" target="_blank" rel="noopener noreferrer">Apple Music</a>
-                    <button className="home-top-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>↑</button>
                 </div>
             </footer>
         </main>
     );
 }
-
 export default Home;

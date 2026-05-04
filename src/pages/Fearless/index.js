@@ -1,7 +1,8 @@
 import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Fearless.css';
-
+import RatingSection from '../../components/RatingSection/RatingSection';
+import { eraThemes } from '../../utils/eraThemes';
 import fearlessCover from '../../imagens/fearless.webp';
 import fearlessTVCover from '../../imagens/fearless-tv.png';
 import fearlessTour from '../../imagens/fearless-tour.jpg';
@@ -14,27 +15,14 @@ import clipFifteen from '../../imagens/fifteen.jpg';
 import clipFearless from '../../imagens/fearless-mv.jpg';
 import clipBestDay from '../../imagens/thebestday.jpg';
 import clipChange from '../../imagens/change.jpg';
-
 const Fearless = () => {
   const [isTV, setIsTV] = useState(false);
-  const [showTopBtn, setShowTopBtn] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const scrollContainer = useRef(null);
-
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 100);
     return () => clearTimeout(timer);
   }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 400) setShowTopBtn(true);
-      else setShowTopBtn(false);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const scroll = (direction) => {
     if (scrollContainer.current) {
       const scrollAmount = 450;
@@ -44,15 +32,12 @@ const Fearless = () => {
       });
     }
   };
-
   const toggleVersion = (status) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setTimeout(() => {
       setIsTV(status);
     }, 600);
   };
-  
-
   const tracks = [
     { no: "01", title: "Fearless", duration: "4:01" },
     { no: "02", title: "Fifteen", duration: "4:54" },
@@ -68,7 +53,6 @@ const Fearless = () => {
     { no: "12", title: "The Best Day", duration: "4:05" },
     { no: "13", title: "Change", duration: "4:40" }
   ];
-
   const vaultTracks = [
     { no: "01", title: "Fearless", duration: "4:01" },
     { no: "02", title: "Fifteen", duration: "4:54" },
@@ -97,7 +81,6 @@ const Fearless = () => {
     { no: "25", title: "Don't You", duration: "3:28" },
     { no: "26", title: "Bye Bye Baby", duration: "4:02" }
   ];
-
   const musicVideos = [
     {
       title: "Love Story",
@@ -142,27 +125,20 @@ const Fearless = () => {
       url: "https://www.youtube.com/watch?v=B1jYllE0T-k&list=RDB1jYllE0T-k&start_radio=1"
     }
   ];
-
   return (
     <div className={`f-stage-root ${isTV ? 'f-tv-active' : ''} ${loaded ? 'f-loaded' : ''}`}>
       <div className="f-spotlight-top"></div>
       <div className="f-glitter-dust"></div>
-
       <nav className="f-nav-glass">
         <Link to="/debut" className="f-nav-link">← CAPÍTULO 01</Link>
         <div className="f-nav-center">{isTV ? "FEARLESS (TAYLOR'S VERSION)" : "THE FEARLESS CHAPTER"}</div>
         <Link to="/speak-now" className="f-nav-link">CAPÍTULO 03 →</Link>
       </nav>
-
       <header className="f-hero-gold">
         <div className="f-texture-overlay"></div>
-        
-        {/* Dynamic Golden Sparkle Bursts */}
         <svg className="f-sparkle-burst f-sparkle-burst--left" viewBox="0 0 400 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-           {/* Radiating arcs */}
            <path d="M 350 600 Q 200 500, 100 300 Q 50 150, 200 0" stroke="url(#fSparkleGrad)" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.5" />
            <path d="M 400 550 Q 300 400, 150 250 Q 50 120, 100 0" stroke="url(#fSparkleGrad)" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.3" />
-           {/* Scattered star dots */}
            <circle cx="100" cy="300" r="3" fill="#ffdf00" className="f-sparkle-dot" />
            <circle cx="200" cy="150" r="2" fill="#fff" className="f-sparkle-dot" />
            <circle cx="150" cy="450" r="4" fill="#d4af37" className="f-sparkle-dot" />
@@ -178,7 +154,6 @@ const Fearless = () => {
                </linearGradient>
            </defs>
         </svg>
-
         <svg className="f-sparkle-burst f-sparkle-burst--right" viewBox="0 0 400 600" fill="none" xmlns="http://www.w3.org/2000/svg">
            <path d="M 50 600 Q 200 450, 300 250 Q 350 100, 200 0" stroke="url(#fSparkleGrad2)" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.4" />
            <path d="M 0 500 Q 100 350, 250 200 Q 350 80, 300 0" stroke="url(#fSparkleGrad2)" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.25" />
@@ -196,7 +171,6 @@ const Fearless = () => {
                </linearGradient>
            </defs>
         </svg>
-
         <div className="f-hero-main">
           <div className="f-album-spotlight">
             <div className="f-neon-frame">
@@ -206,25 +180,21 @@ const Fearless = () => {
                 className="f-album-image"
               />
               <div className="f-album-glow-effect"></div>
-
               <div className="f-glow-line"></div>
             </div>
             <div className="f-floor-reflection"></div>
           </div>
-
           <div className="f-hero-text-block">
             <span className="f-pre-title">TAYLOR SWIFT</span>
             <h1 className="f-main-display">
                <span className="f-title-shimmer" data-text="Fearless">Fearless</span>
             </h1>
             {isTV && <h2 className="f-tv-subtitle">(TAYLOR'S VERSION)</h2>}
-
             <div className="f-info-pill-container">
               <div className="f-pill">{isTV ? "2021" : "2008"}</div>
               <div className="f-pill">COUNTRY POP</div>
               <div className="f-pill">{isTV ? "1:46:22" : "53:41"}</div>
             </div>
-
             <div className="f-description-box">
               <p>
                 {isTV
@@ -242,14 +212,12 @@ const Fearless = () => {
           </div>
         </div>
       </header>
-
       <section className="f-tracklist-section">
         <div className="f-section-divider">
           <div className="f-line-gold"></div>
           <h2 className="f-track-header">{isTV ? "THE VAULT & MORE" : "THE TRACKLIST"}</h2>
           <div className="f-line-gold"></div>
         </div>
-
         <div className="f-tracks-container">
           {(isTV ? vaultTracks : tracks).map((track) => (
             <div key={track.no} className="f-track-item">
@@ -264,7 +232,6 @@ const Fearless = () => {
             </div>
           ))}
         </div>
-
         {!isTV && (
           <div className="f-vault-teaser">
             <button className="f-vault-button" onClick={() => toggleVersion(true)}>
@@ -274,7 +241,6 @@ const Fearless = () => {
           </div>
         )}
       </section>
-
       {isTV ? (
         <>
           <section className="f-re-record-info">
@@ -287,7 +253,6 @@ const Fearless = () => {
               </p>
             </div>
           </section>
-
           <section className="f-announcement-section">
             <div className="f-announcement-card">
               <h2 className="f-section-title-gold">A Carta do Cofre</h2>
@@ -315,7 +280,6 @@ const Fearless = () => {
               <p className="f-lyric-line">"...and I don't know why but with you I'd dance."</p>
             </div>
           </section>
-
           <section className="f-videos-section">
             <h2 className="f-section-title-gold">The Cinematic Era</h2>
             <div className="f-carousel-wrapper">
@@ -341,7 +305,6 @@ const Fearless = () => {
               </div>
             </div>
           </section>
-
           <section className="f-legacy-section">
             <div className="f-legacy-grid">
               <div className="f-awards-column">
@@ -365,7 +328,6 @@ const Fearless = () => {
                   </div>
                 </div>
               </div>
-
               <div className="f-tour-column">
                 <h2 className="f-legacy-title">A turnê mundial</h2>
                 <div className="f-tour-photo-main">
@@ -380,7 +342,6 @@ const Fearless = () => {
                 <p className="f-tour-desc">A primeira grande turnê mundial, onde o "Heart Hand" se tornou marca registrada.</p>
               </div>
             </div>
-
             <div className="f-gallery-portal">
               <Link to="/fearless-gallery" className="f-portal-button">
                 <span className="f-portal-text">VISIT THE PHOTO ARCHIVE</span>
@@ -390,8 +351,6 @@ const Fearless = () => {
           </section>
         </>
       )}
-
-{/* NOVA SEÇÃO: EXPLORAR OUTRAS ERAS (PADRONIZADA) */}
 <section className="fe-eras-section">
         <div className="fe-eras-inner">
           <span className="fe-nav-label">NAVEGUE</span>
@@ -418,8 +377,7 @@ const Fearless = () => {
           </div>
         </div>
       </section>
-
-      {/* NOVO FOOTER ELEGANTE */}
+      <RatingSection era="fearless" tracks={vaultTracks} theme={eraThemes.fearless} />
       <footer className="fe-footer">
         <div className="fe-footer-inner">
           <p className="fe-footer-cursive">Fearless</p> 
@@ -431,19 +389,7 @@ const Fearless = () => {
           </div>
         </div>
       </footer>
-
-      {/* BOTÃO VOLTAR AO TOPO */}
-      {showTopBtn && (
-        <button 
-          className="fe-top-btn" 
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
-          aria-label="Voltar ao topo"
-        >
-          ↑
-        </button>
-      )}
     </div>
   );
 };
-
 export default Fearless;

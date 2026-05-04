@@ -1,6 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap');
-
-/* ═══ BASE ═══ */
 .era-ever-page {
     min-height: 100vh;
     overflow-x: hidden;
@@ -13,12 +11,9 @@
     opacity: 0;
     transition: opacity 0.8s;
 }
-
 .era-ever-page.ever-loaded {
     opacity: 1;
 }
-
-/* ═══ SHARED ═══ */
 .ever-label {
     display: inline-block;
     font-family: 'Inter', sans-serif;
@@ -29,7 +24,6 @@
     color: #cc621b;
     margin-bottom: 8px;
 }
-
 .ever-section-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2.5rem;
@@ -38,13 +32,11 @@
     margin: 0 0 8px;
     color: #e8ddd0;
 }
-
 .ever-sub {
     font-size: 0.75rem;
     color: rgba(232, 221, 208, 0.35);
     margin: 0;
 }
-
 .ever-visible .ever-tracklist-inner,
 .ever-visible .ever-detective-inner,
 .ever-visible .ever-lyrics-inner,
@@ -53,8 +45,6 @@
     opacity: 1;
     transform: translateY(0);
 }
-
-/* ═══ FALLING LEAVES ═══ */
 .ever-leaves {
     position: fixed;
     inset: 0;
@@ -62,34 +52,27 @@
     z-index: 1;
     overflow: hidden;
 }
-
 .ever-leaf {
     position: absolute;
     top: -40px;
     animation: everLeafFall linear infinite;
 }
-
 @keyframes everLeafFall {
     0% {
         transform: translateY(-40px) rotate(0deg) translateX(0);
         opacity: 0;
     }
-
     10% {
         opacity: 1;
     }
-
     90% {
         opacity: 1;
     }
-
     100% {
         transform: translateY(110vh) rotate(540deg) translateX(100px);
         opacity: 0;
     }
 }
-
-/* ═══ WHISPERS ═══ */
 .ever-whispers {
     position: fixed;
     inset: 0;
@@ -97,7 +80,6 @@
     z-index: 1;
     overflow: hidden;
 }
-
 .ever-whisper {
     position: absolute;
     font-family: 'Cormorant Garamond', serif;
@@ -108,28 +90,22 @@
     animation: everWhisperFloat ease-in-out infinite alternate;
     white-space: nowrap;
 }
-
 @keyframes everWhisperFloat {
     0% {
         transform: translateY(0) translateX(0);
         opacity: 0;
     }
-
     30% {
         opacity: 1;
     }
-
     70% {
         opacity: 1;
     }
-
     100% {
         transform: translateY(-30px) translateX(20px);
         opacity: 0;
     }
 }
-
-/* ═══ BRANCHES SVG ═══ */
 .ever-branch {
     position: fixed;
     z-index: 2;
@@ -139,29 +115,23 @@
     top: 0;
     opacity: 0.7;
 }
-
 .ever-branch--l {
     left: 0;
 }
-
 .ever-branch--r {
     right: 0;
     transform: scaleX(-1);
 }
-
 .ever-branch-path {
     stroke-dasharray: 1500;
     stroke-dashoffset: 1500;
     animation: everBranchDraw 4s ease forwards 0.5s;
 }
-
 @keyframes everBranchDraw {
     to {
         stroke-dashoffset: 0;
     }
 }
-
-/* ═══ NAV ═══ */
 .ever-nav {
     position: fixed;
     top: 0;
@@ -175,7 +145,6 @@
     background: linear-gradient(180deg, rgba(56, 35, 35, 0.95) 0%, transparent 100%);
     backdrop-filter: blur(10px);
 }
-
 .ever-nav-link {
     text-decoration: none;
     font-size: 0.65rem;
@@ -184,28 +153,22 @@
     color: #994914;
     transition: color 0.3s;
 }
-
 .ever-nav-link:hover {
     color: #cc621b;
 }
-
 .ever-nav-link span {
     display: inline-block;
     transition: transform 0.3s;
 }
-
 .ever-nav-link:hover span:first-child {
     transform: translateX(-4px);
 }
-
 .ever-nav-link:hover span:last-child {
     transform: translateX(4px);
 }
-
 .ever-nav-center {
     text-align: center;
 }
-
 .ever-nav-logo {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.3rem;
@@ -214,8 +177,6 @@
     color: #cc621b;
     letter-spacing: 4px;
 }
-
-/* ═══ HERO — #382323 ═══ */
 .ever-hero {
     position: relative;
     min-height: 100vh;
@@ -226,7 +187,6 @@
     background: linear-gradient(180deg, #382323 0%, #382323 100%);
     overflow: hidden;
 }
-
 .ever-hero-mist {
     position: absolute;
     inset: 0;
@@ -234,7 +194,6 @@
     background: radial-gradient(ellipse at 30% 60%, rgba(204, 98, 27, 0.06) 0%, transparent 50%),
         radial-gradient(ellipse at 70% 40%, rgba(153, 73, 20, 0.04) 0%, transparent 40%);
 }
-
 .ever-hero-content {
     position: relative;
     z-index: 2;
@@ -243,11 +202,9 @@
     gap: 60px;
     max-width: 1100px;
 }
-
 .ever-hero-text {
     flex: 1;
 }
-
 .ever-hero-tag {
     font-size: 0.55rem;
     font-weight: 600;
@@ -255,11 +212,9 @@
     color: #994914;
     margin: 0 0 20px;
 }
-
 .ever-hero-title {
     margin: 0 0 20px;
 }
-
 .ever-hero-title-line {
     display: block;
     font-family: 'Cormorant Garamond', serif;
@@ -271,11 +226,9 @@
     opacity: 0;
     animation: everFadeUp 0.8s ease forwards;
 }
-
 .ever-hero-title-line:nth-child(2) {
     animation-delay: 0.15s;
 }
-
 .ever-hero-title-accent {
     display: block;
     font-family: 'Cormorant Garamond', serif;
@@ -287,14 +240,12 @@
     opacity: 0;
     animation: everFadeUp 0.8s ease forwards 0.3s;
 }
-
 .ever-hero-divider {
     width: 120px;
     margin: 24px 0;
     opacity: 0;
     animation: everFadeUp 0.6s ease forwards 0.5s;
 }
-
 .ever-hero-quote {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.05rem;
@@ -305,15 +256,12 @@
     opacity: 0;
     animation: everFadeUp 0.8s ease forwards 0.6s;
 }
-
-/* Cover */
 .ever-hero-cover {
     position: relative;
     flex-shrink: 0;
     opacity: 0;
     animation: everFadeUp 1s ease forwards 0.5s;
 }
-
 .ever-cover-glow {
     position: absolute;
     inset: -30px;
@@ -322,21 +270,17 @@
     filter: blur(25px);
     animation: everGlowPulse 4s ease-in-out infinite;
 }
-
 @keyframes everGlowPulse {
-
     0%,
     100% {
         opacity: 0.4;
         transform: scale(0.95);
     }
-
     50% {
         opacity: 0.8;
         transform: scale(1.05);
     }
 }
-
 .ever-cover-img {
     width: 320px;
     height: auto;
@@ -347,12 +291,9 @@
     z-index: 1;
     transition: transform 0.5s;
 }
-
 .ever-cover-img:hover {
     transform: scale(1.02) translateY(-4px);
 }
-
-/* Scroll cue */
 .ever-scroll-cue {
     position: absolute;
     bottom: 30px;
@@ -363,43 +304,35 @@
     align-items: center;
     gap: 8px;
 }
-
 .ever-scroll-line {
     width: 1px;
     height: 40px;
     background: linear-gradient(180deg, transparent, #cc621b);
     animation: everScrollP 2s ease-in-out infinite;
 }
-
 @keyframes everScrollP {
-
     0%,
     100% {
         opacity: 0.3;
         height: 40px;
     }
-
     50% {
         opacity: 0.7;
         height: 55px;
     }
 }
-
 .ever-scroll-cue span {
     font-size: 0.5rem;
     letter-spacing: 4px;
     color: #994914;
     text-transform: uppercase;
 }
-
-/* ═══ ABOUT — #382323 → #523211 ═══ */
 .ever-about {
     position: relative;
     z-index: 2;
     padding: 120px 5%;
     background: linear-gradient(180deg, #382323 0%, #523211 100%);
 }
-
 .ever-about-inner {
     max-width: 1000px;
     margin: 0 auto;
@@ -411,19 +344,16 @@
     transform: translateY(30px);
     transition: all 1s;
 }
-
 .ever-about-text p {
     font-size: 1rem;
     line-height: 1.8;
     color: rgba(232, 221, 208, 0.5);
     margin: 0 0 14px;
 }
-
 .ever-about-text strong {
     color: #e8ddd0;
     font-weight: 500;
 }
-
 .ever-about-facts {
     display: flex;
     flex-direction: column;
@@ -434,30 +364,24 @@
     border-radius: 8px;
     min-width: 280px;
 }
-
 .ever-fact {
     display: flex;
     align-items: center;
     gap: 12px;
 }
-
 .ever-fact-icon {
     font-size: 1.2rem;
 }
-
 .ever-fact span:last-child {
     font-size: 0.8rem;
     color: rgba(232, 221, 208, 0.4);
 }
-
-/* ═══ TRACKLIST — #523211 → #7f3c10 ═══ */
 .ever-tracklist {
     position: relative;
     z-index: 2;
     padding: 100px 5%;
     background: linear-gradient(180deg, #523211 0%, #7f3c10 100%);
 }
-
 .ever-tracklist-inner {
     max-width: 700px;
     margin: 0 auto;
@@ -471,17 +395,14 @@
     transform: translateY(30px);
     transition: all 1s;
 }
-
 .ever-tracklist-header {
     text-align: center;
     margin-bottom: 30px;
 }
-
 .ever-tracks-list {
     display: flex;
     flex-direction: column;
 }
-
 .ever-track {
     display: flex;
     align-items: center;
@@ -493,16 +414,13 @@
     animation: everFadeUp 0.3s ease forwards;
     animation-delay: calc(var(--i) * 0.03s);
 }
-
 .ever-track:hover {
     background: rgba(204, 98, 27, 0.04);
     padding-left: 14px;
 }
-
 .ever-track.is-playing {
     background: rgba(204, 98, 27, 0.08);
 }
-
 .ever-track-num {
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.8rem;
@@ -510,7 +428,6 @@
     width: 22px;
     text-align: center;
 }
-
 .ever-track-btn {
     width: 28px;
     height: 28px;
@@ -526,18 +443,15 @@
     transition: all 0.3s;
     position: relative;
 }
-
 .ever-track-btn:hover {
     background: rgba(204, 98, 27, 0.1);
     border-color: #cc621b;
 }
-
 .ever-track-btn.active {
     background: #cc621b;
     color: #1a1210;
     border-color: #cc621b;
 }
-
 .ever-waves {
     position: absolute;
     bottom: -8px;
@@ -548,69 +462,57 @@
     align-items: flex-end;
     height: 8px;
 }
-
 .ever-waves span {
     width: 2px;
     background: #cc621b;
     border-radius: 1px;
     animation: everWave 0.5s ease-in-out infinite alternate;
 }
-
 .ever-waves span:nth-child(1) {
     height: 3px;
     animation-delay: 0s;
 }
-
 .ever-waves span:nth-child(2) {
     height: 6px;
     animation-delay: 0.1s;
 }
-
 .ever-waves span:nth-child(3) {
     height: 4px;
     animation-delay: 0.2s;
 }
-
 .ever-waves span:nth-child(4) {
     height: 7px;
     animation-delay: 0.15s;
 }
-
 .ever-waves span:nth-child(5) {
     height: 3px;
     animation-delay: 0.05s;
 }
-
 @keyframes everWave {
     0% {
         height: 2px;
     }
-
     100% {
         height: 8px;
     }
 }
-
 .ever-track-info {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
-
 .ever-track-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1rem;
     font-style: italic;
     color: #e8ddd0;
 }
-
 .ever-track-feat {
     font-size: 0.7rem;
     color: rgba(204, 98, 27, 0.5);
     font-style: italic;
 }
-
 .ever-badge {
     font-size: 0.45rem;
     letter-spacing: 3px;
@@ -619,17 +521,14 @@
     font-weight: 600;
     flex-shrink: 0;
 }
-
 .ever-badge--single {
     background: rgba(204, 98, 27, 0.15);
     color: #cc621b;
 }
-
 .ever-badge--bonus {
     background: rgba(153, 73, 20, 0.2);
     color: #b8824a;
 }
-
 .ever-stats-row {
     display: flex;
     justify-content: center;
@@ -638,36 +537,30 @@
     padding-top: 20px;
     border-top: 1px solid rgba(204, 98, 27, 0.08);
 }
-
 .ever-stat {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
 }
-
 .ever-stat-val {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.3rem;
     font-weight: 600;
     color: #cc621b;
 }
-
 .ever-stat-lbl {
     font-size: 0.5rem;
     letter-spacing: 3px;
     color: rgba(232, 221, 208, 0.3);
     text-transform: uppercase;
 }
-
-/* ═══ DETECTIVE — #7f3c10 → #994914 → #8a4a18 ═══ */
 .ever-detective {
     position: relative;
     z-index: 2;
     padding: 120px 5%;
     background: linear-gradient(180deg, #7f3c10 0%, #994914 40%, #8a4a18 100%);
 }
-
 .ever-detective-inner {
     max-width: 900px;
     margin: 0 auto;
@@ -676,13 +569,11 @@
     transform: translateY(30px);
     transition: all 1s;
 }
-
 .ever-detective-board {
     position: relative;
     margin-top: 50px;
     min-height: 350px;
 }
-
 .ever-strings {
     position: absolute;
     inset: 0;
@@ -690,7 +581,6 @@
     height: 100%;
     pointer-events: none;
 }
-
 .ever-detective-cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -698,7 +588,6 @@
     position: relative;
     z-index: 2;
 }
-
 .ever-det-card {
     background: rgba(250, 245, 235, 0.9);
     border-radius: 3px;
@@ -712,12 +601,10 @@
     animation: everFadeUp 0.5s ease forwards;
     animation-delay: calc(var(--di) * 0.12s);
 }
-
 .ever-det-card:hover {
     transform: rotate(0deg) translateY(-6px) scale(1.03);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
-
 .ever-det-pin {
     position: absolute;
     top: -6px;
@@ -729,7 +616,6 @@
     background: radial-gradient(circle, #c62828, #8b0000);
     box-shadow: 0 2px 6px rgba(139, 0, 0, 0.4);
 }
-
 .ever-det-suspect {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.1rem;
@@ -737,7 +623,6 @@
     margin: 8px 0 6px;
     color: #382323;
 }
-
 .ever-det-detail {
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.85rem;
@@ -746,15 +631,12 @@
     margin: 0;
     line-height: 1.5;
 }
-
-/* ═══ LYRICS — #8a4a18 → #7f3c10 ═══ */
 .ever-lyrics {
     position: relative;
     z-index: 2;
     padding: 120px 5%;
     background: linear-gradient(180deg, #8a4a18 0%, #7f3c10 100%);
 }
-
 .ever-lyrics-inner {
     max-width: 1000px;
     margin: 0 auto;
@@ -763,14 +645,12 @@
     transform: translateY(30px);
     transition: all 1s;
 }
-
 .ever-lyrics-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
     margin-top: 40px;
 }
-
 .ever-flip-card {
     perspective: 1000px;
     cursor: pointer;
@@ -779,7 +659,6 @@
     animation: everFadeUp 0.4s ease forwards;
     animation-delay: calc(var(--li) * 0.08s);
 }
-
 .ever-flip-inner {
     position: relative;
     width: 100%;
@@ -787,11 +666,9 @@
     transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
 }
-
 .ever-flip-card.is-flipped .ever-flip-inner {
     transform: rotateY(180deg);
 }
-
 .ever-flip-front,
 .ever-flip-back {
     position: absolute;
@@ -805,23 +682,19 @@
     justify-content: center;
     padding: 24px;
 }
-
 .ever-flip-front {
     background: rgba(56, 35, 35, 0.6);
     border: 1px solid rgba(204, 98, 27, 0.15);
     backdrop-filter: blur(5px);
 }
-
 .ever-flip-front:hover {
     border-color: rgba(204, 98, 27, 0.4);
 }
-
 .ever-flip-back {
     background: linear-gradient(135deg, #cc621b, #994914);
     transform: rotateY(180deg);
     color: #fff;
 }
-
 .ever-flip-song {
     font-size: 0.5rem;
     letter-spacing: 4px;
@@ -830,11 +703,9 @@
     font-weight: 600;
     margin-bottom: 10px;
 }
-
 .ever-flip-back .ever-flip-song {
     color: rgba(255, 255, 255, 0.6);
 }
-
 .ever-flip-lyric {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1rem;
@@ -843,22 +714,18 @@
     color: #e8ddd0;
     margin: 0;
 }
-
 .ever-flip-meaning {
     font-size: 0.85rem;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.85);
     margin: 0;
 }
-
-/* ═══ AWARDS — #7f3c10 → #6b3210 ═══ */
 .ever-awards {
     position: relative;
     z-index: 2;
     padding: 100px 5%;
     background: linear-gradient(180deg, #7f3c10 0%, #6b3210 100%);
 }
-
 .ever-awards-inner {
     max-width: 900px;
     margin: 0 auto;
@@ -867,14 +734,12 @@
     transform: translateY(30px);
     transition: all 1s;
 }
-
 .ever-awards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
     margin-top: 30px;
 }
-
 .ever-award-card {
     background: rgba(0, 0, 0, 0.15);
     border: 1px solid rgba(204, 98, 27, 0.08);
@@ -886,23 +751,19 @@
     animation: everFadeUp 0.4s ease forwards;
     animation-delay: calc(var(--ai) * 0.08s);
 }
-
 .ever-award-card:hover {
     transform: translateY(-4px);
     border-color: rgba(204, 98, 27, 0.25);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
 }
-
 .ever-award--hl {
     border-color: rgba(204, 98, 27, 0.2);
     background: rgba(204, 98, 27, 0.08);
 }
-
 .ever-award-icon {
     font-size: 2rem;
     margin-bottom: 10px;
 }
-
 .ever-award-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.1rem;
@@ -910,27 +771,22 @@
     margin: 0 0 6px;
     color: #e8ddd0;
 }
-
 .ever-award-desc {
     font-size: 0.75rem;
     color: rgba(232, 221, 208, 0.35);
     margin: 0;
 }
-
-/* ═══ MV — #6b3210 → #523211 ═══ */
 .ever-mv-section {
     position: relative;
     z-index: 2;
     padding: 100px 5%;
     background: linear-gradient(180deg, #6b3210 0%, #523211 100%);
 }
-
 .ever-mv-inner {
     max-width: 900px;
     margin: 0 auto;
     text-align: center;
 }
-
 .ever-mv-frame {
     position: relative;
     padding-bottom: 56.25%;
@@ -940,7 +796,6 @@
     background: #000;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
-
 .ever-mv-frame::before {
     content: '';
     position: absolute;
@@ -952,7 +807,6 @@
     animation: everBorderGlow 4s ease infinite;
     opacity: 0.7;
 }
-
 .ever-mv-frame::after {
     content: '';
     position: absolute;
@@ -965,13 +819,11 @@
     filter: blur(20px);
     opacity: 0.35;
 }
-
 @keyframes everBorderGlow {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
-
 .ever-mv-frame iframe {
     position: absolute;
     inset: 0;
@@ -980,28 +832,23 @@
     border: none;
     border-radius: 8px;
 }
-
-/* ═══ GALLERY — #523211 → #382323 ═══ */
 .ever-gallery {
     position: relative;
     z-index: 2;
     padding: 100px 5%;
     background: linear-gradient(180deg, #523211 0%, #382323 100%);
 }
-
 .ever-gallery-inner {
     max-width: 1100px;
     margin: 0 auto;
     text-align: center;
 }
-
 .ever-gallery-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
     margin-top: 30px;
 }
-
 .ever-gallery-item {
     overflow: hidden;
     border-radius: 6px;
@@ -1014,7 +861,6 @@
     animation: everFadeUp 0.4s ease forwards;
     animation-delay: calc(var(--gi) * 0.08s);
 }
-
 .ever-gallery-item::after {
     content: '';
     position: absolute;
@@ -1023,16 +869,13 @@
     opacity: 1;
     transition: opacity 0.4s;
 }
-
 .ever-gallery-item:hover::after {
     opacity: 0;
 }
-
 .ever-gallery-item:hover {
     border-color: rgba(204, 98, 27, 0.3);
     transform: translateY(-4px);
 }
-
 .ever-gallery-item img {
     width: 100%;
     height: 100%;
@@ -1040,13 +883,10 @@
     filter: saturate(0.7) brightness(0.85);
     transition: all 0.5s;
 }
-
 .ever-gallery-item:hover img {
     filter: saturate(1.1) brightness(1);
     transform: scale(1.05);
 }
-
-/* ═══ ERAS NAV — #382323 ═══ */
 .ever-eras {
     position: relative;
     z-index: 2;
@@ -1054,7 +894,6 @@
     background: linear-gradient(180deg, #382323 0%, #2a1a15 100%);
     text-align: center;
 }
-
 .ever-eras-grid {
     display: flex;
     flex-wrap: wrap;
@@ -1063,7 +902,6 @@
     max-width: 900px;
     margin: 20px auto 0;
 }
-
 .ever-era-card {
     text-decoration: none;
     display: flex;
@@ -1076,27 +914,22 @@
     transition: all 0.35s;
     background: rgba(255, 255, 255, 0.02);
 }
-
 .ever-era-card:hover {
     border-color: var(--ea);
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
-
 .ever-era-year {
     font-size: 0.55rem;
     letter-spacing: 3px;
     font-weight: 600;
 }
-
 .ever-era-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.9rem;
     font-style: italic;
     color: #e8ddd0;
 }
-
-/* ═══ FOOTER — #2a1a15 ═══ */
 .ever-footer {
     position: relative;
     z-index: 2;
@@ -1107,7 +940,6 @@
     justify-content: space-between;
     border-top: 1px solid rgba(204, 98, 27, 0.08);
 }
-
 .ever-footer-logo {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.2rem;
@@ -1115,31 +947,25 @@
     color: rgba(204, 98, 27, 0.3);
     margin: 0;
 }
-
 .ever-footer-copy {
     font-size: 0.55rem;
     color: rgba(232, 221, 208, 0.15);
     letter-spacing: 1px;
     margin: 0;
 }
-
 .ever-footer-links {
     display: flex;
     gap: 16px;
 }
-
 .ever-footer-links a {
     text-decoration: none;
     font-size: 0.7rem;
     color: rgba(232, 221, 208, 0.2);
     transition: color 0.3s;
 }
-
 .ever-footer-links a:hover {
     color: #cc621b;
 }
-
-/* Top btn — small in footer corner */
 .ever-top-btn {
     width: 32px;
     height: 32px;
@@ -1155,85 +981,66 @@
     align-items: center;
     justify-content: center;
 }
-
 .ever-top-btn:hover {
     background: #cc621b;
     color: #fff;
     transform: translateY(-2px);
 }
-
-/* ═══ ANIMATIONS ═══ */
 @keyframes everFadeUp {
     from {
         opacity: 0;
         transform: translateY(20px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
-
-/* ═══ RESPONSIVE ═══ */
 @media (max-width: 900px) {
     .ever-hero-content {
         flex-direction: column;
         text-align: center;
         gap: 40px;
     }
-
     .ever-hero-cover {
         display: flex;
         justify-content: center;
     }
-
     .ever-cover-img {
         width: 240px;
     }
-
     .ever-detective-cards {
         grid-template-columns: repeat(2, 1fr);
     }
-
     .ever-lyrics-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
     .ever-about-inner {
         grid-template-columns: 1fr;
     }
-
     .ever-gallery-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
     .ever-awards-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
     .ever-branch {
         display: none;
     }
 }
-
 @media (max-width: 500px) {
     .ever-detective-cards {
         grid-template-columns: 1fr;
     }
-
     .ever-lyrics-grid {
         grid-template-columns: 1fr;
     }
-
     .ever-gallery-grid {
         grid-template-columns: 1fr;
     }
-
     .ever-awards-grid {
         grid-template-columns: 1fr;
     }
-
     .ever-footer {
         flex-direction: column;
         gap: 10px;

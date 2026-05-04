@@ -1,39 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './1989.css';
-
-// Saindo de pages/1989 (../..) e entrando em imagens/
+import RatingSection from '../../components/RatingSection/RatingSection';
+import { eraThemes } from '../../utils/eraThemes';
 import coverOriginal from '../../imagens/1989cover.webp';
 import coverTV from '../../imagens/1989TV_Cover.webp';
-
 const NineteenEightyNine = () => {
     const [isTV, setIsTV] = useState(false);
-    const [showTopBtn, setShowTopBtn] = useState(false);
     const [loaded, setLoaded] = useState(false);
-
     useEffect(() => {
         const timer = setTimeout(() => setLoaded(true), 100);
         return () => clearTimeout(timer);
     }, []);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 400) {
-                setShowTopBtn(true);
-            } else {
-                setShowTopBtn(false);
-            }
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    // Seagulls effect
     useEffect(() => {
         let active = true;
         const launchSeagulls = () => {
             if (!active) return;
-            
             const amount = 3;
             for (let i = 0; i < amount; i++) {
                 setTimeout(() => {
@@ -43,63 +25,48 @@ const NineteenEightyNine = () => {
                     seagull.style.left = '-5vw';
                     seagull.style.top = (Math.random() * 40 + 5) + 'vh';
                     const sizeScale = Math.random() * 0.5 + 0.5;
-                    
                     document.body.appendChild(seagull);
-                    
                     const animation = seagull.animate([
                         { transform: `translateX(0) translateY(0) scale(${sizeScale})`, opacity: 0 },
                         { opacity: 0.8, offset: 0.1 },
                         { opacity: 0.8, offset: 0.9 },
                         { transform: `translateX(110vw) translateY(${Math.random() * 200 - 100}px) scale(${sizeScale})`, opacity: 0 }
                     ], { duration: Math.random() * 10000 + 15000, easing: 'linear' });
-                    
                     animation.onfinish = () => { if (document.body.contains(seagull)) seagull.remove(); };
                 }, i * 2000);
             }
         };
-        
+        // eslint-disable-next-line no-loop-func
         launchSeagulls();
         const interval = setInterval(launchSeagulls, 8000);
-        
         return () => {
             active = false;
             clearInterval(interval);
             document.querySelectorAll('.seagull-fly').forEach(s => s.remove());
         };
     }, []);
-
     const audioRef = useRef(null);
     const tracklistRef = useRef(null);
     const timelineRef = useRef(null);
     const clipScrollRef = useRef(null);
-
     const scrollClips = (dir) => {
         if (clipScrollRef.current) {
             const w = clipScrollRef.current.offsetWidth;
             clipScrollRef.current.scrollBy({ left: dir === 'left' ? -w : w, behavior: 'smooth' });
         }
     };
-
     const [playingTrack, setPlayingTrack] = useState(null);
     const [previews, setPreviews] = useState({});
-
-    // New States
     const [vaultOpened, setVaultOpened] = useState(false);
-
-    // Decoder State
     const secretMessageText = "We bEgan Looking for Clues Out of town, Mostly nEar The Ocean. Nobody Expected What You fOund in the daRK.";
     const [foundIndexes, setFoundIndexes] = useState([]);
     const totalSecretLetters = secretMessageText.split('').filter(c => c.match(/[A-Z]/)).length;
-
     const handleLetterClick = (char, index) => {
         if (char.match(/[A-Z]/) && !foundIndexes.includes(index)) {
             setFoundIndexes([...foundIndexes, index]);
         }
     };
-
-    // Video State
     const [activeVideo, setActiveVideo] = useState(null);
-
     const musicVideos = [
         { title: "Shake It Off", year: "2014", youtubeId: "nfWlot6h_JM", desc: "Lead single — The video that changed pop" },
         { title: "Blank Space", year: "2014", youtubeId: "e-ORhEE9VVg", desc: "3B+ views — Most iconic MV of the era" },
@@ -109,10 +76,7 @@ const NineteenEightyNine = () => {
         { title: "Out Of The Woods", year: "2016", youtubeId: "JLf9q36UsBk", desc: "Nature-themed visual journey" },
         { title: "New Romantics", year: "2016", youtubeId: "wyK7YuwUWsU", desc: "Tour footage turned into iconic MV" },
     ];
-
     const galleryScrollRef = useRef(null);
-
-    // Gallery uses thumbnails from DIFFERENT videos (Eras Tour 1989 set, lyric videos, acoustic versions, etc.)
     const galleryItems = [
         { img: "https://commons.wikimedia.org/wiki/Special:FilePath/Taylor_Swift_-_1989_Tour_Singapore_-_Style_(23409003734).jpg?width=800", caption: "The 1989 World Tour — Singapore" },
         { img: "https://commons.wikimedia.org/wiki/Special:FilePath/Taylor_Swift_-_1989_World_Tour.jpg?width=800", caption: "Welcome to New York" },
@@ -128,27 +92,20 @@ const NineteenEightyNine = () => {
         { img: "https://commons.wikimedia.org/wiki/Special:FilePath/Taylor_Swift_-_The_1989_World_Tour_-_Wristband_-_picture_from_HYDE_Park,_LONDON.jpg?width=800", caption: "Tour Wristbands" },
         { img: "https://commons.wikimedia.org/wiki/Special:FilePath/Taylor_Swift_@_CenturyLink_Field_(20234457170).jpg?width=800", caption: "CenturyLink Field" }
     ];
-
     useEffect(() => {
         const galleryEl = galleryScrollRef.current;
         if (!galleryEl) return;
-
         const handleWheel = (e) => {
             if (e.deltaY !== 0) {
                 e.preventDefault();
                 galleryEl.scrollLeft += e.deltaY;
             }
         };
-
-        // { passive: false } allows preventDefault() to work correctly
         galleryEl.addEventListener('wheel', handleWheel, { passive: false });
-
         return () => {
             galleryEl.removeEventListener('wheel', handleWheel);
         };
     }, []);
-
-    // Tracks
     const standardTracks = [
         { name: "Welcome to New York", single: false },
         { name: "Blank Space", single: true },
@@ -167,7 +124,6 @@ const NineteenEightyNine = () => {
         { name: "You Are In Love", single: false },
         { name: "New Romantics", single: true }
     ];
-
     const vaultTracks = [
         { name: "\"Slut!\"", single: false },
         { name: "Say Don't Go", single: false },
@@ -175,8 +131,6 @@ const NineteenEightyNine = () => {
         { name: "Suburban Legends", single: false },
         { name: "Is It Over Now?", single: true }
     ];
-
-    // Áudio player dinâmico (iTunes fetch)
     useEffect(() => {
         const fetchPreviews = async () => {
             try {
@@ -195,12 +149,10 @@ const NineteenEightyNine = () => {
         };
         fetchPreviews();
     }, []);
-
     const findPreview = (trackName) => {
         const key = trackName.toLowerCase().replace(/['"!?]/g, '');
         return previews[key] || Object.entries(previews).find(([k]) => k.replace(/['"!?]/g, '').includes(key) || key.includes(k.replace(/['"!?]/g, '')))?.[1] || null;
     };
-
     const handlePlay = (trackName) => {
         if (playingTrack === trackName) {
             audioRef.current?.pause();
@@ -218,7 +170,6 @@ const NineteenEightyNine = () => {
         }
         setPlayingTrack(trackName);
     };
-
     const eraData = {
         original: {
             cover: coverOriginal,
@@ -239,30 +190,22 @@ const NineteenEightyNine = () => {
             handwritten: "T. S. 1989 (TV)"
         }
     };
-
     const current = isTV ? eraData.tv : eraData.original;
-
     return (
         <main className={`era-1989-page ${isTV ? 'theme-tv' : 'theme-original'} ${loaded ? 'eightynine-loaded' : ''}`}>
             <audio ref={audioRef} />
-
             <header className="era-1989-nav">
                 <Link to="/red" className="nav-1989-link">← RED</Link>
-
                 <div className="toggle-container" onClick={() => setIsTV(!isTV)}>
                     <span className={!isTV ? 'active' : ''}>ORIGINAL</span>
                     <div className={`toggle-switch ${isTV ? 'tv-active' : ''}`}></div>
                     <span className={isTV ? 'active' : ''}>TV</span>
                 </div>
-
                 <Link to="/reputation" className="nav-1989-link">REPUTATION →</Link>
             </header>
-
             <section className="ninetene-eightynine-hero">
                 <div className="hero-1989-neon-bg"></div>
                 <div className="eightynine-texture-overlay"></div>
-
-                {/* Dynamic Neon Streak SVGs */}
                 <svg className="eightynine-neon-streak eightynine-neon-streak--left" viewBox="0 0 300 800" fill="none" xmlns="http://www.w3.org/2000/svg">
                    <path 
                       d="M 300 0 L 150 200 L 250 400 L 50 600 L 200 800" 
@@ -280,7 +223,6 @@ const NineteenEightyNine = () => {
                        </linearGradient>
                    </defs>
                 </svg>
-
                 <svg className="eightynine-neon-streak eightynine-neon-streak--right" viewBox="0 0 300 800" fill="none" xmlns="http://www.w3.org/2000/svg">
                    <path 
                       d="M 0 0 L 150 200 L 50 400 L 250 600 L 100 800" 
@@ -298,7 +240,6 @@ const NineteenEightyNine = () => {
                        </linearGradient>
                    </defs>
                 </svg>
-
                 <div className="hero-1989-main-content">
                     <div className="hero-1989-titles">
                         <h2 className="hero-1989-artist">TAYLOR SWIFT</h2>
@@ -307,7 +248,6 @@ const NineteenEightyNine = () => {
                         </h1>
                         <p className="hero-1989-quote">"Welcome to New York. It's been waiting for you."</p>
                     </div>
-
                     <div className="hero-1989-center-album" onClick={() => setIsTV(!isTV)}>
                         <div className="album-showcase">
                             <div className="album-glow"></div>
@@ -315,7 +255,6 @@ const NineteenEightyNine = () => {
                             <img src={current.cover} alt="1989 Cover" className="album-img" />
                         </div>
                     </div>
-
                     <div className="hero-1989-info-strip">
                         <div className="info-strip-item">
                             <span className="strip-label">ERA</span>
@@ -337,7 +276,6 @@ const NineteenEightyNine = () => {
                             <span className="strip-value">{isTV ? "RE-RECORDING" : "9X PLATINA"}</span>
                         </div>
                     </div>
-
                     <div className="hero-1989-action-row">
                         <button className="btn-1989-play" onClick={() => tracklistRef.current?.scrollIntoView({ behavior: 'smooth' })}>TRACKLIST</button>
                         <button className="btn-1989-primary" onClick={() => setIsTV(!isTV)}>
@@ -347,18 +285,13 @@ const NineteenEightyNine = () => {
                     </div>
                 </div>
             </section>
-
-            {/* SEPARADOR DE SEÇÕES */}
             <div className="section-divider-1989"></div>
-
-            {/* SEÇÃO TRACKLIST ADICIONADA AQUI */}
             <section className="tracklist-1989-section" ref={tracklistRef}>
                 <div className="tracklist-container">
                     <h2 className="tracklist-title-main">
                         <span className="neon-sweep">THE SOUNDTRACK</span>
                     </h2>
                     <p className="tracklist-subtitle">Every track. Every emotion. The story of 1989.</p>
-
                     <div className="tracklist-grid">
                         <div className="tracklist-column">
                             <h3 className="column-label">Standard Edition</h3>
@@ -380,13 +313,11 @@ const NineteenEightyNine = () => {
                                         )}
                                     </div>
                                     <button className="t-play-btn" aria-label="Play">
-                                        {/* Play Icon managed solely by CSS later or as pseudo element! Actually let's just use CSS for play icon */}
                                     </button>
                                     <div className="t-eq"><span></span><span></span><span></span><span></span></div>
                                 </div>
                             ))}
                         </div>
-
                         <div className={`tracklist-column vault-side ${isTV ? 'active' : 'locked'}`}>
                             <h3 className="column-label">From The Vault</h3>
                             <p className="column-phrase">"Say you'll remember me."</p>
@@ -407,7 +338,6 @@ const NineteenEightyNine = () => {
                                             )}
                                         </div>
                                         <button className="t-play-btn" aria-label="Play">
-                                            {/* ícone dinâmico gerado pelo CSS se não tiver span interno */}
                                         </button>
                                         <div className="t-eq"><span></span><span></span><span></span><span></span></div>
                                     </div>
@@ -422,16 +352,12 @@ const NineteenEightyNine = () => {
                     </div>
                 </div>
             </section>
-
             <div className="section-divider-1989"></div>
-
-            {/* SEÇÃO 1: THE VAULT - DECODE THE CODE */}
             <section className="vault-1989-section">
                 <div className="vault-header">
                     <h2 className="vault-section-title">"THE VAULT"</h2>
                     <p className="vault-section-subtitle">Decode the Code</p>
                 </div>
-
                 <div className="vault-container">
                     <div className={`bank-vault ${vaultOpened ? 'is-open' : ''}`} onClick={() => !vaultOpened && setVaultOpened(true)}>
                         <div className="vault-door">
@@ -451,11 +377,7 @@ const NineteenEightyNine = () => {
                             </div>
                             {!vaultOpened && <p className="click-to-open">CLICK TO UNLOCK</p>}
                         </div>
-
-                        {/* Fumaça/Partículas */}
                         <div className="vault-smoke"></div>
-
-                        {/* Conteúdo do Cofre (Faixas) */}
                         <div className="vault-inside">
                             <h3 className="inside-title">UNLOCKED</h3>
                             <button
@@ -465,8 +387,6 @@ const NineteenEightyNine = () => {
                                 CLOSE VAULT
                             </button>
                         </div>
-
-                        {/* Scattered Tracks */}
                         <div className="vault-tracks-scattered">
                             {[
                                 { lyric: "In a world of boys, he's a gentleman", song: "\"Slut!\"" },
@@ -475,7 +395,6 @@ const NineteenEightyNine = () => {
                                 { lyric: "I broke my own heart 'cause you were too polite to do it", song: "Suburban Legends" },
                                 { lyric: "Let's fast forward to 300 awkward blind dates later", song: "Is It Over Now?" }
                             ].map((item, i) => {
-                                // Posições bem mais amplas nas laterais e embaixo
                                 const scatterPos = [
                                     { t: '-60px', l: '-350px' },
                                     { t: '-40px', l: '460px' },
@@ -500,17 +419,13 @@ const NineteenEightyNine = () => {
                     </div>
                 </div>
             </section>
-
-            {/* SEÇÃO 3: TIMELINE */}
             <section className="timeline-1989-section" ref={timelineRef}>
                 <div className="timeline-header">
                     <h2 className="timeline-title">THE ERAS TIMELINE</h2>
                     <p className="timeline-subtitle">Key moments of the 1989 magic.</p>
                 </div>
-
                 <div className="timeline-1989-container">
                     <div className="timeline-1989-line"></div>
-
                     {[
                         { date: "AUG 18, 2014", title: "THE LIVESTREAM", desc: "Taylor announces 1989 and drops 'Shake It Off' during a Yahoo! worldwide livestream from the Empire State Building." },
                         { date: "OCT 2014", title: "SECRET SESSIONS", desc: "Taylor invites fans to her homes (including Tribeca, NY) to hear the album before its release." },
@@ -530,16 +445,12 @@ const NineteenEightyNine = () => {
                     ))}
                 </div>
             </section>
-
             <div className="section-divider-1989"></div>
-
-            {/* SEÇÃO 4: SECRET MESSAGE DECODER */}
             <section className="decoder-1989-section">
                 <div className="decoder-header">
                     <h2 className="decoder-title">SECRET MESSAGE</h2>
                     <p className="decoder-subtitle">Find the hidden uppercase letters</p>
                 </div>
-
                 <div className="decoder-game-container">
                     <div className="decoder-text-box">
                         {secretMessageText.split('').map((char, index) => {
@@ -556,7 +467,6 @@ const NineteenEightyNine = () => {
                             );
                         })}
                     </div>
-
                     <div className="decoder-progress">
                         <div className="decoded-board">
                             {secretMessageText.split('').map((char, index) => {
@@ -581,16 +491,12 @@ const NineteenEightyNine = () => {
                     </div>
                 </div>
             </section>
-
             <div className="section-divider-1989"></div>
-
-            {/* SEÇÃO 5: MUSIC VIDEOS — HORIZONTAL CAROUSEL */}
             <section className="clips-1989-section">
                 <div className="clips-header">
                     <h2 className="clips-title">MUSIC VIDEOS</h2>
                     <p className="clips-subtitle">The visual era</p>
                 </div>
-
                 <div className="mv-carousel-wrapper">
                     <button className="mv-nav-btn prev" onClick={() => scrollClips('left')}>‹</button>
                     <button className="mv-nav-btn next" onClick={() => scrollClips('right')}>›</button>
@@ -631,20 +537,16 @@ const NineteenEightyNine = () => {
                     </div>
                 </div>
             </section>
-
-            {/* SEÇÃO 6: THE 1989 WORLD TOUR */}
             <section className="tour-1989-section">
                 <div className="tour-content">
                     <h2 className="tour-title">THE 1989 WORLD TOUR</h2>
                     <p className="tour-desc">85 shows. 5 continents. 2.2 million fans. The biggest tour of 2015.</p>
-
                     <div className="tour-stats">
                         <div className="stat"><span>85</span>SHOWS</div>
                         <div className="stat"><span>2.2M</span>FANS</div>
                         <div className="stat"><span>$250M</span>GROSS</div>
                         <div className="stat"><span>7</span>SINGLES PERFORMED</div>
                     </div>
-
                     <div className="tour-video-embed" style={{ marginTop: '60px', marginBottom: '40px' }}>
                         {activeVideo === 'tour' ? (
                             <div className="mv-slide-player">
@@ -676,7 +578,6 @@ const NineteenEightyNine = () => {
                             </div>
                         )}
                     </div>
-
                     <div className="tour-details-grid">
                         <div className="tour-detail-card">
                             <h4>🎤 SETLIST HIGHLIGHTS</h4>
@@ -714,8 +615,6 @@ const NineteenEightyNine = () => {
                     </div>
                 </div>
             </section>
-
-            {/* SEÇÃO 7: ERA GALLERY — HORIZONTAL SCROLL (Speak Now pattern) */}
             <section className="gallery-1989-section">
                 <div className="gallery-header">
                     <h2 className="gallery-title">GALLERY</h2>
@@ -735,8 +634,6 @@ const NineteenEightyNine = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ===== SEÇÃO: OUTRAS ERAS ===== */}
             <section className="nineteen-eras-section">
                 <div className="nineteen-eras-inner">
                     <span className="nineteen-tour-tag">NAVEGUE</span>
@@ -763,8 +660,7 @@ const NineteenEightyNine = () => {
                     </div>
                 </div>
             </section>
-
-            {/* FOOTER */}
+            <RatingSection era="1989" tracks={[...standardTracks, ...vaultTracks]} theme={eraThemes["1989"]} />
             <footer className="nineteen-footer">
                 <div className="nineteen-footer-inner">
                     <p className="nineteen-footer-cursive">1989</p>
@@ -780,16 +676,7 @@ const NineteenEightyNine = () => {
                     </div>
                 </div>
             </footer>
-
-            {/* BOTÃO VOLTAR AO TOPO */}
-            {showTopBtn && (
-                <button className="nineteen-top-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Voltar ao topo">
-                    ↑
-                </button>
-            )}
-
         </main>
     );
 };
-
 export default NineteenEightyNine;

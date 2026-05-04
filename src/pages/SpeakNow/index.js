@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import './SpeakNow.css';
-
+import RatingSection from '../../components/RatingSection/RatingSection';
+import { eraThemes } from '../../utils/eraThemes';
 import speakNowCover from '../../imagens/speak-now-album.png';
 import speakNowTVCover from '../../imagens/speak-now-tv.webp';
 import taylorStoryImg from '../../imagens/speaknow1.jpg';
@@ -26,8 +27,6 @@ import sn17 from '../../imagens/sn17.webp';
 import sn18 from '../../imagens/sn18.webp';
 import sn19 from '../../imagens/sn19.webp';
 import sn20 from '../../imagens/sn20.webp';
-
-// Hook customizado para animações de scroll
 const useInView = (options = {}) => {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
@@ -43,37 +42,24 @@ const useInView = (options = {}) => {
   }, []);
   return [ref, inView];
 };
-
 const SpeakNow = () => {
   const [isTV, setIsTV] = useState(false);
   const [activePage, setActivePage] = useState(0);
   const [playingTrack, setPlayingTrack] = useState(null);
-  const [showTopBtn, setShowTopBtn] = useState(false);
   const audioRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
-
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 100);
     return () => clearTimeout(timer);
   }, []);
-
-  useEffect(() => {
-    const handleScroll = () => setShowTopBtn(window.scrollY > 400);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const tourScrollRef = useRef(null);
   const photoScrollRef = useRef(null);
-
-  // Refs para animações de scroll
   const [storyRef, storyInView] = useInView();
   const [tracklistRef, tracklistInView] = useInView();
   const [tourRef, tourInView] = useInView();
   const [timelineRef, timelineInView] = useInView();
   const [mvRef, mvInView] = useInView();
   const [concertRef, concertInView] = useInView();
-
   const scrollToPage = (index) => {
     setActivePage(index);
     if (tourScrollRef.current) {
@@ -84,26 +70,20 @@ const SpeakNow = () => {
       });
     }
   };
-
   useEffect(() => {
     const scrollContainer = photoScrollRef.current;
     if (!scrollContainer) return;
-
     const handleWheelEvent = (e) => {
       if (e.deltaY !== 0) {
         e.preventDefault();
         scrollContainer.scrollLeft += e.deltaY;
       }
     };
-
     scrollContainer.addEventListener('wheel', handleWheelEvent, { passive: false });
-
     return () => {
       scrollContainer.removeEventListener('wheel', handleWheelEvent);
     };
   }, []);
-
-  // Pré-carrega todos os previews do álbum Speak Now na montagem
   const [previews, setPreviews] = useState({});
   useEffect(() => {
     const fetchPreviews = async () => {
@@ -125,16 +105,12 @@ const SpeakNow = () => {
     };
     fetchPreviews();
   }, []);
-
-  // Encontra o preview mais próximo pelo nome da track
   const findPreview = (trackName) => {
     const key = trackName.toLowerCase();
     return previews[key]
       || Object.entries(previews).find(([k]) => k.includes(key) || key.includes(k))?.[1]
       || null;
   };
-
-  // Player
   const handlePlay = useCallback((trackName) => {
     if (playingTrack === trackName) {
       audioRef.current?.pause();
@@ -152,7 +128,6 @@ const SpeakNow = () => {
     }
     setPlayingTrack(trackName);
   }, [playingTrack, previews]);
-
   const albumData = {
     original: {
       released: "25 OUT, 2010",
@@ -169,9 +144,7 @@ const SpeakNow = () => {
       buttonText: "VINTAGE EDITION"
     }
   };
-
   const current = isTV ? albumData.tv : albumData.original;
-
   const standardTracks = [
     { name: "Mine", single: true }, { name: "Sparks Fly", single: true },
     { name: "Back to December", single: true }, { name: "Speak Now", single: false },
@@ -182,7 +155,6 @@ const SpeakNow = () => {
     { name: "Last Kiss", single: false }, { name: "Long Live", single: false },
     { name: "Ours", single: true }, { name: "If This Was a Movie", single: false }
   ];
-
   const vaultTracks = [
     { name: "Electric Touch", feat: "feat. Fall Out Boy", single: false },
     { name: "When Emma Falls in Love", single: false },
@@ -191,16 +163,12 @@ const SpeakNow = () => {
     { name: "Foolish One", single: false },
     { name: "Timeless", single: false }
   ];
-
   return (
     <div className={`sn-page-container ${loaded ? 'sn-loaded' : ''}`}>
       <audio ref={audioRef} style={{ display: 'none' }} />
       <div className="sn-forest-root">
-        {/* Estrelas CSS puras — 2 camadas com ritmo diferente */}
         <div className="sn-stars-layer sn-stars-sm"></div>
         <div className="sn-stars-layer sn-stars-md"></div>
-        
-        {/* Shooting Stars Layer */}
         <div className="sn-shooting-stars">
           <div className="sn-shooting-star"></div>
           <div className="sn-shooting-star"></div>
@@ -208,11 +176,8 @@ const SpeakNow = () => {
           <div className="sn-shooting-star"></div>
           <div className="sn-shooting-star"></div>
         </div>
-
         <div className="sn-fog-layer"></div>
         <div className="sn-texture-overlay"></div>
-
-        {/* Dynamic Magical Wisps / Aura */}
         <svg className="sn-magic-wisps sn-magic-wisps--left" viewBox="0 0 400 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
            <path 
               d="M 50 1000 C 150 800, -50 600, 150 400 C 350 200, 50 100, 200 -50" 
@@ -231,7 +196,6 @@ const SpeakNow = () => {
                </linearGradient>
            </defs>
         </svg>
-
         <svg className="sn-magic-wisps sn-magic-wisps--right" viewBox="0 0 400 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
            <path 
               d="M 350 1000 C 250 800, 450 600, 250 400 C 50 200, 350 100, 200 -50" 
@@ -254,7 +218,6 @@ const SpeakNow = () => {
           <Link to="/fearless" className="nav-era-link left">✦ FEARLESS ERA</Link>
           <Link to="/red" className="nav-era-link right">RED ERA ✦</Link>
         </header>
-
         <div className="sn-main-wrapper">
           <div className="sn-title-area">
             <h1 className="sn-main-title">
@@ -262,7 +225,6 @@ const SpeakNow = () => {
             </h1>
             <p className="sn-artist-cursive">Taylor Swift</p>
           </div>
-
           <div className="sn-dynamic-grid">
             <div className="sn-widget pos-1">
               <h4>LANÇAMENTO</h4>
@@ -272,13 +234,11 @@ const SpeakNow = () => {
               <h4>DURAÇÃO</h4>
               <p>{current.duration}</p>
             </div>
-            
             <div className="sn-album-wrap" onClick={() => setIsTV(!isTV)}>
               <div className="sn-magic-aura"></div>
               <div className="sn-spinning-rays"></div>
               <img src={isTV ? speakNowTVCover : speakNowCover} className="sn-album-img" alt="Capa" />
             </div>
-
             <div className="sn-widget pos-3">
               <h4>GÊNERO</h4>
               <p>COUNTRY ROCK</p>
@@ -288,7 +248,6 @@ const SpeakNow = () => {
               <p>{current.status}</p>
             </div>
           </div>
-
           <p className="sn-floor-quote">"Long live all the magic we made..."</p>
           <div className="sn-button-row">
             <button
@@ -300,7 +259,6 @@ const SpeakNow = () => {
           </div>
         </div>
       </div>
-
       <section className="sn-story-section" ref={storyRef}>
         <div className="sn-story-container">
           <div className="sn-story-image-area">
@@ -320,7 +278,6 @@ const SpeakNow = () => {
           </div>
         </div>
       </section>
-
       <section className={`sn-tracklist-section scroll-reveal ${tracklistInView ? 'in-view' : ''}`} ref={tracklistRef}>
         <h2 className="sn-tracklist-title">TRACKLIST</h2>
         <div className="sn-tracks-container">
@@ -342,7 +299,6 @@ const SpeakNow = () => {
               </div>
             ))}
           </div>
-
           <div className="sn-track-column vault">
             <h3 className="vault-header">FROM THE VAULT</h3>
             {vaultTracks.map((track, index) => (
@@ -369,8 +325,6 @@ const SpeakNow = () => {
           </div>
         </div>
       </section>
-
-      {/* SEÇÃO: TIMELINE DA ERA */}
       <section className={`sn-timeline-section scroll-reveal ${timelineInView ? 'in-view' : ''}`} ref={timelineRef}>
         <div className="sn-timeline-inner">
           <span className="sn-mv-label">HISTÓRIA</span>
@@ -399,7 +353,6 @@ const SpeakNow = () => {
           </div>
         </div>
       </section>
-
       <section className={`sn-tour-section scroll-reveal ${tourInView ? 'in-view' : ''}`} ref={tourRef}>
         <h2 className="sn-section-title-alt">Tour Dates</h2>
         <div className="sn-ticket-wrapper">
@@ -429,7 +382,6 @@ const SpeakNow = () => {
                   <p><strong>May 21</strong> - Nashville, US</p>
                   <p><strong>May 27</strong> - Omaha, US</p>
                 </div>
-
                 <div className="tour-page">
                   <p><strong>May 28</strong> - Omaha, US</p>
                   <p><strong>May 29</strong> - Des Moines, US</p>
@@ -453,7 +405,6 @@ const SpeakNow = () => {
                   <p><strong>Jul 16</strong> - Toronto, CA</p>
                   <p><strong>Jul 19</strong> - Newark, US</p>
                 </div>
-
                 <div className="tour-page">
                   <p><strong>Jul 20</strong> - Newark, US</p>
                   <p><strong>Jul 23</strong> - Newark, US</p>
@@ -476,7 +427,6 @@ const SpeakNow = () => {
                   <p><strong>Aug 27</strong> - Los Angeles, US</p>
                   <p><strong>Aug 28</strong> - Los Angeles, US</p>
                 </div>
-
                 <div className="tour-page">
                   <p><strong>Sep 01</strong> - San Jose, US</p>
                   <p><strong>Sep 02</strong> - San Jose, US</p>
@@ -502,7 +452,6 @@ const SpeakNow = () => {
                 </div>
               </>
             </div>
-
             <div className="tour-pagination">
               {[0, 1, 2, 3].map((i) => (
                 <span
@@ -515,8 +464,6 @@ const SpeakNow = () => {
           </div>
         </div>
       </section>
-
-
       <section className="sn-photos-section">
         <h2 className="sn-section-title-alt dark">Photos</h2>
         <div
@@ -530,8 +477,6 @@ const SpeakNow = () => {
           </div>
         </div>
       </section>
-
-      {/* SEÇÃO: VIDEOCLIPES */}
       <section className="sn-mv-section">
         <div className="sn-mv-inner">
           <span className="sn-mv-label">MÍDIA & VISUAL</span>
@@ -571,8 +516,6 @@ const SpeakNow = () => {
           </div>
         </div>
       </section>
-
-      {/* SEÇÃO: O FILME DA ERA */}
       <section className="sn-concert-section">
         <div className="sn-concert-glow" />
         <div className="sn-concert-inner">
@@ -611,7 +554,6 @@ const SpeakNow = () => {
           </div>
         </div>
       </section>
-      {/* SEÇÃO: AWARDS */}
       <section className="sn-awards-section">
         <div className="sn-awards-inner">
           <span className="sn-mv-label">RECONHECIMENTO</span>
@@ -634,8 +576,6 @@ const SpeakNow = () => {
           </div>
         </div>
       </section>
-
-      {/* SEÇÃO: FUN FACTS */}
       <section className="sn-facts-section">
         <div className="sn-facts-inner">
           <span className="sn-mv-label">CURIOSIDADES</span>
@@ -656,7 +596,6 @@ const SpeakNow = () => {
           </div>
         </div>
       </section>
-
       <section className="sn-eras-section">
         <div className="sn-eras-inner">
           <span className="sn-mv-label">NAVEGUE</span>
@@ -676,7 +615,6 @@ const SpeakNow = () => {
               { name: "The Life of a Showgirl", year: "2025", path: "/showgirl", color: "#e46c32" },
             ].map((era, i) => (
               <Link key={i} to={era.path} className="sn-era-card" style={{ '--era-color': era.color }}>
-                {/* O ano agora recebe a cor definida no objeto acima */}
                 <span className="sn-era-year" style={{ color: era.color }}>{era.year}</span>
                 <span className="sn-era-name">{era.name}</span>
               </Link>
@@ -684,8 +622,7 @@ const SpeakNow = () => {
           </div>
         </div>
       </section>
-      
-      {/* FOOTER */}
+      <RatingSection era="speak-now" tracks={[...standardTracks, ...vaultTracks]} theme={eraThemes["speak-now"]} />
       <footer className="sn-footer">
         <div className="sn-footer-inner">
           <p className="sn-footer-cursive">Speak Now</p>
@@ -701,16 +638,7 @@ const SpeakNow = () => {
           </div>
         </div>
       </footer>
-
-      {/* BOTÃO VOLTAR AO TOPO */}
-      {showTopBtn && (
-        <button className="sn-top-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Voltar ao topo">
-          ↑
-        </button>
-      )}
-
     </div>
   );
 };
-
 export default SpeakNow;

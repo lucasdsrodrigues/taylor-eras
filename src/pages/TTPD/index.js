@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import './ttpd.css';
-
-/* ═══ DATA ═══ */
+import RatingSection from '../../components/RatingSection/RatingSection';
+import { eraThemes } from '../../utils/eraThemes';
 const COVER = "https://static.wikia.nocookie.net/taylor-swift/images/e/ef/The_Tortured_Poets_Department.jpeg/revision/latest/scale-to-width-down/1000?cb=20240405141714";
 const ANTHOLOGY_COVER = "https://static.wikia.nocookie.net/taylor-swift/images/8/83/THE_TORTURED_POETS_DEPARTMENT_-_THE_ANTHOLOGY.jpg/revision/latest/scale-to-width-down/1000?cb=20241007031035";
-
 const TRACKS_TTPD = [
     { id: 1, title: "Fortnight", feat: "feat. Post Malone", single: true, lyrics: "I was a functioning alcoholic 'til nobody noticed my new aesthetic\nAll of this to say, I hope you're okay\nBut you're the reason\nAnd no one here's to blame\nBut what about your quiet treason?" },
     { id: 2, title: "The Tortured Poets Department", lyrics: "You left your typewriter at my apartment\nStraight from the Tortured Poets Department\nI think some things I never say\nLike, 'Who uses typewriters anyway?'" },
@@ -24,7 +23,6 @@ const TRACKS_TTPD = [
     { id: 15, title: "The Alchemy", lyrics: "So when I touch down\nKeep the trophy\nWe're making the anthology\n'Cause the sign on your heart\nIs still reserved for me" },
     { id: 16, title: "Clara Bow", lyrics: "You look like Clara Bow\nIn this light, remarkable\nAll your life, did you know\nYou'd be this memorizing?" },
 ];
-
 const TRACKS_ANTHOLOGY = [
     { id: 17, title: "The Black Dog", lyrics: "And I hope it's shitty in The Black Dog\nWhen someone plays The Starting Line\nAnd you jump up\nBut you're just some guy" },
     { id: 18, title: "imgonnagetyouback", lyrics: "Whether I'm gonna be your wife or\nGonna smash up your bike, I\nHaven't decided yet\nBut I'm gonna get you back" },
@@ -42,18 +40,15 @@ const TRACKS_ANTHOLOGY = [
     { id: 30, title: "Robin", lyrics: "My friends all smell like weed or little babies\nAnd this city reeks of driving myself crazy" },
     { id: 31, title: "The Manuscript", lyrics: "The only thing that's left\nIs the manuscript\nIn the orange light of the lamp\nNow and then I reread it\nBut I don't look like this anymore" },
 ];
-
 const MVS = [
     { title: "Fortnight", feat: "feat. Post Malone", url: "https://www.youtube.com/embed/q3zqJs7JUCQ?rel=0&modestbranding=1&hd=1&vq=hd1080" },
     { title: "I Can Do It With a Broken Heart", url: "https://www.youtube.com/embed/Sl6en1NPTYM?rel=0&modestbranding=1&hd=1&vq=hd1080" },
 ];
-
 const SETLIST = [
     "But Daddy I Love Him", "So High School", "Who's Afraid of Little Old Me?",
     "Down Bad", "Fortnight", "The Smallest Man Who Ever Lived",
     "I Can Do It With a Broken Heart",
 ];
-
 const GALLERY = [
     "https://static.wikia.nocookie.net/taylor-swift/images/9/93/Fresh_Out_The_Slammer_LV.jpg/revision/latest/scale-to-width-down/1000?cb=20240425164013",
     "https://static.wikia.nocookie.net/taylor-swift/images/7/7d/20240421_011528.jpg/revision/latest/scale-to-width-down/1000?cb=20240609181628",
@@ -68,7 +63,6 @@ const GALLERY = [
     "https://static.wikia.nocookie.net/taylor-swift/images/7/7d/TTPD_album_photoshoot_1.jpeg/revision/latest/scale-to-width-down/1000?cb=20241014222722",
     "https://static.wikia.nocookie.net/taylor-swift/images/8/83/TTPD_album_photoshoot_19.jpeg/revision/latest/scale-to-width-down/1000?cb=20240420025325",
 ];
-
 const ERAS = [
     { name: "Debut", year: "2006", path: "/debut", color: "#7ec8a0" },
     { name: "Fearless", year: "2008", path: "/fearless", color: "#c9a227" },
@@ -82,11 +76,8 @@ const ERAS = [
     { name: "Midnights", year: "2022", path: "/midnights", color: "#7b8aff" },
     { name: "Showgirl", year: "2025", path: "/showgirl", color: "#e46c32" },
 ];
-
-/* ═══ COMPONENT ═══ */
 const TTPD = () => {
     const [loaded, setLoaded] = useState(false);
-    const [showTopBtn, setShowTopBtn] = useState(false);
     const [isAnthology, setIsAnthology] = useState(false);
     const [typingSong, setTypingSong] = useState(null);
     const [typedText, setTypedText] = useState('');
@@ -95,8 +86,6 @@ const TTPD = () => {
     const audioRef = useRef(null);
     const filmstripRef = useRef(null);
     const dragState = useRef({ isDown: false, startX: 0, scrollLeft: 0 });
-
-    /* Mount */
     useEffect(() => {
         setTimeout(() => setLoaded(true), 100);
         window.scrollTo(0, 0);
@@ -104,15 +93,6 @@ const TTPD = () => {
         document.body.style.backgroundImage = 'none';
         return () => { document.body.style.backgroundColor = ''; document.body.style.backgroundImage = ''; };
     }, []);
-
-    /* Scroll observer */
-    useEffect(() => {
-        const h = () => setShowTopBtn(window.scrollY > 2000);
-        window.addEventListener('scroll', h);
-        return () => window.removeEventListener('scroll', h);
-    }, []);
-
-    /* Intersection observer for sections */
     useEffect(() => {
         const els = document.querySelectorAll('.tp-about, .tp-records-section, .tp-mv-section, .tp-eras-act');
         const obs = new IntersectionObserver((entries) => {
@@ -121,8 +101,6 @@ const TTPD = () => {
         els.forEach(el => obs.observe(el));
         return () => obs.disconnect();
     }, []);
-
-    /* Typewriter effect */
     useEffect(() => {
         if (!typingSong) return;
         setTypedText('');
@@ -135,18 +113,14 @@ const TTPD = () => {
         }, 35);
         return () => clearInterval(interval);
     }, [typingSong]);
-
     const handleTrackClick = useCallback((track) => {
         setTypingSong(track);
         setTimeout(() => {
             typewriterRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 100);
     }, []);
-
     const activeTracks = isAnthology ? TRACKS_ANTHOLOGY : TRACKS_TTPD;
     const currentCover = isAnthology ? ANTHOLOGY_COVER : COVER;
-
-    /* Drag-to-scroll for gallery */
     const handleDragStart = (e) => {
         const el = filmstripRef.current;
         if (!el) return;
@@ -169,17 +143,11 @@ const TTPD = () => {
         const walk = (x - dragState.current.startX) * 1.5;
         el.scrollLeft = dragState.current.scrollLeft - walk;
     };
-
-    /* Ink SVG pen strokes */
     const PenStrokeSVG = () => (
         <svg viewBox="0 0 160 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Main flowing stroke */}
             <path d="M80 0 Q70 100 90 200 Q110 300 70 400 Q30 500 90 600 Q120 700 80 800" stroke="#7a7975" strokeWidth="2" opacity="0.7" strokeDasharray="8 12" />
-            {/* Second thinner stroke */}
             <path d="M50 20 Q45 150 65 280 Q85 400 55 520 Q25 640 60 780" stroke="#2f2a24" strokeWidth="1.5" opacity="0.5" strokeDasharray="4 16" />
-            {/* Third delicate stroke */}
             <path d="M100 60 Q95 200 110 340 Q125 480 95 620 Q80 720 105 800" stroke="#a79e8f" strokeWidth="1" opacity="0.45" strokeDasharray="3 20" />
-            {/* Ink splatters */}
             <circle cx="85" cy="180" r="5" fill="#7a7975" opacity="0.35" />
             <circle cx="60" cy="350" r="8" fill="#2f2a24" opacity="0.2" />
             <circle cx="95" cy="520" r="4" fill="#a79e8f" opacity="0.3" />
@@ -189,16 +157,11 @@ const TTPD = () => {
             <circle cx="100" cy="750" r="5" fill="#a79e8f" opacity="0.2" />
         </svg>
     );
-
     return (
         <main className={`era-ttpd-page ${loaded ? 'ttpd-loaded' : ''}`}>
             <div className="tp-grain" />
-
-            {/* Ink pen strokes */}
             <div className="tp-pen-stroke tp-pen-stroke--l"><PenStrokeSVG /></div>
             <div className="tp-pen-stroke tp-pen-stroke--r"><PenStrokeSVG /></div>
-
-            {/* ═══ NAV ═══ */}
             <nav className="tp-nav">
                 <Link to="/midnights" className="tp-nav-link"><span>←</span> MIDNIGHTS</Link>
                 <div className="tp-nav-center">
@@ -206,8 +169,6 @@ const TTPD = () => {
                 </div>
                 <Link to="/showgirl" className="tp-nav-link">SHOWGIRL <span>→</span></Link>
             </nav>
-
-            {/* ═══ HERO ═══ */}
             <header className="tp-hero">
                 <div className="tp-hero-ink-bg" />
                 <div className="tp-hero-content">
@@ -240,8 +201,6 @@ const TTPD = () => {
                     <span>scroll</span>
                 </div>
             </header>
-
-            {/* ═══ ABOUT ═══ */}
             <section className="tp-about">
                 <div className="tp-about-inner">
                     <div className="tp-about-stat">
@@ -269,8 +228,6 @@ const TTPD = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ TRACKLIST ═══ */}
             <section className="tp-tracklist">
                 <div className="tp-tracklist-layout">
                     <div className="tp-sticky-cover">
@@ -307,8 +264,6 @@ const TTPD = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ TYPEWRITER ═══ */}
             <section ref={typewriterRef} className="tp-typewriter-section">
                 <div className="tp-typewriter-header">
                     <span className="tp-label">máquina de escrever</span>
@@ -332,8 +287,6 @@ const TTPD = () => {
                     )}
                 </div>
             </section>
-
-            {/* ═══ COLLABS & RECORDS ═══ */}
             <section className="tp-records-section">
                 <div className="tp-records-inner">
                     <span className="tp-label">colaborações & recordes</span>
@@ -366,8 +319,6 @@ const TTPD = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ MUSIC VIDEOS ═══ */}
             <section className="tp-mv-section">
                 <div className="tp-mv-inner">
                     <span className="tp-label">clipes</span>
@@ -393,8 +344,6 @@ const TTPD = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ ERAS TOUR ACT ═══ */}
             <section className="tp-eras-act">
                 <div className="tp-eras-act-inner">
                     <span className="tp-label">the eras tour</span>
@@ -413,8 +362,6 @@ const TTPD = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ GALLERY ═══ */}
             <section className="tp-gallery">
                 <div className="tp-gallery-header">
                     <span className="tp-label">arquivo fotográfico</span>
@@ -435,8 +382,6 @@ const TTPD = () => {
                     ))}
                 </div>
             </section>
-
-            {/* ═══ ERAS NAV ═══ */}
             <section className="tp-eras">
                 <span className="tp-label">navegue entre as eras</span>
                 <h2 className="tp-section-title" style={{ color: 'var(--tp-cream)' }}>outras eras</h2>
@@ -449,8 +394,7 @@ const TTPD = () => {
                     ))}
                 </div>
             </section>
-
-            {/* ═══ FOOTER ═══ */}
+            <RatingSection era="ttpd" tracks={[...TRACKS_TTPD, ...TRACKS_ANTHOLOGY]} theme={eraThemes.ttpd} />
             <footer className="tp-footer">
                 <div>
                     <p className="tp-footer-logo">TTPD</p>
@@ -460,12 +404,10 @@ const TTPD = () => {
                     <a href="https://www.taylorswift.com" target="_blank" rel="noopener noreferrer">Site Oficial</a>
                     <a href="https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02" target="_blank" rel="noopener noreferrer">Spotify</a>
                     <a href="https://music.apple.com/us/artist/taylor-swift/159260351" target="_blank" rel="noopener noreferrer">Apple Music</a>
-                    <button className="tp-top-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>↑</button>
                 </div>
             </footer>
             <audio ref={audioRef} />
         </main>
     );
 };
-
 export default TTPD;

@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import './showgirl.css';
-
-/* ═══ DATA ═══ */
+import RatingSection from '../../components/RatingSection/RatingSection';
+import { eraThemes } from '../../utils/eraThemes';
 const COVER = "https://static.wikia.nocookie.net/taylor-swift/images/a/a6/The_Life_of_a_Showgirl_-_The_Crowd_is_Your_King.jpeg/revision/latest/scale-to-width-down/1000?cb=20250924184239";
-
 const TRACKS = [
     { id: 1,  title: "The Fate of Ophelia",  time: "3:46", single: true },
     { id: 2,  title: "Elizabeth Taylor",      time: "3:28", single: true },
@@ -19,20 +18,17 @@ const TRACKS = [
     { id: 11, title: "Honey",                time: "3:01" },
     { id: 12, title: "The Life of a Showgirl", time: "3:48", feat: "feat. Sabrina Carpenter" },
 ];
-
 const MVS = [
     { title: "The Fate of Ophelia", url: "https://www.youtube.com/embed/ko70cExuzZM?rel=0&modestbranding=1&hd=1&vq=hd1080", thumb: "https://img.youtube.com/vi/ko70cExuzZM/hqdefault.jpg" },
     { title: "Opalite",             url: "https://www.youtube.com/embed/1FVF-9KQiPo?rel=0&modestbranding=1&hd=1&vq=hd1080", thumb: "https://img.youtube.com/vi/1FVF-9KQiPo/hqdefault.jpg" },
     { title: "Elizabeth Taylor",    url: "https://www.youtube.com/embed/WqbJT_vC0rs?rel=0&modestbranding=1&hd=1&vq=hd1080", thumb: "https://img.youtube.com/vi/WqbJT_vC0rs/hqdefault.jpg" },
 ];
-
 const SPOTLIGHTS = [
     { title: "The Fate of Ophelia", lyrics: "The eldest daughter of a nobleman\nOphelia lived in fantasy\nBut love was a cold bed full of scorpions\nThe venom stole her sanity" },
     { title: "Ruin the Friendship", lyrics: "My advice is always ruin the friendship\nBetter that than regret it for all time\nShould've kissed you anyway\nAnd my advice is always answer the question\nBetter that than to ask it all your life" },
     { title: "Elizabeth Taylor", lyrics: "All my white diamonds and lovers are forever\nIn the papers, on the screen and in their minds\nAll my white diamonds and lovers are forever\nDon't you ever end up anything but mine..." },
     { title: "The Life of a Showgirl", lyrics: "She said: I'd sell my soul to have a taste\nOf a magnificent life that's all mine\nBut that's not what showgirls get\nThey leave us for dead" },
 ];
-
 const GALLERY = [
     "https://static.wikia.nocookie.net/taylor-swift/images/9/9b/The_Life_of_a_Showgirl_unedited_backcover.jpg/revision/latest/scale-to-width-down/1000?cb=20251004142401",
     "https://static.wikia.nocookie.net/taylor-swift/images/f/fb/The_life_of_a_showgirl_photoshoot_52.jpg/revision/latest/scale-to-width-down/1000?cb=20260307180903",
@@ -52,7 +48,6 @@ const GALLERY = [
     "https://static.wikia.nocookie.net/taylor-swift/images/1/1b/The_Life_of_a_Showgirl_photoshoot_29.jpeg/revision/latest/scale-to-width-down/1000?cb=20251108153716",
     "https://static.wikia.nocookie.net/taylor-swift/images/e/ee/The_Life_of_a_Showgirl_photoshoot_35.jpeg/revision/latest/scale-to-width-down/1000?cb=20251003041528",
 ];
-
 const ERAS = [
     { name: "Debut",      path: "/debut",      color: "#7ec8a0" },
     { name: "Fearless",   path: "/fearless",   color: "#c9a227" },
@@ -66,19 +61,13 @@ const ERAS = [
     { name: "Midnights",  path: "/midnights",  color: "#7b8aff" },
     { name: "TTPD",       path: "/ttpd",       color: "#a79e8f" },
 ];
-
 const SPARKLE_COUNT = 25;
-
-/* ═══ COMPONENT ═══ */
 const Showgirl = () => {
     const [loaded, setLoaded] = useState(false);
-    const [showTopBtn, setShowTopBtn] = useState(false);
     const [activeSpot, setActiveSpot] = useState(0);
     const [activeMv, setActiveMv] = useState(0);
     const filmstripRef = useRef(null);
     const dragState = useRef({ isDown: false, startX: 0, scrollLeft: 0 });
-
-    /* Mount */
     useEffect(() => {
         setTimeout(() => setLoaded(true), 100);
         window.scrollTo(0, 0);
@@ -86,15 +75,6 @@ const Showgirl = () => {
         document.body.style.backgroundImage = 'none';
         return () => { document.body.style.backgroundColor = ''; document.body.style.backgroundImage = ''; };
     }, []);
-
-    /* Scroll */
-    useEffect(() => {
-        const h = () => setShowTopBtn(window.scrollY > 2000);
-        window.addEventListener('scroll', h);
-        return () => window.removeEventListener('scroll', h);
-    }, []);
-
-    /* Intersection observer */
     useEffect(() => {
         const els = document.querySelectorAll('.show-about, .show-tracklist, .show-spotlight, .show-collabs, .show-awards, .show-videos, .show-feat, .show-gallery, .show-eras');
         const obs = new IntersectionObserver((entries) => {
@@ -103,8 +83,6 @@ const Showgirl = () => {
         els.forEach(el => obs.observe(el));
         return () => obs.disconnect();
     }, []);
-
-    /* Drag-to-scroll */
     const handleDragStart = (e) => {
         const el = filmstripRef.current; if (!el) return;
         dragState.current = { isDown: true, startX: e.pageX - el.offsetLeft, scrollLeft: el.scrollLeft };
@@ -122,47 +100,32 @@ const Showgirl = () => {
         const x = e.pageX - el.offsetLeft;
         el.scrollLeft = dragState.current.scrollLeft - (x - dragState.current.startX) * 1.5;
     };
-
-    /* Sparkle data (generated once) */
     const sparkles = Array.from({ length: SPARKLE_COUNT }, (_, i) => ({
         left: `${Math.random() * 100}%`,
         size: `${0.5 + Math.random() * 0.8}rem`,
         dur: `${4 + Math.random() * 6}s`,
         delay: `${Math.random() * 8}s`,
     }));
-
     return (
         <main className={`era-show-page ${loaded ? 'show-loaded' : ''}`}>
-
-            {/* ═══ SPARKLES ═══ */}
             <div className="show-sparkles">
                 {sparkles.map((s, i) => (
                     <span key={i} className="show-sparkle" style={{ left: s.left, '--size': s.size, '--dur': s.dur, '--delay': s.delay }}>✦</span>
                 ))}
             </div>
-
-            {/* ═══ NAV ═══ */}
             <nav className="show-nav">
                 <Link to="/ttpd" className="show-nav-link">← TTPD</Link>
                 <span className="show-nav-logo">THE LIFE OF A SHOWGIRL</span>
                 <Link to="/" className="show-nav-link">ERAS →</Link>
             </nav>
-
-            {/* ═══ HERO ═══ */}
             <header className="show-hero">
                 <div className="show-hero-bg" />
-                {/* Spotlight SVGs */}
                 <svg className="show-hero-svg" viewBox="0 0 1200 800" preserveAspectRatio="none">
-                    {/* Stage spot left */}
                     <polygon points="200,0 0,800 400,800" fill="url(#spotL)" opacity="0.12" />
-                    {/* Stage spot center */}
                     <polygon points="600,0 400,800 800,800" fill="url(#spotC)" opacity="0.1" />
-                    {/* Stage spot right */}
                     <polygon points="1000,0 800,800 1200,800" fill="url(#spotR)" opacity="0.12" />
-                    {/* Curtain lines left */}
                     <path d="M0 0 Q30 200 10 400 Q-10 600 20 800" stroke="rgba(178,67,66,0.08)" strokeWidth="40" fill="none" />
                     <path d="M40 0 Q70 200 50 400 Q30 600 60 800" stroke="rgba(178,67,66,0.05)" strokeWidth="25" fill="none" />
-                    {/* Curtain lines right */}
                     <path d="M1200 0 Q1170 200 1190 400 Q1210 600 1180 800" stroke="rgba(178,67,66,0.08)" strokeWidth="40" fill="none" />
                     <path d="M1160 0 Q1130 200 1150 400 Q1170 600 1140 800" stroke="rgba(178,67,66,0.05)" strokeWidth="25" fill="none" />
                     <defs>
@@ -180,7 +143,6 @@ const Showgirl = () => {
                         </radialGradient>
                     </defs>
                 </svg>
-
                 <div className="show-hero-centered">
                     <span className="show-hero-tag">ÁLBUM XII · 2025</span>
                     <div className="show-hero-cover-wrap">
@@ -212,8 +174,6 @@ const Showgirl = () => {
                     </div>
                 </div>
             </header>
-
-            {/* ═══ ABOUT — PLAYBILL ═══ */}
             <section className="show-about">
                 <div className="show-playbill">
                     <div className="show-playbill-header">
@@ -240,8 +200,6 @@ const Showgirl = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ TRACKLIST ═══ */}
             <section className="show-tracklist">
                 <div className="show-tracklist-inner">
                     <div className="show-section-header">
@@ -269,8 +227,6 @@ const Showgirl = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ SPOTLIGHT ═══ */}
             <section className="show-spotlight">
                 <div className="show-spotlight-inner">
                     <div className="show-section-header">
@@ -294,8 +250,6 @@ const Showgirl = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ COLLABS — MARQUEE CARDS ═══ */}
             <section className="show-collabs">
                 <div className="show-section-header">
                     <span className="show-label">bastidores</span>
@@ -321,8 +275,6 @@ const Showgirl = () => {
                     ))}
                 </div>
             </section>
-
-            {/* ═══ RECORDS ═══ */}
             <section className="show-awards">
                 <div className="show-awards-title">
                     <span className="show-label">recordes</span>
@@ -344,8 +296,6 @@ const Showgirl = () => {
                     ))}
                 </div>
             </section>
-
-            {/* ═══ MUSIC VIDEOS ═══ */}
             <section className="show-videos">
                 <div className="show-videos-title">
                     <span className="show-label">palco visual</span>
@@ -371,8 +321,6 @@ const Showgirl = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ SABRINA COLLAB ═══ */}
             <section className="show-feat">
                 <div className="show-feat-inner">
                     <div className="show-feat-photo">
@@ -400,8 +348,6 @@ const Showgirl = () => {
                     </div>
                 </div>
             </section>
-
-            {/* ═══ GALLERY ═══ */}
             <section className="show-gallery">
                 <div className="show-gallery-title show-section-header" style={{ textAlign: 'left' }}>
                     <span className="show-label">backstage</span>
@@ -422,8 +368,6 @@ const Showgirl = () => {
                     ))}
                 </div>
             </section>
-
-            {/* ═══ ERAS NAV ═══ */}
             <section className="show-eras">
                 <div className="show-eras-nav-title">
                     <span className="show-label">navegue entre as eras</span>
@@ -437,8 +381,7 @@ const Showgirl = () => {
                     ))}
                 </div>
             </section>
-
-            {/* ═══ FOOTER ═══ */}
+            <RatingSection era="showgirl" tracks={TRACKS} theme={eraThemes.showgirl} />
             <footer className="show-footer">
                 <div>
                     <span className="show-footer-logo">Showgirl</span>
@@ -448,11 +391,9 @@ const Showgirl = () => {
                     <a href="https://www.taylorswift.com" target="_blank" rel="noopener noreferrer">Site Oficial</a>
                     <a href="https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02" target="_blank" rel="noopener noreferrer">Spotify</a>
                     <a href="https://music.apple.com/us/artist/taylor-swift/159260351" target="_blank" rel="noopener noreferrer">Apple Music</a>
-                    <button className="show-top-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>↑</button>
                 </div>
             </footer>
         </main>
     );
 };
-
 export default Showgirl;
