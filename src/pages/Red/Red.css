@@ -1065,6 +1065,41 @@ body {
   }
 }
 
+.atw-ten-min-section {
+  margin-top: 80px;
+  padding-top: 60px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.atw-ten-min-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.atw-ten-min-title {
+  font-family: 'Prata', serif;
+  font-size: 2.8rem;
+  color: #fff;
+  margin: 10px 0 15px;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+
+.atw-ten-min-desc {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+  letter-spacing: 1px;
+}
+
+.atw-ten-min-player {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
 .red-mv-section {
   padding: 120px 0 140px;
   background: transparent;

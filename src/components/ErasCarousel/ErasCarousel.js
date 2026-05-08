@@ -187,11 +187,15 @@ export default function ErasCarousel({ currentIndex, setCurrentIndex }) {
               }}
               onMouseDown={(e) => {
                 if (index === currentIndex) {
-                  e.currentTarget.classList.add('pressing');
-                  setTimeout(() => e.currentTarget.classList.remove('pressing'), 150);
+                  const slide = e.currentTarget;
+
+                  slide.classList.add('pressing');
+
+                  setTimeout(() => {
+                    slide.classList.remove('pressing');
+                  }, 150);
                 }
-              }}
-              onMouseMove={(e) => handleMouseMove(e, index)}
+              }} onMouseMove={(e) => handleMouseMove(e, index)}
               onMouseLeave={(e) => handleMouseLeave(e)}
             >
               <div className="era-content">

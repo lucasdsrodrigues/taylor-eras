@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { AuthProvider } from "./context/AuthContext";
+import AuthModal from "./components/AuthModal/AuthModal";
 
 import Home from "./pages/Home";
 import Debut from "./pages/Debut";
@@ -17,6 +19,7 @@ import Showgirl from "./pages/Showgirl";
 import FearlessGallery from "./pages/Fearless/FearlessGallery";
 
 import PainelAvaliacoes from "./components/PainelAvaliacoes/PainelAvaliacoes";
+import PainelUsuario from "./components/PainelUsuario/PainelUsuario";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -28,26 +31,30 @@ function ScrollToTop() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <PainelAvaliacoes />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/debut" element={<Debut />} />
-        <Route path="/fearless" element={<Fearless />} />
-        <Route path="/fearless-gallery" element={<FearlessGallery />} />
-        <Route path="/speak-now" element={<SpeakNow />} />
-        <Route path="/red" element={<Red />} />
-        <Route path="/1989" element={<NineteenEightyNine />} />
-        <Route path="/reputation" element={<Reputation />} />
-        <Route path="/lover" element={<Lover />} />
-        <Route path="/folklore" element={<Folklore />} />
-        <Route path="/evermore" element={<Evermore />} />
-        <Route path="/midnights" element={<Midnights />} />
-        <Route path="/ttpd" element={<TTPD />} />
-        <Route path="/showgirl" element={<Showgirl />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <AuthModal />
+        <PainelAvaliacoes />
+        <PainelUsuario />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/debut" element={<Debut />} />
+          <Route path="/fearless" element={<Fearless />} />
+          <Route path="/fearless-gallery" element={<FearlessGallery />} />
+          <Route path="/speak-now" element={<SpeakNow />} />
+          <Route path="/red" element={<Red />} />
+          <Route path="/1989" element={<NineteenEightyNine />} />
+          <Route path="/reputation" element={<Reputation />} />
+          <Route path="/lover" element={<Lover />} />
+          <Route path="/folklore" element={<Folklore />} />
+          <Route path="/evermore" element={<Evermore />} />
+          <Route path="/midnights" element={<Midnights />} />
+          <Route path="/ttpd" element={<TTPD />} />
+          <Route path="/showgirl" element={<Showgirl />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

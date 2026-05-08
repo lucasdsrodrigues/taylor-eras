@@ -207,44 +207,44 @@ const NineteenEightyNine = () => {
                 <div className="hero-1989-neon-bg"></div>
                 <div className="eightynine-texture-overlay"></div>
                 <svg className="eightynine-neon-streak eightynine-neon-streak--left" viewBox="0 0 300 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-                   <path 
-                      d="M 300 0 L 150 200 L 250 400 L 50 600 L 200 800" 
-                      stroke="url(#neonStreakL)" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.6"
-                   />
-                   <path 
-                      d="M 250 -50 L 100 150 L 200 350 L 0 550 L 150 750" 
-                      stroke="url(#neonStreakL)" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.3"
-                   />
-                   <defs>
-                       <linearGradient id="neonStreakL" x1="0" y1="0" x2="0" y2="1">
-                           <stop offset="0%" stopColor="#87ceeb" stopOpacity="0"/>
-                           <stop offset="50%" stopColor="var(--neon, #87ceeb)" />
-                           <stop offset="100%" stopColor="#87ceeb" stopOpacity="0"/>
-                       </linearGradient>
-                   </defs>
+                    <path
+                        d="M 300 0 L 150 200 L 250 400 L 50 600 L 200 800"
+                        stroke="url(#neonStreakL)" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.6"
+                    />
+                    <path
+                        d="M 250 -50 L 100 150 L 200 350 L 0 550 L 150 750"
+                        stroke="url(#neonStreakL)" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.3"
+                    />
+                    <defs>
+                        <linearGradient id="neonStreakL" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#87ceeb" stopOpacity="0" />
+                            <stop offset="50%" stopColor="var(--neon, #87ceeb)" />
+                            <stop offset="100%" stopColor="#87ceeb" stopOpacity="0" />
+                        </linearGradient>
+                    </defs>
                 </svg>
                 <svg className="eightynine-neon-streak eightynine-neon-streak--right" viewBox="0 0 300 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-                   <path 
-                      d="M 0 0 L 150 200 L 50 400 L 250 600 L 100 800" 
-                      stroke="url(#neonStreakR)" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.5"
-                   />
-                   <path 
-                      d="M 50 -50 L 200 150 L 100 350 L 300 550 L 150 750" 
-                      stroke="url(#neonStreakR)" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.25"
-                   />
-                   <defs>
-                       <linearGradient id="neonStreakR" x1="0" y1="0" x2="0" y2="1">
-                           <stop offset="0%" stopColor="var(--neon, #87ceeb)" stopOpacity="0"/>
-                           <stop offset="50%" stopColor="#87ceeb" />
-                           <stop offset="100%" stopColor="var(--neon, #87ceeb)" stopOpacity="0"/>
-                       </linearGradient>
-                   </defs>
+                    <path
+                        d="M 0 0 L 150 200 L 50 400 L 250 600 L 100 800"
+                        stroke="url(#neonStreakR)" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.5"
+                    />
+                    <path
+                        d="M 50 -50 L 200 150 L 100 350 L 300 550 L 150 750"
+                        stroke="url(#neonStreakR)" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.25"
+                    />
+                    <defs>
+                        <linearGradient id="neonStreakR" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="var(--neon, #87ceeb)" stopOpacity="0" />
+                            <stop offset="50%" stopColor="#87ceeb" />
+                            <stop offset="100%" stopColor="var(--neon, #87ceeb)" stopOpacity="0" />
+                        </linearGradient>
+                    </defs>
                 </svg>
                 <div className="hero-1989-main-content">
                     <div className="hero-1989-titles">
                         <h2 className="hero-1989-artist">TAYLOR SWIFT</h2>
                         <h1 className="hero-1989-album-title">
-                           <span className="eightynine-title-flicker" data-text="1989">1989</span>
+                            <span className="eightynine-title-flicker" data-text="1989">1989</span>
                         </h1>
                         <p className="hero-1989-quote">"Welcome to New York. It's been waiting for you."</p>
                     </div>
@@ -504,7 +504,7 @@ const NineteenEightyNine = () => {
                         {musicVideos.map((mv, i) => (
                             <div key={i} className="mv-slide">
                                 {activeVideo && activeVideo.youtubeId === mv.youtubeId ? (
-                                    <div className="mv-slide-player">
+                                    <div className="mv-slide-player mv-tour-player">
                                         <iframe
                                             width="100%"
                                             height="100%"
@@ -547,7 +547,7 @@ const NineteenEightyNine = () => {
                         <div className="stat"><span>$250M</span>GROSS</div>
                         <div className="stat"><span>7</span>SINGLES PERFORMED</div>
                     </div>
-                    <div className="tour-video-embed" style={{ marginTop: '60px', marginBottom: '40px' }}>
+                    <div className={`tour-video-embed ${activeVideo === 'tour' ? 'playing' : ''}`}>
                         {activeVideo === 'tour' ? (
                             <div className="mv-slide-player">
                                 <iframe
