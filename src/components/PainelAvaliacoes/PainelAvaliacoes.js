@@ -167,10 +167,10 @@ const PainelAvaliacoes = () => {
                           <div key={item.id} className="rating-item">
                             <div className="rating-info">
                               <span className="rating-track">
-                                {item.musica || 'Álbum'}
+                                {item.tipo === 'album' ? `${item.era} (Álbum)` : item.musica}
                               </span>
                               <span className="rating-type">
-                                {item.musica ? 'Música' : 'Álbum'}
+                                {item.tipo === 'musica' ? 'Música' : 'Álbum'}
                               </span>
                             </div>
                             

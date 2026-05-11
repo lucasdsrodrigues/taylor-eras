@@ -36,7 +36,7 @@ const RatingSection = ({ era, tracks = [], theme }) => {
           let newAlbumRating = 0;
 
           eraRatings.forEach(rating => {
-            if (rating.musica) {
+            if (rating.tipo === 'musica') {
               const trackIndex = tracks.findIndex(t => {
                 const name = typeof t === 'string' ? t : (t.titulo || t.title || t.name || '');
                 return name === rating.musica;

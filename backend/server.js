@@ -36,12 +36,49 @@ try {
     CREATE TABLE IF NOT EXISTS avaliacoes (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       usuario_id INTEGER NOT NULL,
-      era TEXT,
-      nota INTEGER,
-      musica TEXT,
+      era TEXT NOT NULL,
+      nota INTEGER NOT NULL,
+      tipo TEXT NOT NULL DEFAULT 'album',
+      musica TEXT NOT NULL,
       FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
     )
   `);
+
+  // Migração: adiciona coluna 'tipo' se a tabela já existia sem ela
+  try {
+    db.exec(`ALTER TABLE avaliacoes ADD COLUMN tipo TEXT NOT NULL DEFAULT 'album'`);
+    console.log('Coluna "tipo" adicionada com sucesso.');
+
+    // Corrige registros antigos de MÚSICA: onde musica não é NULL e é diferente do nome da era
+    // (são avaliações de músicas, não de álbum)
+    const musicasCorrigidas = db.prepare(
+      `UPDATE avaliacoes SET tipo = 'musica' WHERE musica IS NOT NULL AND musica != era`
+    ).run();
+    console.log(`Migração: ${musicasCorrigidas.changes} avaliações de músicas corrigidas (tipo -> 'musica').`);
+  } catch (e) {
+    // Coluna já existe, segue normalmente
+  }
+
+  // Migração: preenche registros antigos que tinham musica = NULL
+  // Marca como 'album' e coloca o nome da era no campo musica
+  const registrosNulos = db.prepare(`SELECT id, era FROM avaliacoes WHERE musica IS NULL`).all();
+  if (registrosNulos.length > 0) {
+    const updateStmt = db.prepare(`UPDATE avaliacoes SET musica = ?, tipo = 'album' WHERE id = ?`);
+    for (const reg of registrosNulos) {
+      updateStmt.run(reg.era, reg.id);
+    }
+    console.log(`Migração: ${registrosNulos.length} registros antigos corrigidos (musica NULL -> nome da era).`);
+  }
+
+  // Correção de segurança: garante que avaliações com nome de música diferente da era
+  // estejam marcadas como tipo 'musica' (cobre dados que já existiam antes da migração)
+  const correcaoMusicas = db.prepare(
+    `UPDATE avaliacoes SET tipo = 'musica' WHERE tipo = 'album' AND musica IS NOT NULL AND musica != era`
+  ).run();
+  if (correcaoMusicas.changes > 0) {
+    console.log(`Correção: ${correcaoMusicas.changes} avaliações de músicas corrigidas (tipo 'album' -> 'musica').`);
+  }
+
 } catch (e) {
   console.log("Aviso ao criar tabela avaliacoes:", e.message);
 }
@@ -153,22 +190,19 @@ app.get('/minhas-avaliacoes', authenticateToken, (req, res) => {
 
 // ROTA: Criar ou Atualizar uma avaliação (Exige Login)
 app.post('/avaliar', authenticateToken, (req, res) => {
-  const { era, nota, musica } = req.body;
+  const { era, nota, tipo, musica } = req.body;
   const usuario_id = req.user.id; // Vem do token JWT
-  const nomeMusica = musica || null;
+
+  // Determina o tipo explícito: 'album' ou 'musica'
+  const tipoFinal = tipo === 'musica' ? 'musica' : 'album';
+  // Se for álbum, salva o nome da era no campo musica (nunca NULL)
+  const nomeFinal = tipoFinal === 'album' ? era : (musica || era);
   
   try {
-    // 1. Verifica se já existe uma avaliação desse usuário para essa era e música/álbum
-    let queryBusca;
-    let avaliacaoExistente;
-
-    if (nomeMusica) {
-      queryBusca = db.prepare('SELECT id FROM avaliacoes WHERE usuario_id = ? AND era = ? AND musica = ?');
-      avaliacaoExistente = queryBusca.get(usuario_id, era, nomeMusica);
-    } else {
-      queryBusca = db.prepare('SELECT id FROM avaliacoes WHERE usuario_id = ? AND era = ? AND musica IS NULL');
-      avaliacaoExistente = queryBusca.get(usuario_id, era);
-    }
+    // 1. Verifica se já existe uma avaliação desse usuário para essa era + tipo + nome
+    const avaliacaoExistente = db.prepare(
+      'SELECT id FROM avaliacoes WHERE usuario_id = ? AND era = ? AND tipo = ? AND musica = ?'
+    ).get(usuario_id, era, tipoFinal, nomeFinal);
 
     if (avaliacaoExistente) {
       // 2. Se já existe, apenas atualiza a nota (UPDATE)
@@ -177,8 +211,8 @@ app.post('/avaliar', authenticateToken, (req, res) => {
       res.status(200).json({ id: avaliacaoExistente.id, action: 'updated' });
     } else {
       // 3. Se não existe, cria uma nova (INSERT)
-      const stmt = db.prepare('INSERT INTO avaliacoes (usuario_id, era, nota, musica) VALUES (?, ?, ?, ?)');
-      const result = stmt.run(usuario_id, era, nota, nomeMusica);
+      const stmt = db.prepare('INSERT INTO avaliacoes (usuario_id, era, nota, tipo, musica) VALUES (?, ?, ?, ?, ?)');
+      const result = stmt.run(usuario_id, era, nota, tipoFinal, nomeFinal);
       res.status(201).json({ id: result.lastInsertRowid, action: 'created' });
     }
   } catch (error) {

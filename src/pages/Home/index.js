@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ErasCarousel from "../../components/ErasCarousel/ErasCarousel";
 import Timeline from "../../components/Timeline/Timeline";
+import NoticiasSection from "../../components/NoticiasSection/NoticiasSection";
 import './home.css';
 const ERA_COLORS = [
     { name: "Debut", color: "#7ec8a0" },
@@ -171,6 +172,7 @@ function Home() {
                     </div>
                 </div>
             </section>
+            <NoticiasSection />
             <div className="home-carousel-wrap">
                 <ErasCarousel
                     currentIndex={currentIndex}
