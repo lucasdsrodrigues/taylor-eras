@@ -31,6 +31,7 @@
     opacity: 1;
     transform: translateY(0);
 }
+/* Overlay de ruído sobre toda a página — textura sutil */
 .rep-noise-overlay {
     position: fixed;
     inset: 0;
@@ -38,6 +39,8 @@
     opacity: 0.06;
     pointer-events: none;
     z-index: 1;
+    /* mix-blend-mode: overlay mistura a textura com as cores do fundo */
+    /* overlay preserva os escuros e clareia os claros — dá aspecto "granulado" */
     mix-blend-mode: overlay;
 }
 .rep-newspaper-overlay {
@@ -165,6 +168,7 @@
         stroke-dashoffset: 0;
     }
 }
+/* Logo "reputation" com gradiente animado — mesma técnica do título da Home */
 .rep-logo {
     font-family: 'UnifrakturMaguntia', serif;
     font-size: 2rem;
@@ -368,6 +372,9 @@
     opacity: 0;
     z-index: -1;
 }
+/* Efeito glitch: ::after duplica o texto e faz tremer com step-end */
+/* step-end = sem transição suave, muda instantaneamente entre keyframes */
+/* Isso cria o efeito de "falha digital" característico da era Reputation */
 @keyframes repGlitchFlicker {
     0%,
     90%,
@@ -614,6 +621,10 @@
         letter-spacing: 4px;
     }
 }
+/* Timeline da Reputation com color-mix() dinâmico baseado em scroll */
+/* --scroll-progress é uma variável CSS atualizada pelo JS (valor de 0 a 1) */
+/* color-mix() interpola entre duas cores baseado no progresso do scroll */
+/* Isso cria a transição visual de "claro (era anterior) → escuro (reputation)" */
 .rep-timeline-section {
     position: relative;
     padding: 100px 5% 150px;

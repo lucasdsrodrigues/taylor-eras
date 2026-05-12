@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@900&family=Homemade+Apple&family=Special+Elite&family=Montserrat:wght@300;700;900&display=swap');
+/* :root define variáveis CSS GLOBAIS — acessíveis em qualquer lugar do CSS */
+/* Centraliza as cores da era pra não repetir valores hex em 50 lugares */
 :root {
   --deep-green: #2d3e2d;
   --sage-green: #3a523a;
@@ -23,6 +25,7 @@
   pointer-events: none;
   z-index: 1;
 }
+/* Trepadeiras SVG laterais — começam invisíveis e aparecem com animação */
 .debut-slither-bg {
   position: absolute;
   top: 0;
@@ -30,6 +33,9 @@
   width: 250px;
   z-index: 0;
   opacity: 0;
+  /* mask-image cria um "fade out" gradual na base da trepadeira */
+  /* É como um recorte: só a parte com 'black' aparece, 'transparent' some */
+  /* -webkit- é necessário pro Chrome/Safari */
   -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
 }
@@ -45,6 +51,10 @@
 @keyframes debutVinesFadeIn {
   to { opacity: 1; }
 }
+/* Animação de "desenhar" o SVG das trepadeiras */
+/* stroke-dasharray = define o padrão de traços e espaços (aqui, um traço de 1800px) */
+/* stroke-dashoffset = desloca o traço (1800 = totalmente oculto) */
+/* A animação muda o offset de 1800 pra 0 = revela a linha gradualmente */
 .debut-slither-bg path {
   stroke-dasharray: 1800;
   stroke-dashoffset: 1800;
@@ -77,6 +87,9 @@
   flex-direction: column;
   align-items: center;
 }
+/* Layout masonry (tipo Pinterest) usando CSS columns */
+/* column-count: 3 = divide o conteúdo em 3 colunas */
+/* Mais simples que CSS Grid pra layout de alturas variáveis */
 .photo-masonry {
   column-count: 3;
   column-gap: 40px;
@@ -94,11 +107,14 @@
   }
 }
 .polaroid-item {
+  /* break-inside: avoid impede que o card seja partido entre duas colunas */
+  /* Sem isso, uma polaroid poderia começar no fim de uma coluna e terminar na próxima */
   break-inside: avoid;
   background: #fff;
   padding: 15px;
   margin-bottom: 40px;
   box-shadow: 10px 10px 30px rgba(0,0,0,0.5);
+  /* var(--r) = rotação aleatória definida inline, dá efeito de fotos espalhadas */
   transform: rotate(var(--r));
   transition: 0.4s ease;
   display: inline-block;
@@ -514,6 +530,8 @@
   margin-bottom: 80px; 
   color: var(--paper-cream); 
 }
+/* auto-fill cria quantas colunas couberem no espaço, com mínimo de 260px cada */
+/* Diferente de repeat(3, 1fr) que força 3 colunas — auto-fill é responsivo automaticamente */
 .scraps-wall { 
   display: grid; 
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
@@ -544,6 +562,7 @@
 .paper-1, .paper-5, .paper-9 { background-color: #e8eee4; } 
 .paper-2, .paper-6, .paper-10 { background-color: #fdfbf7; } 
 .paper-3, .paper-7, .paper-11 { background-color: #f2efdc; } 
+/* Animação de balanço dos papéis — usa calc() pra somar 2° à rotação original */
 @keyframes paperSway {
   0% { transform: rotate(var(--r)) translateY(0px); }
   100% { transform: rotate(calc(var(--r) + 2deg)) translateY(-5px); }
@@ -634,6 +653,8 @@
   margin-bottom: 40px;
   letter-spacing: 4px;
 }
+/* auto-fit vs auto-fill: auto-fit estica as colunas pra preencher o espaço restante */
+/* auto-fill deixaria células vazias; auto-fit expande as existentes */
 .awards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

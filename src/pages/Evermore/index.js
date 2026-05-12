@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import './evermore.css';
 import RatingSection from '../../components/RatingSection/RatingSection';
 import { eraThemes } from '../../utils/eraThemes';
+
+// Hook reutilizável de IntersectionObserver
 const useInView = (options = {}) => {
     const ref = useRef(null);
     const [inView, setInView] = useState(false);
@@ -18,10 +20,13 @@ const useInView = (options = {}) => {
     }, []);
     return [ref, inView];
 };
+
+/** Página da era Evermore (2020) — tema outonal, folhas caindo e tons terrosos */
 const Evermore = () => {
     const [loaded, setLoaded] = useState(false);
     const [playingTrack, setPlayingTrack] = useState(null);
     const audioRef = useRef(null);
+    // Seções observadas individualmente pra animação de entrada
     const [aboutRef, aboutInView] = useInView();
     const [tracklistRef, tracklistInView] = useInView();
     const [detectiveRef, detectiveInView] = useInView();

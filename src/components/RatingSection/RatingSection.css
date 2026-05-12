@@ -1,3 +1,4 @@
+/* Fontes: Cormorant Garamond (serifada elegante) pro título, Inter pro corpo */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
 
 .rv-root {
@@ -80,8 +81,11 @@
   cursor: pointer;
   padding: 0;
   line-height: 1;
+  /* var(--rv-star-off) = cor da estrela inativa, definida pelo tema da era */
   color: var(--rv-star-off, rgba(255, 255, 255, 0.15));
   transition: color 0.25s ease,
+    /* cubic-bezier(0.34, 1.56, 0.64, 1) = efeito "bounce" — o valor 1.56 faz */
+    /* o scale ultrapassar 1.2 e voltar, criando um "pulo" elástico */
     transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
     text-shadow 0.3s ease;
 }
@@ -102,6 +106,7 @@
 .rv-star:hover {
   transform: scale(1.2);
   color: var(--rv-color, #fff);
+  /* text-shadow com a cor da era cria um "glow" ao redor da estrela */
   text-shadow: 0 0 18px var(--rv-color, #fff);
 }
 
@@ -139,13 +144,18 @@
   align-items: center;
   gap: 10px;
   padding: 9px 0;
+  /* color-mix() mistura a cor do texto com transparente pra borda sutil */
   border-bottom: 1px solid color-mix(in srgb, var(--rv-text, #fff) 8%, transparent);
   transition: background 0.2s ease;
 
+  /* Começa invisível e deslocada — a animação de entrada ativa com .rv-visible */
   opacity: 0;
   transform: translateX(-10px);
 }
 
+/* Animação staggered (escalonada): cada linha aparece com um delay diferente */
+/* calc(0.05s * var(--row-i)) = linha 0 delay 0s, linha 1 delay 0.05s, linha 2 delay 0.1s... */
+/* --row-i é definida inline no React com style={{ '--row-i': index }} */
 .rv-visible .rv-track-row {
   opacity: 1;
   transform: translateX(0);
@@ -172,12 +182,15 @@
 }
 
 .rv-track-name {
+  /* flex: 1 faz o nome ocupar todo o espaço disponível entre número e estrelas */
   flex: 1;
   font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
   font-weight: 300;
   color: var(--rv-text, #fff);
   letter-spacing: 0.15px;
+  /* white-space + overflow + text-overflow = trunca texto longo com "..." */
+  /* Sem os 3 juntos, não funciona */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -219,6 +232,7 @@
   transform: scale(0.97);
 }
 
+/* cursor: not-allowed mostra o ícone de "proibido" quando o botão tá desabilitado */
 .rv-submit:disabled {
   opacity: 0.4;
   cursor: not-allowed;

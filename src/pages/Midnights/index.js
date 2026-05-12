@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import './midnights.css';
 
+// Hook reutilizável de IntersectionObserver
 const useInView = (options = {}) => {
     const ref = useRef(null);
     const [inView, setInView] = useState(false);
@@ -18,6 +19,7 @@ const useInView = (options = {}) => {
     return [ref, inView];
 };
 
+/** Página da era Midnights (2022) — tema noturno, estrelas e estética lavanda/azul */
 const Midnights = () => {
     const [loaded, setLoaded] = useState(false);
     const [playingTrack, setPlayingTrack] = useState(null);

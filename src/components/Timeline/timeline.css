@@ -1,6 +1,7 @@
 .timeline-section {
     padding: 120px 40px;
     text-align: center;
+    background: #0a0a0f;
 }
 .timeline-title {
     font-family: 'Inter', sans-serif;
@@ -48,19 +49,24 @@
     transform: translateY(-6px);
     opacity: 1;
 }
+/* Bolinha colorida da timeline (criada via ::before) */
 .timeline-item::before {
     content: "";
     margin: 0 auto 14px;
     width: 10px;
     height: 10px;
     border-radius: 50%;
+    /* currentColor herda a cor do texto do pai — como cada era tem cor própria, */
+    /* a bolinha automaticamente recebe a cor certa sem precisar de variáveis extras */
     background: currentColor;
+    /* box-shadow com cor branca = anel ao redor da bolinha */
     box-shadow: 0 0 0 6px rgba(255,255,255,0.9);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .timeline-item:hover::before {
     transform: scale(1.4);
 }
+/* Halo de luz (glow) atrás da bolinha — círculo borrado que aparece no hover */
 .timeline-item::after {
     content: "";
     position: absolute;
@@ -71,10 +77,12 @@
     height: 40px;
     border-radius: 50%;
     background: currentColor;
+    /* filter: blur(26px) transforma o círculo num brilho difuso */
     filter: blur(26px);
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.3s ease;
     pointer-events: none;
+    /* z-index: -1 coloca o halo ATRÁS da bolinha */
     z-index: -1;
 }
 .timeline-item:hover::after {
@@ -123,6 +131,8 @@
 .midnights { color: #1e3799; }
 .ttpd { color: #3d3d3d; }
 .showgirl { color: #e29608; }
+/* Easter egg text: aparece com delay de 0.6s — só mostra se manter o hover */
+/* transition: opacity 0.4s ease 0.6s = 0.4s de duração, 0.6s de DELAY */
 .easter-text {
     position: absolute;
     bottom: -18px;
@@ -131,6 +141,7 @@
     text-transform: uppercase;
     opacity: 0;
     transition: opacity 0.4s ease 0.6s;
+    /* white-space: nowrap impede que o texto quebre em múltiplas linhas */
     white-space: nowrap;
 }
 .timeline-item:hover .easter-text {

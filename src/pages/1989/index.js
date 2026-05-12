@@ -5,6 +5,8 @@ import RatingSection from '../../components/RatingSection/RatingSection';
 import { eraThemes } from '../../utils/eraThemes';
 import coverOriginal from '../../imagens/1989cover.webp';
 import coverTV from '../../imagens/1989TV_Cover.webp';
+
+/** Página da era 1989 (2014) — tema praiano com gaivotas voando e estética polaroid */
 const NineteenEightyNine = () => {
     const [isTV, setIsTV] = useState(false);
     const [loaded, setLoaded] = useState(false);
@@ -12,6 +14,18 @@ const NineteenEightyNine = () => {
         const timer = setTimeout(() => setLoaded(true), 100);
         return () => clearTimeout(timer);
     }, []);
+
+    /**
+     * Efeito de gaivotas voando pela tela (mesmo padrão dos vagalumes da Debut)
+     * 
+     * Diferenças:
+     * - Gaivotas voam da esquerda (-5vw) até além da direita (110vw)
+     * - Só 3 por leva (menos que os 20 vagalumes) pra não poluir visualmente
+     * - Duração mais longa (15-25s) pra simular voo real
+     * 
+     * No cleanup, além de clearInterval, também removo todas as gaivotas
+     * que ainda estão no DOM pra não vazar elementos ao trocar de página
+     */
     useEffect(() => {
         let active = true;
         const launchSeagulls = () => {
@@ -42,13 +56,20 @@ const NineteenEightyNine = () => {
         return () => {
             active = false;
             clearInterval(interval);
+            // Limpeza extra: removo todas as gaivotas que ainda estão voando
             document.querySelectorAll('.seagull-fly').forEach(s => s.remove());
         };
     }, []);
     const audioRef = useRef(null);
     const tracklistRef = useRef(null);
     const timelineRef = useRef(null);
+    // Ref pro scroll horizontal dos clipes
     const clipScrollRef = useRef(null);
+    /**
+     * Scroll programático dos clipes
+     * offsetWidth retorna a largura visível do container (não do conteúdo total)
+     * Uso como scrollAmount pra scrollar exatamente uma "página" por clique
+     */
     const scrollClips = (dir) => {
         if (clipScrollRef.current) {
             const w = clipScrollRef.current.offsetWidth;
@@ -56,7 +77,9 @@ const NineteenEightyNine = () => {
         }
     };
     const [playingTrack, setPlayingTrack] = useState(null);
+    // previews guarda as URLs de preview do Spotify pra cada faixa
     const [previews, setPreviews] = useState({});
+    // Controla se o cofre (vault tracks) foi "aberto" pelo usuário
     const [vaultOpened, setVaultOpened] = useState(false);
     const secretMessageText = "We bEgan Looking for Clues Out of town, Mostly nEar The Ocean. Nobody Expected What You fOund in the daRK.";
     const [foundIndexes, setFoundIndexes] = useState([]);

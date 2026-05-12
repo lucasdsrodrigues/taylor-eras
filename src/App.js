@@ -1,8 +1,13 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+// Importo o React pra usar JSX
+import React from "react";
+// Importo o sistema de rotas do React Router pra navegar entre as páginas sem recarregar
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// Importo o Provider de autenticação que criei — ele envolve tudo pra compartilhar o estado de login
 import { AuthProvider } from "./context/AuthContext";
-import AuthModal from "./components/AuthModal/AuthModal";
+// Componente que rola a página pro topo ao trocar de rota
+import ScrollToTop from "./components/ScrollToTop";
 
+// Importo todas as páginas de cada era da Taylor Swift
 import Home from "./pages/Home";
 import Debut from "./pages/Debut";
 import Fearless from "./pages/Fearless";
@@ -16,32 +21,24 @@ import Evermore from "./pages/Evermore";
 import Midnights from "./pages/Midnights";
 import TTPD from "./pages/TTPD";
 import Showgirl from "./pages/Showgirl";
-import FearlessGallery from "./pages/Fearless/FearlessGallery";
 
-import PainelAvaliacoes from "./components/PainelAvaliacoes/PainelAvaliacoes";
-import PainelUsuario from "./components/PainelUsuario/PainelUsuario";
-
-function ScrollToTop() {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-  return null;
-}
-
+// Componente principal da aplicação — ele organiza todas as rotas e envolve tudo com o AuthProvider
 function App() {
   return (
+    // O AuthProvider garante que qualquer componente filho pode acessar os dados de login
     <AuthProvider>
-      <BrowserRouter>
+      {/* O Router gerencia a navegação entre páginas */}
+      <Router>
+        {/* ScrollToTop garante que ao trocar de página, o scroll volta pro topo */}
+        {/* Também limpa o fundo do body pra evitar o flash vermelho da página Red */}
         <ScrollToTop />
-        <AuthModal />
-        <PainelAvaliacoes />
-        <PainelUsuario />
+        {/* Aqui defino todas as rotas da aplicação — cada path leva pra uma era diferente */}
         <Routes>
+          {/* Página inicial com o carrossel de eras */}
           <Route path="/" element={<Home />} />
+          {/* Cada rota abaixo leva pra página individual de cada era */}
           <Route path="/debut" element={<Debut />} />
           <Route path="/fearless" element={<Fearless />} />
-          <Route path="/fearless-gallery" element={<FearlessGallery />} />
           <Route path="/speak-now" element={<SpeakNow />} />
           <Route path="/red" element={<Red />} />
           <Route path="/1989" element={<NineteenEightyNine />} />
@@ -53,9 +50,10 @@ function App() {
           <Route path="/ttpd" element={<TTPD />} />
           <Route path="/showgirl" element={<Showgirl />} />
         </Routes>
-      </BrowserRouter>
+      </Router>
     </AuthProvider>
   );
 }
 
+// Exporto o App pra ser usado no index.js
 export default App;

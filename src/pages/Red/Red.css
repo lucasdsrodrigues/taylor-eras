@@ -7,11 +7,9 @@
   --red-text: #f4f1ea;
 }
 
-html {
-  background: none !important;
-}
-
-body {
+/* ANTES: o gradiente estava no body, o que fazia a cor "vazar" pra outras páginas */
+/* AGORA: o gradiente está no container — só existe enquanto a página Red está ativa */
+.red-page-container {
   background: linear-gradient(180deg,
       #1a0202 0%,
       #2a0303 15%,
@@ -24,11 +22,6 @@ body {
       #e02020 96%,
       #ff2a2a 100%);
   background-attachment: fixed;
-  min-height: 100vh;
-}
-
-.red-page-container {
-  background: transparent;
   color: var(--red-text);
   min-height: 100vh;
   font-family: 'Prata', serif;
@@ -62,6 +55,8 @@ body {
   opacity: 0.25;
   pointer-events: none;
   z-index: 1;
+  /* mix-blend-mode: multiply escurece a imagem misturando com o fundo */
+  /* Diferente de overlay: multiply sempre escurece, nunca clareia */
   mix-blend-mode: multiply;
 }
 
@@ -438,6 +433,7 @@ body {
   letter-spacing: 2px;
 }
 
+/* Disco de vinil girando */
 .red-vinyl-record {
   position: absolute;
   top: 5%;
@@ -448,6 +444,8 @@ body {
   border-radius: 50%;
   z-index: 2;
   box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.5);
+  /* repeating-radial-gradient cria "sulcos" do vinil */
+  /* Repete a cada 4px: 1px visível + 3px transparente = linhas circulares finas */
   background-image: repeating-radial-gradient(rgba(255, 255, 255, 0.05) 0px,
       transparent 1px,
       transparent 4px);
@@ -455,6 +453,7 @@ body {
   align-items: center;
   justify-content: center;
   animation: spinVinyl 20s linear infinite;
+  /* cubic-bezier com overshoot (1.275 > 1) = o vinil "quica" ao aparecer */
   transition: right 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 

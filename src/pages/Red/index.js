@@ -9,6 +9,10 @@ import red2 from '../../imagens/red2.webp';
 import redSF from '../../imagens/red-sf.png';
 
 
+// Tracklist completa do Red — cada faixa tem flags que controlam visibilidade:
+// isOG: aparece na versão original | isTV: aparece na Taylor's Version
+// vault: é faixa inédita do cofre | single: foi lançada como single
+// Essa estrutura evita duplicar listas — uma única lista serve as duas versões
 const redTracks = [
     { id: 1, title: "State of Grace", duration: "4:55", isTV: true, isOG: true, vault: false },
     { id: 2, title: "Red", duration: "3:43", isTV: true, isOG: true, vault: false, single: true },
@@ -42,6 +46,7 @@ const redTracks = [
     { id: 30, title: "All Too Well (10 Minute Version)", duration: "10:13", isTV: true, isOG: false, vault: true, single: true },
 ];
 
+// Clipes musicais — o 'id' é o ID do YouTube, usado pra montar a URL do embed
 const redMusicVideos = [
     { title: "We Are Never Ever Getting Back Together", desc: "O início de uma revolução pop", id: "WA4iX5D9Z64" },
     { title: "Begin Again", desc: "Um recomeço em Paris", id: "cMPEd8m79Hw" },
@@ -54,9 +59,13 @@ const redMusicVideos = [
     { title: "All Too Well: The Short Film", desc: "10 minutos de cinema puro", id: "tollGa3S0o8" },
 ];
 
+/** Página da era Red (2012) — com toggle Original/TV e player de áudio */
 const Red = () => {
+    // Toggle entre versão original e Taylor's Version
     const [isTV, setIsTV] = useState(false);
+    // Ref pro elemento <audio> HTML — permite controlar play/pause via JavaScript
     const audioRef = useRef(null);
+    // Qual faixa tá tocando no momento (null = nenhuma)
     const [playingTrack, setPlayingTrack] = useState(null);
     const [showTopBtn, setShowTopBtn] = useState(false);
     const tracklistRef = useRef(null);

@@ -3,8 +3,13 @@ import { Link } from 'react-router-dom';
 import './ttpd.css';
 import RatingSection from '../../components/RatingSection/RatingSection';
 import { eraThemes } from '../../utils/eraThemes';
+
+// URLs das capas — hospedadas externamente (wiki) pra não pesar o bundle
 const COVER = "https://static.wikia.nocookie.net/taylor-swift/images/e/ef/The_Tortured_Poets_Department.jpeg/revision/latest/scale-to-width-down/1000?cb=20240405141714";
 const ANTHOLOGY_COVER = "https://static.wikia.nocookie.net/taylor-swift/images/8/83/THE_TORTURED_POETS_DEPARTMENT_-_THE_ANTHOLOGY.jpg/revision/latest/scale-to-width-down/1000?cb=20241007031035";
+
+// Tracklist com letras embutidas — cada faixa tem um trecho de lyrics pra exibir na UI
+// Decisão: guardar letras aqui (não em API) porque são estáticas e não mudam
 const TRACKS_TTPD = [
     { id: 1, title: "Fortnight", feat: "feat. Post Malone", single: true, lyrics: "I was a functioning alcoholic 'til nobody noticed my new aesthetic\nAll of this to say, I hope you're okay\nBut you're the reason\nAnd no one here's to blame\nBut what about your quiet treason?" },
     { id: 2, title: "The Tortured Poets Department", lyrics: "You left your typewriter at my apartment\nStraight from the Tortured Poets Department\nI think some things I never say\nLike, 'Who uses typewriters anyway?'" },

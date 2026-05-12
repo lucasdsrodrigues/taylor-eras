@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+// Link é do React Router — substitui o <a> pra navegar sem recarregar a página
 import { Link } from 'react-router-dom';
 import './Debut.css';
+// RatingSection é o componente reutilizável de avaliação que aparece em toda era
 import RatingSection from '../../components/RatingSection/RatingSection';
+// eraThemes traz as cores e nomes de cada era (definidos em utils/eraThemes.js)
 import { eraThemes } from '../../utils/eraThemes';
 import imgTimMcGraw from '../../imagens/tim-mcgraw.webp';
 import imgTeardrops from '../../imagens/teardrops.jpg';
@@ -28,14 +31,42 @@ import shoot17 from '../../imagens/shoot17.webp';
 import shoot18 from '../../imagens/shoot18.webp';
 import shoot19 from '../../imagens/shoot19.webp';
 import shoot20 from '../../imagens/shoot20.webp';
+/**
+ * Página da era Debut (Taylor Swift, 2006)
+ * Tema visual: country, natureza, vagalumes, papéis e polaroids
+ */
 const Debut = () => {
+  // Easter egg: ao clicar no badge da era, o texto muda de "AUTOTITULADA" pra "MÁGICA"
   const [easterEggAtivo, setEasterEggAtivo] = useState(false);
+  // Controla se a galeria de fotos (polaroids) tá aberta ou fechada
   const [galeriaAberta, setGaleriaAberta] = useState(false);
+  // Flag pra animação de entrada — fica true após 100ms pra suavizar o carregamento
   const [loaded, setLoaded] = useState(false);
+
+  // Ativa a flag de loaded após 100ms — o CSS usa essa classe pra animar a entrada
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 100);
+    // Cleanup: cancelo o timer se o componente desmontar antes dos 100ms
     return () => clearTimeout(timer);
   }, []);
+
+  /**
+   * Efeito de vagalumes (fireflies) flutuando pela tela
+   * 
+   * COMO FUNCIONA:
+   * - document.createElement('div') cria um elemento DOM programaticamente
+   * - element.animate() usa a Web Animations API (alternativa moderna ao CSS animations)
+   *   Vantagem: posso gerar valores aleatórios por partícula (cada vagalume é único)
+   * - animation.onfinish remove o elemento do DOM quando a animação acaba (evita acúmulo)
+   * 
+   * POR QUE a flag 'active':
+   * Sem ela, se o usuário sair da página rápido, os setTimeouts continuariam criando
+   * elementos no body mesmo com o componente desmontado = memory leak e bugs visuais
+   * O cleanup (return) seta active = false e para tudo
+   * 
+   * AVISO: document.body.contains() verifica se o elemento ainda tá no DOM
+   * antes de tentar removê-lo — sem isso, pode dar erro se o body já foi limpo
+   */
   useEffect(() => {
     let active = true;
     const launchNatureEffects = () => {
@@ -49,11 +80,15 @@ const Debut = () => {
           element.className = 'nature-firefly';
           element.style.left = (Math.random() * 100) + 'vw';
           element.style.top = (Math.random() * 100) + 'vh';
+          // Math.floor() arredonda pra baixo — Math.random() * colors.length dá um float,
+          // e preciso de um índice inteiro pra acessar o array
           element.style.background = colors[Math.floor(Math.random() * colors.length)];
           const size = Math.random() * 4 + 2 + 'px';
           element.style.width = size;
           element.style.height = size;
           document.body.appendChild(element);
+          // Web Animations API: defino os keyframes inline em vez de usar @keyframes no CSS
+          // offset: 0.5 = meio da animação (onde o vagalume fica mais brilhante)
           const animation = element.animate([
             { transform: 'translate(0, 0)', opacity: 0 },
             { opacity: Math.random() * 0.8 + 0.5, offset: 0.5 },
@@ -65,6 +100,7 @@ const Debut = () => {
     };
     // eslint-disable-next-line no-loop-func
     launchNatureEffects();
+    // Relança os vagalumes a cada 8 segundos pra manter o efeito contínuo
     const interval = setInterval(() => {
       launchNatureEffects();
     }, 8000);
@@ -73,6 +109,7 @@ const Debut = () => {
       clearInterval(interval);
     };
   }, []);
+  // Clipes musicais da era Debut — cada um abre no YouTube em nova aba
   const musicVideos = [
     { titulo: "Tim McGraw", ano: "2006", diretor: "Trey Fanjoy", thumb: imgTimMcGraw, url: "https://www.youtube.com/watch?v=GkD20ajVxnY" },
     { titulo: "Teardrops On My Guitar", ano: "2007", diretor: "Trey Fanjoy", thumb: imgTeardrops, url: "https://www.youtube.com/watch?v=xKCek6ndSA0" },
@@ -80,6 +117,8 @@ const Debut = () => {
     { titulo: "Picture To Burn", ano: "2008", diretor: "Trey Fanjoy", thumb: imgPictureToBurn, url: "https://www.youtube.com/watch?v=yBCP26Ti6nY" },
     { titulo: "Should've Said No", ano: "2008", diretor: "ACM Awards", thumb: imgShouldveSaidNo, url: "https://www.youtube.com/watch?v=mE9O9uY_kRk" }
   ];
+  // Fotos do photoshoot 2006 — cada uma tem uma rotação (rot) pra efeito polaroid
+  // A variável CSS --r aplica a rotação no transform: rotate(var(--r))
   const photoshootImages = [
     { src: shoot1, rot: "-2deg", text: "He said the way my blue eyes shined" },
     { src: shoot2, rot: "3deg", text: "When you think Tim McGraw" },
@@ -102,6 +141,8 @@ const Debut = () => {
     { src: shoot19, rot: "2deg", text: "Friday night beneath the stars" },
     { src: shoot20, rot: "-2deg", text: "It's the first time for everything" }
   ];
+  // Lista de músicas do álbum — usada tanto nos "papéis" visuais quanto no RatingSection
+  // As letras maiúsculas misturadas nas notas formam mensagens secretas (easter eggs da Taylor)
   const trilhasCompletas = [
     { no: "01", titulo: "Tim McGraw", tema: "Nostalgia", nota: "Escrita na aula de mAtEMática.", rot: "-2deg" },
     { no: "02", titulo: "Picture To Burn", tema: "Vingança", nota: "QUeimei as fotos.", rot: "3deg" },
@@ -116,7 +157,10 @@ const Debut = () => {
     { no: "11", titulo: "Our Song", tema: "Amor Jovem", nota: "MúsiCa do show de talentos.", rot: "-2deg" }
   ];
   return (
+    // Template literal com condicionais: adiciona classes CSS baseado no estado
+    // 'show-secret' ativa estilos do easter egg, 'debut-loaded' ativa animações de entrada
     <div className={`debut-ultra-archive ${easterEggAtivo ? 'show-secret' : ''} ${loaded ? 'debut-loaded' : ''}`}>
+      {/* Overlay de textura granulada pra dar sensação vintage */}
       <div className="grain-overlay"></div>
       <div className="debut-texture-overlay"></div>
       <svg className="debut-slither-bg debut-slither-bg--left" viewBox="0 0 200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -166,8 +210,13 @@ const Debut = () => {
           </linearGradient>
         </defs>
       </svg>
+      {/* Galeria de fotos (modal) — só renderiza se galeriaAberta === true */}
+      {/* Renderização condicional com && — o React só monta o componente quando a condição é true */}
       {galeriaAberta && (
+        // Clicar no overlay escuro fecha a galeria
         <div className="photo-overlay" onClick={() => setGaleriaAberta(false)}>
+          {/* e.stopPropagation() impede que o clique dentro do conteúdo feche a galeria */}
+          {/* Sem isso, clicar em qualquer foto fecharia o modal porque o evento "sobe" pro pai */}
           <div className="photo-content" onClick={e => e.stopPropagation()}>
             <button className="close-gallery-top" onClick={() => setGaleriaAberta(false)}>VOLTAR PARA O ÁLBUM ×</button>
             <h2 className="glitter-title" style={{ fontSize: '3.5rem', marginTop: '40px' }}>THE 2006 SESSIONS</h2>
@@ -368,6 +417,8 @@ const Debut = () => {
           </div>
         </div>
       </section>
+      {/* Seção de avaliação — passo a era, as tracks e o tema visual */}
+      {/* O RatingSection usa esses dados pra listar as músicas e enviar notas pro backend */}
       <RatingSection era="debut" tracks={trilhasCompletas} theme={eraThemes.debut} />
       <footer className="db-footer">
         <div className="db-footer-inner">

@@ -1,19 +1,30 @@
+/* Container da seção do carrossel */
 .eras-section {
   position: relative;
   padding: 120px 0 160px;
+  /* overflow-x: hidden esconde os slides que saem pela lateral */
+  /* overflow-y: visible permite que sombras/glows vazem pra cima/baixo */
   overflow-x: hidden;
   overflow-y: visible;
   z-index: 5;
   transition: background 0.8s ease;
+  background: #0a0a0f;
 }
 
+/* Overlay de cor da era que aparece atrás do carrossel */
 .eras-section-bg-overlay {
   position: absolute;
+  /* inset: 0 é atalho pra top:0 right:0 bottom:0 left:0 — cobre o pai inteiro */
   inset: 0;
+  /* color-mix() mistura a cor da era com transparente — resultado: brilho sutil de 12% */
+  /* É uma função CSS moderna que substitui rgba() quando se quer misturar cores dinâmicas */
+  /* var(--section-era-color, #fff) = usa a cor da era, ou branco como fallback */
   background: radial-gradient(ellipse at center 60%,
       color-mix(in srgb, var(--section-era-color, #fff) 12%, transparent),
       transparent 70%);
+  /* cubic-bezier personalizado: começa devagar, acelera no meio, desacelera no fim */
   transition: background 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* pointer-events: none faz o overlay ignorar cliques — eles "passam" pro carrossel */
   pointer-events: none;
   z-index: 0;
 }
@@ -28,32 +39,48 @@
   z-index: 1;
 }
 
+/* Track = trilha que contém todos os slides em linha horizontal */
 .carousel-track {
   display: flex;
   align-items: center;
   height: 100%;
   gap: 28px;
   transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* will-change avisa o navegador que esse elemento VAI ser animado */
+  /* Isso faz o browser criar uma camada GPU separada = animação mais fluida */
+  /* AVISO: usar em excesso consome mais memória — só usar onde realmente anima */
   will-change: transform;
 }
 
+/* Cada slide/card de era */
 .carousel-slide {
+  /* Variáveis CSS que o JavaScript altera em tempo real (efeito tilt 3D) */
   --tilt-x: 0deg;
   --tilt-y: 0deg;
+  /* Variável do parallax — o JS muda esse valor baseado na distância do slide ativo */
   --parallax-bg: 0px;
   min-width: 300px;
   height: 380px;
   background-size: cover;
+  /* calc() permite matemática no CSS — aqui desloco o background pelo valor do parallax */
+  /* 50% é o centro, + var(--parallax-bg) move lateralmente */
   background-position: calc(50% + var(--parallax-bg)) center;
   position: relative;
+  /* flex-shrink: 0 impede que o flex encolha os slides — sem isso, ficariam espremidos */
   flex-shrink: 0;
   border-radius: 22px;
   overflow: hidden;
   opacity: 0.45;
+  /* perspective(800px) cria profundidade 3D — quanto menor, mais dramático o efeito */
+  /* rotateX/Y são controlados pelo JS via --tilt-x e --tilt-y (efeito magnético) */
   transform: scale(0.82) perspective(800px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  /* saturate(0.6) dessatura as cores — slides inativos ficam mais "apagados" */
   filter: saturate(0.6);
+  /* transform-origin: center bottom faz o scale "crescer" a partir da base */
   transform-origin: center bottom;
+  /* preserve-3d mantém o contexto 3D nos filhos do slide (necessário pro tilt funcionar) */
   transform-style: preserve-3d;
+  /* Transição de múltiplas propriedades — cada uma anima separadamente */
   transition:
     transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
@@ -74,12 +101,14 @@
   z-index: 1;
 }
 
+/* Conteúdo de texto dentro de cada slide (título + frase) */
 .era-content {
   --parallax-text: 0px;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
+  /* O texto se desloca na direção oposta ao background = reforça sensação 3D */
   transform: translateX(var(--parallax-text));
   z-index: 2;
   text-align: center;
@@ -91,6 +120,9 @@
       rgba(0, 0, 0, 0.75) 0%,
       rgba(0, 0, 0, 0.45) 55%,
       transparent 100%);
+  /* backdrop-filter: blur() desfoca o que tá ATRÁS do elemento (efeito glassmorphism) */
+  /* Diferente de filter:blur() que desfoca o próprio elemento */
+  /* -webkit- é necessário pro Safari */
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   transition:
@@ -137,9 +169,13 @@
   opacity: 0.9;
 }
 
+/* Sistema de profundidade: .far → .near → .active */
+/* Cada nível tem opacidade, escala, saturação e blur diferentes */
+/* Isso cria a ilusão de profundidade no carrossel */
 .carousel-slide.far {
   opacity: 0.35;
   transform: scale(0.78) perspective(800px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  /* blur(3px) desfoca os slides distantes — efeito de profundidade de campo (DOF) */
   filter: saturate(0.5) blur(3px);
   z-index: 2;
 }
@@ -157,31 +193,37 @@
   filter: saturate(1) blur(0px);
   z-index: 5;
   --active-era-color: var(--era-color);
+  /* animation: glowPulse = brilho pulsante infinito na borda do slide ativo */
   animation: glowPulse 3s ease-in-out infinite;
 }
 
 .carousel-slide.active:hover {
+  /* Scale 1.02 = zoom sutil no hover (2% maior) — feedback visual de que é clicável */
   transform: scale(1.02) perspective(800px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
 }
 
+/* Animação de brilho pulsante — o glow expande e contrai suavemente */
+/* Usa 3 box-shadows empilhados: borda sólida + glow difuso + sombra de profundidade */
 @keyframes glowPulse {
 
   0%,
   100% {
     box-shadow:
-      0 0 0 3px var(--era-color),
-      0 0 90px 35px color-mix(in srgb, var(--era-color) 55%, transparent),
-      0 45px 90px rgba(0, 0, 0, 0.65);
+      0 0 0 3px var(--era-color),               /* borda fina na cor da era */
+      0 0 90px 35px color-mix(in srgb, var(--era-color) 55%, transparent),  /* glow menor */
+      0 45px 90px rgba(0, 0, 0, 0.65);           /* sombra de elevação */
   }
 
   50% {
     box-shadow:
       0 0 0 3px var(--era-color),
-      0 0 115px 48px color-mix(in srgb, var(--era-color) 65%, transparent),
+      0 0 115px 48px color-mix(in srgb, var(--era-color) 65%, transparent), /* glow expandido */
       0 45px 90px rgba(0, 0, 0, 0.65);
   }
 }
 
+/* Efeito visual de "pressionando" — scale menor + transição rápida (0.1s) */
+/* !important é necessário porque precisa sobrescrever o transform do .active */
 .carousel-slide.pressing {
   transform: scale(0.97) perspective(800px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) !important;
   transition: transform 0.1s ease !important;
@@ -197,17 +239,23 @@
   z-index: 10;
 }
 
+/* Botões de navegação ‹ › */
 .prev,
 .next {
+  /* all: unset remove TODOS os estilos padrão do button (borda, fundo, padding, outline) */
+  /* Sem isso, o <button> teria a aparência padrão do navegador */
   all: unset;
   width: 54px;
   height: 54px;
   border-radius: 50%;
   cursor: pointer;
   display: grid;
+  /* place-items: center = atalho pra align-items:center + justify-items:center */
+  /* Centraliza o conteúdo (‹ ou ›) perfeitamente no grid */
   place-items: center;
   font-size: 1.6rem;
   color: var(--active-era-color);
+  /* Gradiente radial que usa a cor da era ativa — muda dinamicamente */
   background:
     radial-gradient(circle at top,
       color-mix(in srgb, var(--active-era-color) 45%, transparent),
@@ -271,6 +319,11 @@ body.dark .carousel-slide.active {
     0 0 120px 40px color-mix(in srgb, var(--era-color) 40%, transparent);
 }
 
+/* ===== CORES DE CADA ERA =====
+ * Cada classe define --era-color como variável CSS local
+ * O CSS inteiro usa var(--era-color) pra colorir glows, bordas, sombras e botões
+ * Isso permite que UM ÚNICO CSS sirva pra 12 eras diferentes — só mudando a variável
+ */
 .era-debut {
   --era-color: #6aebb4;
 }

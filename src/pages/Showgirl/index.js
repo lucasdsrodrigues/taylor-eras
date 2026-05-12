@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 import './showgirl.css';
 import RatingSection from '../../components/RatingSection/RatingSection';
 import { eraThemes } from '../../utils/eraThemes';
+
+// URL da capa do álbum — hospedada externamente
 const COVER = "https://static.wikia.nocookie.net/taylor-swift/images/a/a6/The_Life_of_a_Showgirl_-_The_Crowd_is_Your_King.jpeg/revision/latest/scale-to-width-down/1000?cb=20250924184239";
+
+// Tracklist — 12 faixas com duração e flags de single
 const TRACKS = [
     { id: 1,  title: "The Fate of Ophelia",  time: "3:46", single: true },
     { id: 2,  title: "Elizabeth Taylor",      time: "3:28", single: true },
@@ -18,6 +22,9 @@ const TRACKS = [
     { id: 11, title: "Honey",                time: "3:01" },
     { id: 12, title: "The Life of a Showgirl", time: "3:48", feat: "feat. Sabrina Carpenter" },
 ];
+
+// Clipes musicais — URLs de embed do YouTube com parâmetros de qualidade
+// rel=0 desativa vídeos relacionados, modestbranding=1 esconde o logo do YouTube
 const MVS = [
     { title: "The Fate of Ophelia", url: "https://www.youtube.com/embed/ko70cExuzZM?rel=0&modestbranding=1&hd=1&vq=hd1080", thumb: "https://img.youtube.com/vi/ko70cExuzZM/hqdefault.jpg" },
     { title: "Opalite",             url: "https://www.youtube.com/embed/1FVF-9KQiPo?rel=0&modestbranding=1&hd=1&vq=hd1080", thumb: "https://img.youtube.com/vi/1FVF-9KQiPo/hqdefault.jpg" },

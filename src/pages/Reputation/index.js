@@ -4,6 +4,8 @@ import './Reputation.css';
 import RatingSection from '../../components/RatingSection/RatingSection';
 import { eraThemes } from '../../utils/eraThemes';
 import reputationcover from '../../imagens/reputationcover.webp';
+
+// Hook reutilizável de IntersectionObserver (mesmo padrão da SpeakNow)
 const useInView = (options = {}) => {
     const ref = useRef(null);
     const [inView, setInView] = useState(false);
@@ -19,11 +21,14 @@ const useInView = (options = {}) => {
     }, []);
     return [ref, inView];
 };
+
+/** Página da era Reputation (2017) — tema sombrio, cobras e estética glitch */
 const Reputation = () => {
     const [loaded, setLoaded] = useState(false);
     const [playingTrack, setPlayingTrack] = useState(null);
     const audioRef = useRef(null);
     const [tracklistRef, tracklistInView] = useInView();
+    // Índice do clipe musical ativo no player de vídeo
     const [activeMv, setActiveMv] = useState(0);
     const musicVideos = [
         {

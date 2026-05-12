@@ -1,14 +1,19 @@
+/* Overlay escuro do modal — cobre a tela inteira */
 .auth-modal-overlay {
+  /* position: fixed = fica fixo na tela mesmo ao scrollar */
   position: fixed;
   top: 0;
   left: 0;
+  /* 100vw/vh = 100% da viewport (largura/altura visível da janela) */
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.7);
+  /* backdrop-filter: blur(8px) desfoca o conteúdo ATRÁS do overlay */
   backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
+  /* z-index alto garante que o modal fique ACIMA de tudo */
   z-index: 9999;
   animation: fadeIn 0.3s ease-out;
 }
@@ -63,6 +68,8 @@
   color: #fff;
 }
 
+/* ::after cria a linha indicadora embaixo da tab ativa */
+/* bottom: -1px faz sobrepor a border-bottom do header */
 .auth-tab.active::after {
   content: '';
   position: absolute;
@@ -134,6 +141,8 @@
   transition: transform 0.2s, background 0.2s;
 }
 
+/* :hover:not(:disabled) = só aplica hover se NÃO estiver desabilitado */
+/* Sem isso, o botão desabilitado teria efeito de hover (confuso pro usuário) */
 .auth-submit-btn:hover:not(:disabled) {
   transform: translateY(-2px);
   background: #eee;

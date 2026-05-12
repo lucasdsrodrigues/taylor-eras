@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './SpeakNow.css';
 import RatingSection from '../../components/RatingSection/RatingSection';
 import { eraThemes } from '../../utils/eraThemes';
+
 import speakNowCover from '../../imagens/speak-now-album.png';
 import speakNowTVCover from '../../imagens/speak-now-tv.webp';
 import taylorStoryImg from '../../imagens/speaknow1.jpg';
@@ -27,6 +28,16 @@ import sn17 from '../../imagens/sn17.webp';
 import sn18 from '../../imagens/sn18.webp';
 import sn19 from '../../imagens/sn19.webp';
 import sn20 from '../../imagens/sn20.webp';
+/**
+ * Hook customizado useInView — detecta quando um elemento entra na viewport
+ * 
+ * POR QUE criei um hook separado em vez de repetir o IntersectionObserver em cada seção:
+ * A página SpeakNow tem várias seções animáveis. Sem esse hook, eu teria que
+ * copiar o mesmo código do observer 5+ vezes. Com o hook, é só chamar useInView()
+ * e ele retorna [ref, inView] — ref pra colocar no elemento e inView pra saber se tá visível
+ * 
+ * @returns {Array} [ref, inView] — ref pra atribuir ao elemento, inView (boolean)
+ */
 const useInView = (options = {}) => {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
@@ -42,18 +53,26 @@ const useInView = (options = {}) => {
   }, []);
   return [ref, inView];
 };
+
+/** Página da era Speak Now (2010) — tem toggle entre Original e Taylor's Version */
 const SpeakNow = () => {
+  // Toggle Original vs Taylor's Version
   const [isTV, setIsTV] = useState(false);
+  // Página ativa da galeria de fotos (paginação interna)
   const [activePage, setActivePage] = useState(0);
+  // Controle de preview de áudio: qual faixa tá tocando
   const [playingTrack, setPlayingTrack] = useState(null);
+  // Ref pro elemento <audio> HTML — uso pra controlar play/pause programaticamente
   const audioRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 100);
     return () => clearTimeout(timer);
   }, []);
+  // Refs pra scroll horizontal de seções
   const tourScrollRef = useRef(null);
   const photoScrollRef = useRef(null);
+  // Cada seção tem seu próprio observer via useInView pra animar independentemente
   const [storyRef, storyInView] = useInView();
   const [tracklistRef, tracklistInView] = useInView();
   const [tourRef, tourInView] = useInView();

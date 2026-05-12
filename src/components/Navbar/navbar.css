@@ -37,6 +37,8 @@
     position: relative;
 }
 
+/* Efeito de underline animado nos links de navegação */
+/* ::after cria uma linha invisivel (width:0) que cresce no hover (width:100%) */
 .nav-links a::after {
     content: "";
     position: absolute;
@@ -45,6 +47,7 @@
     width: 0;
     height: 2px;
     background: #6c5ce7;
+    /* Anima só a largura — cria efeito de "sublinhado deslizante" */
     transition: width 0.3s ease;
 }
 
@@ -54,6 +57,8 @@
 
 .nav-cta {
     padding: 10px 18px;
+    /* border-radius: 999px = "pílula" — arredonda completamente as bordas */
+    /* 999px funciona porque nunca será menor que metade da altura */
     border-radius: 999px;
     background: linear-gradient(90deg, #a8d8ff, #ffb6c1);
     color: #2e2e2e;

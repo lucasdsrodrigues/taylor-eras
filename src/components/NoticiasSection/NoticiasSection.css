@@ -2,7 +2,7 @@
   position: relative;
   z-index: 2;
   padding: 120px 5%;
-  background: linear-gradient(180deg, #0a0a0f 0%, #0e0d17 50%, #0a0a0f 100%);
+  background: #0a0a0f;
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 1s ease, transform 1s ease;
@@ -82,11 +82,13 @@
   background: rgba(240, 236, 230, 0.05);
 }
 
+/* Botão de filtro ativo — usa a cor da categoria como fundo */
 .noticias-filtro-btn.ativo {
   background: var(--filtro-cor);
   border-color: var(--filtro-cor);
   color: #0a0a0f;
   font-weight: 600;
+  /* color-mix() cria uma sombra colorida com 30% da cor do filtro */
   box-shadow: 0 4px 20px color-mix(in srgb, var(--filtro-cor) 30%, transparent);
 }
 
@@ -95,9 +97,13 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+  /* align-items: start = cada card tem sua própria altura */
+  /* Sem isso, o Grid usa 'stretch' e todos os cards da linha ficam com a mesma altura */
+  align-items: start;
 }
 
 /* === CARD === */
+/* Card de notícia */
 .noticia-card {
   background: rgba(240, 236, 230, 0.025);
   border: 1px solid rgba(240, 236, 230, 0.06);
@@ -106,7 +112,9 @@
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   opacity: 0;
   transform: translateY(20px);
+  /* forwards = mantém o estado final (opacity:1) após a animação terminar */
   animation: noticiaFadeIn 0.6s ease forwards;
+  /* --card-delay é definido inline pelo React = cada card aparece em sequência (stagger) */
   animation-delay: var(--card-delay, 0s);
 }
 
@@ -135,8 +143,11 @@
 .noticia-img {
   width: 100%;
   height: 100%;
+  /* object-fit: cover faz a imagem preencher o container sem distorcer */
+  /* A imagem é cortada (cropped) pra manter a proporção, similar a background-size: cover */
   object-fit: cover;
   transition: transform 0.6s ease;
+  /* filter: brightness + saturate ajusta brilho e saturação da imagem */
   filter: brightness(0.85) saturate(0.9);
 }
 
@@ -207,6 +218,12 @@
   line-height: 1.7;
   color: rgba(240, 236, 230, 0.45);
   margin: 0;
+  /* Limita o texto a 3 linhas — trunca com "..." se for maior */
+  /* Isso garante que todos os cards tenham a mesma altura base */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* === BADGE PHP === */
@@ -254,6 +271,8 @@
   color: rgba(240, 236, 230, 0.4);
 }
 
+/* Spinner de loading — truque clássico: círculo com borda, mas só uma borda colorida */
+/* border-top-color diferente das outras = cria o efeito de "arco girando" */
 .noticias-spinner {
   width: 36px;
   height: 36px;
@@ -323,4 +342,263 @@
     padding: 6px 14px;
     font-size: 0.7rem;
   }
+}
+
+/* ===== BARRA DE AÇÕES (Curtir, Comentar, Salvar) ===== */
+.noticia-acoes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(240, 236, 230, 0.06);
+}
+
+/* Botão genérico de ação */
+.noticia-acao-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(240, 236, 230, 0.04);
+  border: 1px solid rgba(240, 236, 230, 0.08);
+  border-radius: 20px;
+  padding: 6px 12px;
+  color: rgba(240, 236, 230, 0.5);
+  font-size: 0.75rem;
+  cursor: pointer;
+  /* cubic-bezier com overshoot pra micro-animação de "bounce" */
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: 'Inter', sans-serif;
+}
+
+.noticia-acao-btn:hover:not(:disabled) {
+  background: rgba(240, 236, 230, 0.08);
+  border-color: rgba(240, 236, 230, 0.15);
+  transform: translateY(-1px);
+}
+
+/* Botão desabilitado (não logado) */
+.noticia-acao-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Ícone do botão — cresce no hover */
+.acao-icon {
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
+}
+
+.noticia-acao-btn:hover:not(:disabled) .acao-icon {
+  transform: scale(1.2);
+}
+
+/* Contador de likes/comentários */
+.acao-count {
+  font-weight: 600;
+  font-size: 0.7rem;
+  min-width: 10px;
+  text-align: center;
+}
+
+/* Estado CURTIDO — muda borda e fundo */
+.noticia-acao-btn.curtido {
+  background: rgba(255, 100, 100, 0.1);
+  border-color: rgba(255, 100, 100, 0.3);
+  color: #ff6b6b;
+}
+
+.noticia-acao-btn.curtido .acao-icon {
+  /* Animação de "pulse" ao curtir */
+  animation: curtirPulse 0.4s ease;
+}
+
+@keyframes curtirPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+/* Estado SALVO — cor de destaque */
+.noticia-acao-btn.salvo {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: rgba(168, 85, 247, 0.3);
+  color: #a855f7;
+}
+
+/* Botão de comentário ativo (seção aberta) */
+.noticia-acao-btn.ativo {
+  background: rgba(123, 138, 255, 0.1);
+  border-color: rgba(123, 138, 255, 0.3);
+  color: #7b8aff;
+}
+
+/* Empurra o botão salvar pra direita */
+.noticia-acao-btn:last-child {
+  margin-left: auto;
+}
+
+/* ===== SEÇÃO DE COMENTÁRIOS ===== */
+.noticia-comentarios {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(240, 236, 230, 0.06);
+  /* Animação de entrada suave */
+  animation: comentarioSlideIn 0.3s ease;
+}
+
+@keyframes comentarioSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 500px;
+  }
+}
+
+/* Lista de comentários existentes */
+.comentarios-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  /* scrollbar estilizada */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(240, 236, 230, 0.1) transparent;
+}
+
+/* Cada comentário individual */
+.comentario-item {
+  padding: 8px 10px;
+  background: rgba(240, 236, 230, 0.03);
+  border-radius: 8px;
+  border-left: 2px solid rgba(168, 85, 247, 0.3);
+}
+
+.comentario-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.comentario-autor {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #a855f7;
+  letter-spacing: 0.3px;
+}
+
+/* Agrupa a data e o botão de excluir à direita */
+.comentario-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.comentario-data {
+  font-size: 0.6rem;
+  color: rgba(240, 236, 230, 0.3);
+}
+
+/* Botão de excluir comentário — só aparece nos comentários do próprio usuário */
+.comentario-delete-btn {
+  background: none;
+  border: none;
+  color: rgba(240, 236, 230, 0.25);
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.comentario-delete-btn:hover {
+  color: #ff6b6b;
+  background: rgba(255, 100, 100, 0.1);
+}
+
+.comentario-texto {
+  font-size: 0.8rem;
+  color: rgba(240, 236, 230, 0.7);
+  margin: 0;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* Mensagem quando não tem comentários */
+.comentarios-vazio {
+  font-size: 0.75rem;
+  color: rgba(240, 236, 230, 0.3);
+  text-align: center;
+  font-style: italic;
+  margin: 8px 0;
+}
+
+/* Formulário pra escrever comentário */
+.comentario-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.comentario-input {
+  flex: 1;
+  background: rgba(240, 236, 230, 0.05);
+  border: 1px solid rgba(240, 236, 230, 0.1);
+  border-radius: 20px;
+  padding: 8px 14px;
+  color: #f0ece6;
+  font-size: 0.78rem;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.comentario-input:focus {
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.comentario-input::placeholder {
+  color: rgba(240, 236, 230, 0.25);
+}
+
+.comentario-enviar {
+  background: rgba(168, 85, 247, 0.2);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 20px;
+  padding: 8px 16px;
+  color: #a855f7;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+}
+
+.comentario-enviar:hover:not(:disabled) {
+  background: rgba(168, 85, 247, 0.35);
+  transform: translateY(-1px);
+}
+
+.comentario-enviar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Mensagem pedindo login pra comentar */
+.comentarios-login-msg {
+  font-size: 0.72rem;
+  color: rgba(240, 236, 230, 0.3);
+  text-align: center;
+  margin: 8px 0 0;
+  font-style: italic;
 }

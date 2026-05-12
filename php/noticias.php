@@ -7,14 +7,21 @@
  * Rodar com: php -S localhost:3002
  */
 
-// Permite que o React (porta 3000) acesse essa API
+// ===== HEADERS CORS (Cross-Origin Resource Sharing) =====
+// POR QUE preciso disso:
+// O React roda em localhost:3000 e esse PHP roda em localhost:3002
+// Por padrão, o navegador BLOQUEIA requisições entre origens diferentes (política de segurança)
+// Esses headers dizem ao navegador: "pode deixar o React acessar essa API"
+// AVISO: '*' permite QUALQUER origem — em produção, trocar pelo domínio específico
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
+// charset=UTF-8 garante que acentos e caracteres especiais (ç, ã, é) funcionem
 header('Content-Type: application/json; charset=UTF-8');
 
-// === BANCO DE NOTÍCIAS ===
-// Em produção, isso viria de um banco de dados MySQL/PostgreSQL
-// Por enquanto, usamos um array PHP como fonte de dados
+// ===== BANCO DE NOTÍCIAS =====
+// Decisão: uso um array PHP hardcoded em vez de banco de dados
+// porque é um projeto educacional e não precisa de persistência.
+// Em produção, isso seria uma consulta SQL (ex: SELECT * FROM noticias)
 
 $noticias = [
     [
@@ -79,18 +86,30 @@ $noticias = [
     ],
 ];
 
-// === FILTROS (via query string) ===
-// Exemplo: ?categoria=Tour  ou  ?limite=3
+// ===== FILTROS (via query string) =====
+// O frontend envia parâmetros na URL: ?categoria=Tour ou ?limite=3
+// $_GET é um array superglobal do PHP que contém os parâmetros da URL
 
+// isset() verifica se o parâmetro existe antes de acessá-lo
+// Sem isso, acessar $_GET['categoria'] quando não existe daria um warning
 $categoriaFiltro = isset($_GET['categoria']) ? $_GET['categoria'] : null;
+// intval() converte string pra inteiro — $_GET sempre retorna strings
 $limite = isset($_GET['limite']) ? intval($_GET['limite']) : null;
 
 // Filtra por categoria se especificada
 if ($categoriaFiltro) {
+    // array_filter recebe uma callback (closure) que retorna true/false pra cada item
+    // 'use ($categoriaFiltro)' importa a variável externa pra dentro da closure
+    // POR QUE use(): em PHP, closures NÃO herdam variáveis do escopo pai automaticamente
+    // (diferente do JavaScript). Sem 'use', $categoriaFiltro seria null dentro da função
     $noticias = array_filter($noticias, function($noticia) use ($categoriaFiltro) {
+        // strtolower() normaliza a comparação pra case-insensitive
         return strtolower($noticia['categoria']) === strtolower($categoriaFiltro);
     });
-    $noticias = array_values($noticias); // Reindexa o array
+    // array_values() reindexa o array de 0, 1, 2...
+    // Sem isso, após o filter, os índices ficam com buracos (ex: 0, 2, 5)
+    // e o json_encode geraria um OBJETO em vez de um ARRAY JSON
+    $noticias = array_values($noticias);
 }
 
 // Limita quantidade se especificado
@@ -98,13 +117,18 @@ if ($limite && $limite > 0) {
     $noticias = array_slice($noticias, 0, $limite);
 }
 
-// === RESPOSTA ===
+// ===== RESPOSTA =====
+// Monto o JSON de resposta com metadados (total, fonte, data de atualização)
 $resposta = [
     "total" => count($noticias),
     "fonte" => "PHP API - Taylor Eras",
+    // date() formata a data atual do servidor — 'Y-m-d H:i:s' = '2026-05-12 14:30:00'
     "atualizado_em" => date('Y-m-d H:i:s'),
     "noticias" => $noticias
 ];
 
+// json_encode converte o array PHP pra string JSON
+// JSON_UNESCAPED_UNICODE: mantém acentos legíveis ("ção" em vez de "\u00e7\u00e3o")
+// JSON_PRETTY_PRINT: formata com indentação pra facilitar debug no navegador
 echo json_encode($resposta, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 ?>

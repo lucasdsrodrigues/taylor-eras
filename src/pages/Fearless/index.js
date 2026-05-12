@@ -1,4 +1,6 @@
+// useRef cria referência persistente pra elementos DOM (uso pro scroll container dos vídeos)
 import { useRef, useState, useEffect } from 'react';
+// Link do React Router pra navegar entre eras sem recarregar
 import { Link } from 'react-router-dom';
 import './Fearless.css';
 import RatingSection from '../../components/RatingSection/RatingSection';
@@ -15,14 +17,31 @@ import clipFifteen from '../../imagens/fifteen.jpg';
 import clipFearless from '../../imagens/fearless-mv.jpg';
 import clipBestDay from '../../imagens/thebestday.jpg';
 import clipChange from '../../imagens/change.jpg';
+/**
+ * Página da era Fearless — tem duas versões: Original (2008) e Taylor's Version (2021)
+ * O toggle entre versões troca: capa, tracklist, seções de conteúdo e descrição
+ */
 const Fearless = () => {
+  // isTV controla qual versão tá ativa: false = Original, true = Taylor's Version
   const [isTV, setIsTV] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  // Ref pro container de scroll horizontal dos vídeos — uso pra scrollar programaticamente
   const scrollContainer = useRef(null);
+
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 100);
     return () => clearTimeout(timer);
   }, []);
+
+  /**
+   * Scroll programático dos cards de vídeo
+   * scrollBy() move o scroll por um delta (não pra posição absoluta)
+   * behavior: 'smooth' aplica animação suave em vez de pulo instantâneo
+   * 
+   * POR QUE useRef aqui: preciso acessar o elemento DOM diretamente
+   * pra chamar scrollBy(). Em React, não se acessa DOM com document.querySelector
+   * — useRef é a forma correta e segura
+   */
   const scroll = (direction) => {
     if (scrollContainer.current) {
       const scrollAmount = 450;
@@ -32,12 +51,22 @@ const Fearless = () => {
       });
     }
   };
+
+  /**
+   * Toggle entre versão Original e Taylor's Version
+   * 
+   * POR QUE o setTimeout de 600ms:
+   * Primeiro faço scroll suave pro topo (scrollTo), e só depois troco a versão.
+   * Sem o delay, a troca aconteceria instantaneamente e o scroll ficaria estranho
+   * — o usuário veria o conteúdo mudar no meio do caminho pro topo
+   */
   const toggleVersion = (status) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setTimeout(() => {
       setIsTV(status);
     }, 600);
   };
+  // Tracklist original (13 faixas)
   const tracks = [
     { no: "01", title: "Fearless", duration: "4:01" },
     { no: "02", title: "Fifteen", duration: "4:54" },
@@ -53,6 +82,8 @@ const Fearless = () => {
     { no: "12", title: "The Best Day", duration: "4:05" },
     { no: "13", title: "Change", duration: "4:40" }
   ];
+  // Tracklist da Taylor's Version (26 faixas — inclui as vault tracks inéditas)
+  // Decisão: mantenho as duas listas separadas porque a TV tem quase o dobro de faixas
   const vaultTracks = [
     { no: "01", title: "Fearless", duration: "4:01" },
     { no: "02", title: "Fifteen", duration: "4:54" },
@@ -81,6 +112,7 @@ const Fearless = () => {
     { no: "25", title: "Don't You", duration: "3:28" },
     { no: "26", title: "Bye Bye Baby", duration: "4:02" }
   ];
+  // Clipes musicais da era Fearless
   const musicVideos = [
     {
       title: "Love Story",
@@ -126,6 +158,7 @@ const Fearless = () => {
     }
   ];
   return (
+    // Classes condicionais: 'f-tv-active' muda o tema visual pra versão TV
     <div className={`f-stage-root ${isTV ? 'f-tv-active' : ''} ${loaded ? 'f-loaded' : ''}`}>
       <div className="f-spotlight-top"></div>
       <div className="f-glitter-dust"></div>

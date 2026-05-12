@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import './folklore.css';
 
-
+// Hook reutilizável de IntersectionObserver
 const useInView = (options = {}) => {
     const ref = useRef(null);
     const [inView, setInView] = useState(false);
@@ -19,12 +19,15 @@ const useInView = (options = {}) => {
     return [ref, inView];
 };
 
+/** Página da era Folklore (2020) — tema floresta, introspecção e estética indie */
 const Folklore = () => {
     const [loaded, setLoaded] = useState(false);
     const [playingTrack, setPlayingTrack] = useState(null);
     const [showTopBtn, setShowTopBtn] = useState(false);
     const audioRef = useRef(null);
+    // Cada seção tem seu observer pra animar independentemente quando entra na tela
     const [tracklistRef, tracklistInView] = useInView();
+    // triangleRef é a seção do "triângulo do folklore" (conceito do álbum)
     const [triangleRef, triangleInView] = useInView();
     const [deskRef, deskInView] = useInView();
     const [activeMv, setActiveMv] = useState(0);

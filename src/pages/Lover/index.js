@@ -4,6 +4,7 @@ import './lover.css';
 
 import loverCover from '../../imagens/lover.jpg';
 
+// Hook reutilizável de IntersectionObserver
 const useInView = (options = {}) => {
     const ref = useRef(null);
     const [inView, setInView] = useState(false);
@@ -20,13 +21,18 @@ const useInView = (options = {}) => {
     return [ref, inView];
 };
 
+/** Página da era Lover (2019) — tema pastel rosa, corações e efeito parallax de scroll */
 const Lover = () => {
     const [loaded, setLoaded] = useState(false);
     const [playingTrack, setPlayingTrack] = useState(null);
+    // Botão "voltar ao topo" que aparece após scrollar
     const [showTopBtn, setShowTopBtn] = useState(false);
+    // URLs de preview de áudio do Spotify
     const [previews, setPreviews] = useState({});
     const [activeMv, setActiveMv] = useState(0);
     const audioRef = useRef(null);
+    // Posição do scroll vertical — usado pro efeito parallax no hero
+    // window.scrollY retorna quantos pixels o usuário já scrollou
     const [scrollY, setScrollY] = useState(0);
     const [tracklistRef, tracklistInView] = useInView();
     const [timelineSectionRef, timelineInView] = useInView();
