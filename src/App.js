@@ -22,6 +22,9 @@ import Midnights from "./pages/Midnights";
 import TTPD from "./pages/TTPD";
 import Showgirl from "./pages/Showgirl";
 
+import PainelAvaliacoes from "./components/PainelAvaliacoes/PainelAvaliacoes";
+import PainelUsuario from "./components/PainelUsuario/PainelUsuario";
+
 // Componente principal da aplicação — ele organiza todas as rotas e envolve tudo com o AuthProvider
 function App() {
   return (
@@ -29,6 +32,10 @@ function App() {
     <AuthProvider>
       {/* O Router gerencia a navegação entre páginas */}
       <Router>
+        {/* Paineis flutuantes globais - visíveis em todas as páginas */}
+        <PainelAvaliacoes />
+        <PainelUsuario />
+        
         {/* ScrollToTop garante que ao trocar de página, o scroll volta pro topo */}
         {/* Também limpa o fundo do body pra evitar o flash vermelho da página Red */}
         <ScrollToTop />

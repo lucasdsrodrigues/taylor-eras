@@ -16,25 +16,38 @@ import '../PainelAvaliacoes/PainelAvaliacoes.css';
  * Se o token expirar (24h), o backend retorna 403 e o usuário precisa fazer login de novo
  */
 const PainelUsuario = () => {
-  // user contém os dados do usuário logado, token é o JWT pra autenticar requisições
-  const { user, token } = useContext(AuthContext);
+  // username contém o nome do usuário logado, token é o JWT pra autenticar requisições
+  const { username, token } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
   const [avaliacoes, setAvaliacoes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [editNota, setEditNota] = useState(0);
+
+  // Estados de edição de sugestão
+  const [editSugestaoId, setEditSugestaoId] = useState(null);
+  const [editSugestaoTitulo, setEditSugestaoTitulo] = useState('');
+  const [editSugestaoConteudo, setEditSugestaoConteudo] = useState('');
+  const [editSugestaoCategoria, setEditSugestaoCategoria] = useState('');
+
   
-  // activeTab controla qual aba tá visível: 'avaliacoes' ou 'configuracoes'
+  // activeTab controla qual aba tá visível: 'avaliacoes', 'sugestoes', 'comentarios' ou 'configuracoes'
   const [activeTab, setActiveTab] = useState('avaliacoes');
   const [novaSenha, setNovaSenha] = useState('');
   // configMsg mostra feedback de sucesso/erro nas ações de configuração
   const [configMsg, setConfigMsg] = useState({ text: '', type: '' });
   const { logout } = useContext(AuthContext);
 
-  // Busco as avaliações sempre que o painel abre E tem token válido
+  // Estados para sugestões e comentários do usuário
+  const [sugestoes, setSugestoes] = useState([]);
+  const [comentarios, setComentarios] = useState([]);
+
+  // Busco os dados sempre que o painel abre E tem token válido
   useEffect(() => {
     if (isOpen && token) {
       fetchAvaliacoes();
+      fetchSugestoes();
+      fetchComentarios();
     }
   }, [isOpen, token]);
 
@@ -61,6 +74,30 @@ const PainelUsuario = () => {
       console.error('Erro ao buscar suas avaliações:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchSugestoes = async () => {
+    try {
+      const res = await fetch('http://localhost:3001/minhas-sugestoes', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      setSugestoes(data);
+    } catch (error) {
+      console.error('Erro ao buscar sugestões:', error);
+    }
+  };
+
+  const fetchComentarios = async () => {
+    try {
+      const res = await fetch('http://localhost:3001/meus-comentarios', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      setComentarios(data);
+    } catch (error) {
+      console.error('Erro ao buscar comentários:', error);
     }
   };
 
@@ -112,6 +149,62 @@ const PainelUsuario = () => {
     setEditingId(null);
     setEditNota(0);
   };
+
+  // ===== AÇÕES PARA SUGESTÕES =====
+  const handleSolicitarExclusao = async (id) => {
+    if (!window.confirm("Solicitar à moderação a exclusão desta sugestão?")) return;
+    try {
+      const res = await fetch(`http://localhost:3001/sugestoes/${id}/solicitar-exclusao`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) fetchSugestoes();
+      else {
+        const data = await res.json();
+        alert(data.error || 'Erro ao solicitar exclusão.');
+      }
+    } catch (error) { console.error('Erro:', error); }
+  };
+
+  const handleEditSugestaoClick = (sugestao) => {
+    setEditSugestaoId(sugestao.id);
+    setEditSugestaoTitulo(sugestao.titulo);
+    setEditSugestaoConteudo(sugestao.conteudo);
+    setEditSugestaoCategoria(sugestao.categoria || 'Outro');
+  };
+
+  const handleCancelEditSugestao = () => {
+    setEditSugestaoId(null);
+    setEditSugestaoTitulo('');
+    setEditSugestaoConteudo('');
+    setEditSugestaoCategoria('');
+  };
+
+  const handleSaveEditSugestao = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:3001/sugestoes/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          titulo: editSugestaoTitulo,
+          conteudo: editSugestaoConteudo,
+          categoria: editSugestaoCategoria
+        })
+      });
+      if (res.ok) {
+        setEditSugestaoId(null);
+        fetchSugestoes();
+        alert('Sugestão editada e reenviada para moderação.');
+      } else {
+        const data = await res.json();
+        alert(data.error || 'Erro ao editar sugestão.');
+      }
+    } catch (error) { console.error('Erro:', error); }
+  };
+
 
   /**
    * Altera a senha do usuário logado
@@ -171,8 +264,11 @@ const PainelUsuario = () => {
     }
   };
 
-  // Se não tem usuário logado, não renderizo nada — o botão nem aparece
-  if (!user) return null;
+  // Se não tem usuário logado (sem token), não renderizo nada — o botão nem aparece
+  if (!token) return null;
+  
+  // Se for administrador, não exibe o botão do usuário comum
+  if (username === 'admin') return null;
 
   // Agrupo as avaliações por era usando reduce()
   // reduce() itera o array e acumula num objeto onde cada chave é uma era
@@ -216,14 +312,12 @@ const PainelUsuario = () => {
 
   return (
     <>
-      {/* Botão fixo no canto inferior esquerdo pra abrir o painel do usuário */}
-      {/* Uso style inline aqui porque preciso posicionar diferente do botão admin */}
+      {/* Botão flutuante pra abrir o painel do usuário */}
       <button 
-        className="admin-trigger-btn" 
-        style={{ left: '20px', bottom: '20px', backgroundColor: '#333', zIndex: 9998 }}
+        className="floating-panel-btn user-btn" 
         onClick={() => setIsOpen(true)}
       >
-        Minhas Avaliações
+        👤 Meu Painel
       </button>
 
       {isOpen && (
@@ -234,20 +328,17 @@ const PainelUsuario = () => {
               <button className="close-panel-btn" onClick={() => setIsOpen(false)}>×</button>
             </header>
 
-            {/* Abas: Minhas Avaliações e Configurações da Conta */}
-            <div style={{ display: 'flex', gap: '10px', padding: '0 20px', marginBottom: '10px' }}>
-              <button 
-                onClick={() => setActiveTab('avaliacoes')}
-                style={{ background: activeTab === 'avaliacoes' ? '#fff' : 'transparent', color: activeTab === 'avaliacoes' ? '#000' : '#fff', border: '1px solid #fff', padding: '5px 15px', borderRadius: '20px', cursor: 'pointer' }}
-              >
-                Minhas Avaliações
-              </button>
-              <button 
-                onClick={() => setActiveTab('configuracoes')}
-                style={{ background: activeTab === 'configuracoes' ? '#fff' : 'transparent', color: activeTab === 'configuracoes' ? '#000' : '#fff', border: '1px solid #fff', padding: '5px 15px', borderRadius: '20px', cursor: 'pointer' }}
-              >
-                Configurações da Conta
-              </button>
+            {/* Abas do painel do usuário */}
+            <div style={{ display: 'flex', gap: '10px', padding: '0 20px', marginBottom: '10px', flexWrap: 'wrap' }}>
+              {['avaliacoes', 'sugestoes', 'comentarios', 'configuracoes'].map(tab => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  style={{ background: activeTab === tab ? '#fff' : 'transparent', color: activeTab === tab ? '#000' : '#fff', border: '1px solid #fff', padding: '5px 15px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.8rem' }}
+                >
+                  {tab === 'avaliacoes' ? 'Minhas Avaliações' : tab === 'sugestoes' ? 'Minhas Sugestões' : tab === 'comentarios' ? 'Meus Comentários' : 'Configurações'}
+                </button>
+              ))}
             </div>
 
             <div className="admin-content">
@@ -290,6 +381,114 @@ const PainelUsuario = () => {
                     Excluir Minha Conta
                   </button>
                 </div>
+              ) : activeTab === 'sugestoes' ? (
+                // Aba Minhas Sugestões
+                sugestoes.length === 0 ? (
+                  <div className="empty-state">Você ainda não enviou nenhuma sugestão de notícia.</div>
+                ) : (
+                  sugestoes.map(s => (
+                    <div key={s.id} className="era-group-card" style={{ '--era-primary': s.status === 'aprovado' ? '#51cf66' : s.status === 'rejeitado' ? '#ff6b6b' : s.status === 'exclusao_pendente' ? '#c0392b' : '#f1c40f' }}>
+                      {editSugestaoId === s.id ? (
+                        <div className="mod-motivo-form" style={{ padding: '15px' }}>
+                          <input 
+                            type="text" 
+                            value={editSugestaoTitulo} 
+                            onChange={(e) => setEditSugestaoTitulo(e.target.value)}
+                            placeholder="Título da sugestão"
+                            style={{ width: '100%', marginBottom: '10px', padding: '10px', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', borderRadius: '5px' }}
+                          />
+                          <select 
+                            value={editSugestaoCategoria} 
+                            onChange={(e) => setEditSugestaoCategoria(e.target.value)}
+                            style={{ width: '100%', marginBottom: '10px', padding: '10px', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', borderRadius: '5px' }}
+                          >
+                            <option value="Notícia">Notícia</option>
+                            <option value="Teoria">Teoria</option>
+                            <option value="Rumor">Rumor</option>
+                            <option value="Outro">Outro</option>
+                          </select>
+                          <textarea 
+                            value={editSugestaoConteudo} 
+                            onChange={(e) => setEditSugestaoConteudo(e.target.value)}
+                            placeholder="Conteúdo..."
+                            rows={4}
+                            style={{ width: '100%', marginBottom: '10px', padding: '10px', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', borderRadius: '5px' }}
+                          />
+                          <div className="mod-motivo-actions">
+                            <button className="mod-btn mod-btn-approve" onClick={() => handleSaveEditSugestao(s.id)}>Salvar e Reenviar</button>
+                            <button className="mod-btn mod-btn-cancel" onClick={handleCancelEditSugestao}>Cancelar</button>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="era-group-header">
+                            <h3 style={{ fontSize: '1.1rem' }}>{s.titulo}</h3>
+                            <div className="era-stats">
+                              <span style={{
+                                padding: '3px 10px', borderRadius: '10px', fontSize: '0.7rem', fontWeight: 600,
+                                background: s.status === 'aprovado' ? 'rgba(81,207,102,0.15)' : s.status === 'rejeitado' ? 'rgba(255,107,107,0.15)' : s.status === 'exclusao_pendente' ? 'rgba(192, 57, 43, 0.15)' : 'rgba(241,196,15,0.15)',
+                                color: s.status === 'aprovado' ? '#51cf66' : s.status === 'rejeitado' ? '#ff6b6b' : s.status === 'exclusao_pendente' ? '#c0392b' : '#f1c40f',
+                                textTransform: 'uppercase', letterSpacing: '1px'
+                              }}>{s.status === 'exclusao_pendente' ? 'Excl. Pendente' : s.status}</span>
+                              <span style={{ marginLeft: '10px', fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>
+                                {s.data_envio ? new Date(s.data_envio).toLocaleDateString('pt-BR') : ''}
+                              </span>
+                            </div>
+                          </div>
+                          <div style={{ padding: '10px 0', color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem' }}>
+                            <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '1px' }}>{s.categoria}</span>
+                          </div>
+                          {s.status === 'rejeitado' && s.motivo_rejeicao && (
+                            <div style={{ padding: '10px', background: 'rgba(255,107,107,0.08)', borderRadius: '8px', border: '1px solid rgba(255,107,107,0.15)', marginTop: '5px', marginBottom: '10px' }}>
+                              <span style={{ fontSize: '0.7rem', color: '#ff6b6b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Motivo da rejeição:</span>
+                              <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)', margin: '6px 0 0' }}>{s.motivo_rejeicao}</p>
+                            </div>
+                          )}
+                          
+                          <div className="mod-card-actions" style={{ marginTop: '15px' }}>
+                            <button className="mod-btn" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} onClick={() => handleEditSugestaoClick(s)}>✎ Editar</button>
+                            {s.status === 'aprovado' && (
+                              <button className="mod-btn mod-btn-delete" onClick={() => handleSolicitarExclusao(s.id)}>🗑 Solicitar Exclusão</button>
+                            )}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  ))
+                )
+              ) : activeTab === 'comentarios' ? (
+                // Aba Meus Comentários
+                comentarios.length === 0 ? (
+                  <div className="empty-state">Você ainda não fez nenhum comentário.</div>
+                ) : (
+                  comentarios.map(c => (
+                    <div key={c.id} className="era-group-card" style={{ '--era-primary': c.status === 'ativo' ? '#7b8aff' : '#ff6b6b' }}>
+                      <div className="era-group-header">
+                        <h3 style={{ fontSize: '1rem' }}>{c.noticia_titulo || 'Notícia removida'}</h3>
+                        <div className="era-stats">
+                          <span style={{
+                            padding: '3px 10px', borderRadius: '10px', fontSize: '0.7rem', fontWeight: 600,
+                            background: c.status === 'ativo' ? 'rgba(123,138,255,0.15)' : 'rgba(255,107,107,0.15)',
+                            color: c.status === 'ativo' ? '#7b8aff' : '#ff6b6b',
+                            textTransform: 'uppercase', letterSpacing: '1px'
+                          }}>{c.status}</span>
+                        </div>
+                      </div>
+                      <div style={{ padding: '8px 0', color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem', lineHeight: '1.5' }}>
+                        {c.texto}
+                      </div>
+                      <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)' }}>
+                        {c.data_comentario ? new Date(c.data_comentario).toLocaleDateString('pt-BR') : ''}
+                      </div>
+                      {c.status === 'removido' && c.motivo_remocao && (
+                        <div style={{ padding: '10px', background: 'rgba(255,107,107,0.08)', borderRadius: '8px', border: '1px solid rgba(255,107,107,0.15)', marginTop: '8px' }}>
+                          <span style={{ fontSize: '0.7rem', color: '#ff6b6b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Motivo da remoção:</span>
+                          <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)', margin: '6px 0 0' }}>{c.motivo_remocao}</p>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )
               ) : (
                 // Aba de avaliações: igual ao painel admin mas só com as do usuário
                 loading ? (
@@ -299,7 +498,6 @@ const PainelUsuario = () => {
                 ) : (
                   Object.entries(erasAgrupadas).map(([eraKey, data]) => {
                   const theme = eraThemes[eraKey] || { primary: '#fff', name: eraKey };
-                  // toFixed(1) formata o número com 1 casa decimal (ex: 4.3)
                   const media = (data.soma / data.total).toFixed(1);
 
                   return (
@@ -316,8 +514,6 @@ const PainelUsuario = () => {
                       </div>
 
                       <div className="ratings-list">
-                        {/* slice() cria uma cópia do array pra não mutar o original */}
-                        {/* reverse() inverte pra mostrar as mais recentes primeiro */}
                         {data.items.slice().reverse().map((item) => (
                           <div key={item.id} className="rating-item">
                             <div className="rating-info">

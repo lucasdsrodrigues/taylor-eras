@@ -10,6 +10,11 @@
   --swift-text: #cfcbe9;
 }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -64,5 +69,42 @@ body {
   to {
     opacity: 0;
     transform: translateY(-20px) scale(0.6);
+  }
+}
+
+/* ===== GLOBAL MOBILE SAFETY NET ===== */
+/* This catches any era pages or components that lack specific media queries */
+@media (max-width: 500px) {
+  /* 1. Prevent fixed widths from overflowing */
+  div, section, article, main, header, footer {
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* 2. Force grids to collapse to 1 column on mobile */
+  [class*="grid"], [class*="papers"], [class*="cards"], [class*="list"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 3. Fix fixed-width images and iframes */
+  img, iframe, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* 4. Ensure large text scales down */
+  h1, [class*="title"] {
+    font-size: clamp(1.5rem, 8vw, 3rem) !important;
+    line-height: 1.2 !important;
+  }
+
+  /* 5. Fix flex containers that don't wrap */
+  [style*="display: flex"], [class*="flex"], [class*="row"] {
+    flex-wrap: wrap !important;
+  }
+  
+  /* Exceptions: keep the carousel track and timeline from wrapping/collapsing */
+  .carousel-track, .timeline-track, .timeline-events, .folk-waves, .ever-waves {
+    flex-wrap: nowrap !important;
   }
 }

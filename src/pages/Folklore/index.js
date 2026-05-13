@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import './folklore.css';
+import RatingSection from '../../components/RatingSection/RatingSection';
+import { eraThemes } from '../../utils/eraThemes';
 
 // Hook reutilizável de IntersectionObserver
 const useInView = (options = {}) => {
@@ -479,6 +481,8 @@ const Folklore = () => {
                     ))}
                 </div>
             </section>
+
+            <RatingSection era="folklore" tracks={tracks} theme={eraThemes.folklore} />
 
             {/* ═══ FOOTER ═══ */}
             <footer className="folk-footer">

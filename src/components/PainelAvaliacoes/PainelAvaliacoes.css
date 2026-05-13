@@ -280,3 +280,446 @@
 .btn-save:hover, .btn-cancel:hover {
   opacity: 0.8;
 }
+
+/* ===== ADMIN TABS ===== */
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 0 20px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-tab-btn {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
+}
+
+.admin-tab-btn:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+.admin-tab-btn.active {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+  font-weight: 600;
+}
+
+/* ===== MODERATION CARDS ===== */
+.mod-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  grid-column: 1 / -1;
+}
+
+.mod-card:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.mod-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.mod-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f0ece6;
+  margin: 0;
+  flex: 1;
+}
+
+.mod-status-badge {
+  padding: 3px 12px;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.mod-status-pendente {
+  background: rgba(241, 196, 15, 0.12);
+  color: #f1c40f;
+  border: 1px solid rgba(241, 196, 15, 0.2);
+}
+
+.mod-status-aprovado {
+  background: rgba(81, 207, 102, 0.12);
+  color: #51cf66;
+  border: 1px solid rgba(81, 207, 102, 0.2);
+}
+
+.mod-status-rejeitado {
+  background: rgba(255, 107, 107, 0.12);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+.mod-card-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.mod-card-content {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0 0 14px;
+}
+
+.mod-rejeicao-info {
+  padding: 10px 14px;
+  background: rgba(255, 107, 107, 0.06);
+  border: 1px solid rgba(255, 107, 107, 0.12);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 14px;
+}
+
+.mod-rejeicao-info strong {
+  color: #ff6b6b;
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== MODERATION ACTIONS ===== */
+.mod-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mod-btn {
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: 1px solid transparent;
+  letter-spacing: 0.3px;
+}
+
+.mod-btn-approve {
+  background: rgba(81, 207, 102, 0.12);
+  color: #51cf66;
+  border-color: rgba(81, 207, 102, 0.25);
+}
+
+.mod-btn-approve:hover {
+  background: rgba(81, 207, 102, 0.22);
+  transform: translateY(-1px);
+}
+
+.mod-btn-reject {
+  background: rgba(255, 165, 0, 0.1);
+  color: #ffa500;
+  border-color: rgba(255, 165, 0, 0.25);
+}
+
+.mod-btn-reject:hover {
+  background: rgba(255, 165, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.mod-btn-delete {
+  background: rgba(255, 107, 107, 0.08);
+  color: #ff6b6b;
+  border-color: rgba(255, 107, 107, 0.15);
+}
+
+.mod-btn-delete:hover {
+  background: rgba(255, 107, 107, 0.18);
+  transform: translateY(-1px);
+}
+
+.mod-btn-danger {
+  background: #ff6b6b;
+  color: #fff;
+  border-color: #ff6b6b;
+}
+
+.mod-btn-danger:hover {
+  background: #ff4444;
+}
+
+.mod-btn-cancel {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.mod-btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ===== MOTIVO FORM ===== */
+.mod-motivo-form {
+  padding: 14px;
+  background: rgba(255, 107, 107, 0.04);
+  border: 1px solid rgba(255, 107, 107, 0.12);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  animation: fadeIn 0.3s ease;
+}
+
+.mod-motivo-form textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #f0ece6;
+  font-size: 0.85rem;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.mod-motivo-form textarea:focus {
+  border-color: rgba(255, 107, 107, 0.4);
+}
+
+.mod-motivo-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* ===== STATUS FILTERS ===== */
+.mod-status-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  grid-column: 1 / -1;
+}
+
+.mod-filter-btn {
+  padding: 7px 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.mod-filter-btn:hover {
+  border-color: var(--filter-color);
+  color: var(--filter-color);
+}
+
+.mod-filter-btn.active {
+  background: var(--filter-color);
+  border-color: var(--filter-color);
+  color: #0a0a0f;
+  font-weight: 600;
+}
+
+/* Loading/Empty inside moderation */
+.loading-state, .empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+}
+
+/* ===== RESPONSIVIDADE MOBILE ===== */
+@media (max-width: 768px) {
+  .admin-panel-modal {
+    width: 95%;
+    height: 90vh;
+    border-radius: 20px;
+  }
+  .admin-header {
+    padding: 20px;
+  }
+  .admin-header h2 {
+    font-size: 1.5rem;
+  }
+  .close-panel-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+  .admin-content {
+    padding: 16px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .era-group-card {
+    border-radius: 16px;
+    padding: 16px;
+  }
+  .admin-trigger-btn {
+    bottom: 16px;
+    right: 16px;
+    padding: 10px 18px;
+    font-size: 0.7rem;
+  }
+  .admin-tabs {
+    padding: 0 16px;
+    gap: 6px;
+  }
+  .admin-tab-btn {
+    padding: 5px 12px;
+    font-size: 0.7rem;
+  }
+  .mod-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+  .mod-card-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .mod-card-title {
+    font-size: 0.95rem;
+  }
+  .mod-card-actions {
+    gap: 6px;
+  }
+  .mod-btn {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+  }
+  .rating-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 12px;
+  }
+  .rating-actions {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-panel-modal {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+  }
+  .admin-header {
+    padding: 16px;
+  }
+  .admin-header h2 {
+    font-size: 1.2rem;
+  }
+  .admin-content {
+    padding: 12px;
+  }
+}
+
+/* =========================================
+   ESTILOS DOS BOTÕES FLUTUANTES GLOBAIS
+   ========================================= */
+
+.floating-panel-btn {
+  position: fixed;
+  right: 20px;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(15, 15, 15, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+}
+
+.floating-panel-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+  pointer-events: none;
+}
+
+.floating-panel-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  background: rgba(30, 30, 30, 0.8);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.floating-panel-btn:active {
+  transform: translateY(2px);
+}
+
+.floating-panel-btn.user-btn {
+  bottom: 20px;
+  border-color: rgba(241, 196, 15, 0.3);
+}
+
+.floating-panel-btn.user-btn:hover {
+  border-color: rgba(241, 196, 15, 0.6);
+  box-shadow: 0 15px 40px rgba(241, 196, 15, 0.2);
+}
+
+.floating-panel-btn.admin-btn {
+  bottom: 20px; /* Fica no mesmo local do botão do usuário */
+  border-color: rgba(81, 207, 102, 0.3);
+}
+
+.floating-panel-btn.admin-btn:hover {
+  border-color: rgba(81, 207, 102, 0.6);
+  box-shadow: 0 15px 40px rgba(81, 207, 102, 0.2);
+}
+
+/* Modificação no Painel Admin: Destaque para exclusão pendente */
+.mod-status-exclusao_pendente {
+  background: rgba(255, 107, 107, 0.15);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}

@@ -1,12 +1,13 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import './Red.css';
+import RatingSection from '../../components/RatingSection/RatingSection';
+import { eraThemes } from '../../utils/eraThemes';
 
 import redOG from '../../imagens/red-cover.webp';
 import redTV from '../../imagens/red-tv-cover.webp';
 import red1 from '../../imagens/red1.jpg';
 import red2 from '../../imagens/red2.webp';
-import redSF from '../../imagens/red-sf.png';
 
 
 // Tracklist completa do Red — cada faixa tem flags que controlam visibilidade:
@@ -63,12 +64,7 @@ const redMusicVideos = [
 const Red = () => {
     // Toggle entre versão original e Taylor's Version
     const [isTV, setIsTV] = useState(false);
-    // Ref pro elemento <audio> HTML — permite controlar play/pause via JavaScript
-    const audioRef = useRef(null);
-    // Qual faixa tá tocando no momento (null = nenhuma)
-    const [playingTrack, setPlayingTrack] = useState(null);
     const [showTopBtn, setShowTopBtn] = useState(false);
-    const tracklistRef = useRef(null);
     const [loaded, setLoaded] = useState(false);
     const [activeMV, setActiveMV] = useState(0);
 
@@ -635,6 +631,8 @@ const Red = () => {
                     </div>
                 </div>
             </section>
+
+            <RatingSection era="red" tracks={redTracks} theme={eraThemes.red} />
 
             <footer className="red-footer">
                 <div className="red-footer-inner">

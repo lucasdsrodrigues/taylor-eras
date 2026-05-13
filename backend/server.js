@@ -94,6 +94,44 @@ try {
 }
 
 // ========================
+// TABELA DE SUGESTÕES DE NOTÍCIAS
+// ========================
+// Sugestões enviadas por usuários autenticados — passam por moderação antes de ficarem públicas
+db.exec(`
+  CREATE TABLE IF NOT EXISTS sugestoes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    titulo TEXT NOT NULL,
+    conteudo TEXT NOT NULL,
+    categoria TEXT,
+    autor_id INTEGER,
+    status TEXT DEFAULT 'pendente',
+    motivo_rejeicao TEXT NULL,
+    data_envio TEXT,
+    FOREIGN KEY (autor_id) REFERENCES usuarios(id)
+  )
+`);
+console.log('Tabela "sugestoes" pronta.');
+
+// ========================
+// TABELA DE COMENTÁRIOS MODERADOS
+// ========================
+// Comentários em notícias aprovadas — podem ser removidos por admins com motivo
+db.exec(`
+  CREATE TABLE IF NOT EXISTS comentarios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    noticia_id INTEGER,
+    usuario_id INTEGER,
+    texto TEXT NOT NULL,
+    status TEXT DEFAULT 'ativo',
+    motivo_remocao TEXT NULL,
+    data_comentario TEXT,
+    FOREIGN KEY (noticia_id) REFERENCES sugestoes(id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+  )
+`);
+console.log('Tabela "comentarios" pronta.');
+
+// ========================
 // MIDDLEWARE DE AUTENTICAÇÃO
 // ========================
 
@@ -118,6 +156,20 @@ function authenticateToken(req, res, next) {
   });
 }
 
+// Middleware que verifica se o usuário logado é o admin
+// Reutiliza o padrão já existente (username === 'admin') da rota DELETE /avaliacoes
+function authenticateAdmin(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'Acesso negado.' });
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ error: 'Token inválido.' });
+    if (user.username !== 'admin') return res.status(403).json({ error: 'Acesso restrito a administradores.' });
+    req.user = user;
+    next();
+  });
+}
+
 // ========================
 // ROTAS DE AUTENTICAÇÃO
 // ========================
@@ -126,7 +178,7 @@ function authenticateToken(req, res, next) {
 app.post('/register', async (req, res) => {
   // Pego o nome de usuário e senha que o front-end mandou
   const { username, password } = req.body;
-  
+
   // Valido se os campos foram preenchidos
   if (!username || !password) {
     return res.status(400).json({ error: 'Preencha usuário e senha.' });
@@ -162,7 +214,7 @@ app.post('/login', async (req, res) => {
   try {
     // Busco o usuário no banco pelo nome
     const user = db.prepare('SELECT * FROM usuarios WHERE username = ?').get(username);
-    
+
     // Se não encontrou, retorno erro
     if (!user) {
       return res.status(400).json({ error: 'Usuário não encontrado.' });
@@ -170,7 +222,7 @@ app.post('/login', async (req, res) => {
 
     // Comparo a senha digitada com a hash que tá salva no banco usando bcrypt
     const match = await bcrypt.compare(password, user.password_hash);
-    
+
     // Se a senha não bate, retorno erro
     if (!match) {
       return res.status(401).json({ error: 'Senha incorreta.' });
@@ -230,7 +282,7 @@ app.post('/avaliar', authenticateToken, (req, res) => {
   const tipoFinal = tipo === 'musica' ? 'musica' : 'album';
   // Se for avaliação de álbum, salvo o nome da era no campo musica (pra nunca ficar NULL)
   const nomeFinal = tipoFinal === 'album' ? era : (musica || era);
-  
+
   try {
     // Primeiro verifico se esse usuário já avaliou essa combinação de era + tipo + música
     const avaliacaoExistente = db.prepare(
@@ -259,15 +311,15 @@ app.put('/avaliacoes/:id', authenticateToken, (req, res) => {
   const { id } = req.params;
   const { nota } = req.body;
   const usuario_id = req.user.id;
-  
+
   try {
     // Verifico se a avaliação existe e se pertence ao usuário logado
     const avaliacao = db.prepare('SELECT usuario_id FROM avaliacoes WHERE id = ?').get(id);
-    
+
     if (!avaliacao) {
       return res.status(404).json({ error: 'Avaliação não encontrada' });
     }
-    
+
     // Só o dono pode editar a própria avaliação
     if (avaliacao.usuario_id !== usuario_id) {
       return res.status(403).json({ error: 'Você só pode editar suas próprias avaliações.' });
@@ -287,17 +339,17 @@ app.put('/avaliacoes/:id', authenticateToken, (req, res) => {
 app.delete('/avaliacoes/:id', authenticateToken, (req, res) => {
   const { id } = req.params;
   const usuario_id = req.user.id;
-  
+
   try {
     // Verifico se a avaliação existe
     const avaliacao = db.prepare('SELECT usuario_id FROM avaliacoes WHERE id = ?').get(id);
-    
+
     if (!avaliacao) {
       return res.status(404).json({ error: 'Avaliação não encontrada' });
     }
-    
+
     // Só o dono pode apagar, ou o usuário 'admin' (que tem poderes especiais)
-    if (avaliacao.usuario_id !== usuario_id && req.user.username !== 'admin') { 
+    if (avaliacao.usuario_id !== usuario_id && req.user.username !== 'admin') {
       return res.status(403).json({ error: 'Você só pode deletar suas próprias avaliações.' });
     }
 
@@ -319,7 +371,7 @@ app.delete('/avaliacoes/:id', authenticateToken, (req, res) => {
 app.put('/usuarios/senha', authenticateToken, async (req, res) => {
   const { novaSenha } = req.body;
   const usuario_id = req.user.id;
-  
+
   // Valido que a nova senha tem pelo menos 3 caracteres
   if (!novaSenha || novaSenha.length < 3) {
     return res.status(400).json({ error: 'A nova senha deve ter pelo menos 3 caracteres.' });
@@ -329,7 +381,7 @@ app.put('/usuarios/senha', authenticateToken, async (req, res) => {
     // Criptografo a nova senha com bcrypt
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(novaSenha, saltRounds);
-    
+
     // Atualizo a senha no banco de dados
     const stmt = db.prepare('UPDATE usuarios SET password_hash = ? WHERE id = ?');
     stmt.run(passwordHash, usuario_id);
@@ -343,18 +395,292 @@ app.put('/usuarios/senha', authenticateToken, async (req, res) => {
 // Rota pra excluir a conta do usuário logado (ação permanente!)
 app.delete('/usuarios', authenticateToken, (req, res) => {
   const usuario_id = req.user.id;
-  
+
   try {
-    // Primeiro deleto todas as avaliações desse usuário pra não dar erro de chave estrangeira
+    // Deleto comentários, sugestões e avaliações antes de deletar o usuário
+    db.prepare('DELETE FROM comentarios WHERE usuario_id = ?').run(usuario_id);
+    db.prepare('DELETE FROM sugestoes WHERE autor_id = ?').run(usuario_id);
     db.prepare('DELETE FROM avaliacoes WHERE usuario_id = ?').run(usuario_id);
-    
-    // Depois deleto o próprio usuário
+
     db.prepare('DELETE FROM usuarios WHERE id = ?').run(usuario_id);
-    
-    res.json({ message: 'Sua conta e todas as suas avaliações foram excluídas permanentemente.' });
+
+    res.json({ message: 'Sua conta e todos os seus dados foram excluídos permanentemente.' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro ao deletar conta.' });
+  }
+});
+
+// ========================
+// ROTAS DE SUGESTÕES DE NOTÍCIAS
+// ========================
+
+// Enviar uma sugestão de notícia (exige login)
+app.post('/sugestoes', authenticateToken, (req, res) => {
+  const { titulo, conteudo, categoria } = req.body;
+  const autor_id = req.user.id;
+
+  if (!titulo || !conteudo) {
+    return res.status(400).json({ error: 'Título e conteúdo são obrigatórios.' });
+  }
+
+  try {
+    const data_envio = new Date().toISOString();
+    const stmt = db.prepare('INSERT INTO sugestoes (titulo, conteudo, categoria, autor_id, status, data_envio) VALUES (?, ?, ?, ?, ?, ?)');
+    const result = stmt.run(titulo, conteudo, categoria || 'Outro', autor_id, 'pendente', data_envio);
+    res.status(201).json({ message: 'Sugestão enviada com sucesso! Aguarde a moderação.', id: result.lastInsertRowid });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao enviar sugestão.' });
+  }
+});
+
+// Retornar SOMENTE sugestões aprovadas (rota pública)
+app.get('/noticias', (req, res) => {
+  try {
+    const rows = db.prepare(`
+      SELECT sugestoes.*, usuarios.username as autor
+      FROM sugestoes
+      LEFT JOIN usuarios ON sugestoes.autor_id = usuarios.id
+      WHERE sugestoes.status = 'aprovado'
+      ORDER BY sugestoes.data_envio DESC
+    `).all();
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar notícias.' });
+  }
+});
+
+// Sugestões do usuário logado
+app.get('/minhas-sugestoes', authenticateToken, (req, res) => {
+  try {
+    const rows = db.prepare('SELECT * FROM sugestoes WHERE autor_id = ? ORDER BY data_envio DESC').all(req.user.id);
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar suas sugestões.' });
+  }
+});
+
+// Editar sugestão do usuário logado (volta pra pendente)
+app.put('/sugestoes/:id', authenticateToken, (req, res) => {
+  const { titulo, conteudo, categoria } = req.body;
+  if (!titulo || !conteudo) return res.status(400).json({ error: 'Título e conteúdo são obrigatórios.' });
+  try {
+    const result = db.prepare('UPDATE sugestoes SET titulo = ?, conteudo = ?, categoria = ?, status = ?, motivo_rejeicao = NULL WHERE id = ? AND autor_id = ?')
+      .run(titulo, conteudo, categoria || 'Outro', 'pendente', req.params.id, req.user.id);
+    if (result.changes === 0) return res.status(403).json({ error: 'Sugestão não encontrada ou você não tem permissão.' });
+    res.json({ message: 'Sugestão atualizada e enviada para moderação.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao editar sugestão.' });
+  }
+});
+
+// Solicitar exclusão de sugestão aprovada
+app.put('/sugestoes/:id/solicitar-exclusao', authenticateToken, (req, res) => {
+  try {
+    const result = db.prepare("UPDATE sugestoes SET status = 'exclusao_pendente' WHERE id = ? AND autor_id = ? AND status = 'aprovado'")
+      .run(req.params.id, req.user.id);
+    if (result.changes === 0) return res.status(403).json({ error: 'Apenas sugestões aprovadas podem ter a exclusão solicitada.' });
+    res.json({ message: 'Solicitação de exclusão enviada à moderação.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao solicitar exclusão.' });
+  }
+});
+
+// ========================
+// ROTAS ADMIN DE SUGESTÕES
+// ========================
+
+// Listar todas as sugestões (admin)
+app.get('/admin/sugestoes', authenticateAdmin, (req, res) => {
+  try {
+    const rows = db.prepare(`
+      SELECT sugestoes.*, usuarios.username as autor
+      FROM sugestoes
+      LEFT JOIN usuarios ON sugestoes.autor_id = usuarios.id
+      ORDER BY sugestoes.data_envio DESC
+    `).all();
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar sugestões.' });
+  }
+});
+
+// Aprovar sugestão (admin)
+app.put('/admin/sugestoes/:id/aprovar', authenticateAdmin, (req, res) => {
+  try {
+    const stmt = db.prepare('UPDATE sugestoes SET status = ? WHERE id = ?');
+    stmt.run('aprovado', req.params.id);
+    res.json({ message: 'Sugestão aprovada com sucesso!' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao aprovar sugestão.' });
+  }
+});
+
+// Rejeitar sugestão com motivo (admin)
+app.put('/admin/sugestoes/:id/rejeitar', authenticateAdmin, (req, res) => {
+  const { motivo } = req.body;
+  if (!motivo) return res.status(400).json({ error: 'Motivo da rejeição é obrigatório.' });
+  try {
+    const stmt = db.prepare('UPDATE sugestoes SET status = ?, motivo_rejeicao = ? WHERE id = ?');
+    stmt.run('rejeitado', motivo, req.params.id);
+    res.json({ message: 'Sugestão rejeitada.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao rejeitar sugestão.' });
+  }
+});
+
+// Excluir sugestão permanentemente (admin)
+app.delete('/admin/sugestoes/:id', authenticateAdmin, (req, res) => {
+  try {
+    // Deleto comentários associados primeiro
+    db.prepare('DELETE FROM comentarios WHERE noticia_id = ?').run(req.params.id);
+    db.prepare('DELETE FROM sugestoes WHERE id = ?').run(req.params.id);
+    res.json({ message: 'Sugestão excluída permanentemente.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao excluir sugestão.' });
+  }
+});
+
+// Rejeitar solicitação de exclusão (admin) - volta para aprovado
+app.put('/admin/sugestoes/:id/rejeitar-exclusao', authenticateAdmin, (req, res) => {
+  try {
+    const stmt = db.prepare("UPDATE sugestoes SET status = 'aprovado' WHERE id = ? AND status = 'exclusao_pendente'");
+    const result = stmt.run(req.params.id);
+    if (result.changes === 0) return res.status(400).json({ error: 'Nenhuma solicitação de exclusão pendente.' });
+    res.json({ message: 'Solicitação de exclusão rejeitada, postagem mantida.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao rejeitar exclusão.' });
+  }
+});
+
+// ========================
+// ROTAS DE COMENTÁRIOS
+// ========================
+
+// Enviar comentário em notícia aprovada (exige login)
+app.post('/comentarios', authenticateToken, (req, res) => {
+  const { noticia_id, texto } = req.body;
+  const usuario_id = req.user.id;
+
+  if (!texto || !texto.trim()) {
+    return res.status(400).json({ error: 'Texto do comentário é obrigatório.' });
+  }
+
+  try {
+    // Verifico se a notícia existe e está aprovada
+    const noticia = db.prepare('SELECT id FROM sugestoes WHERE id = ? AND status = ?').get(noticia_id, 'aprovado');
+    if (!noticia) return res.status(404).json({ error: 'Notícia não encontrada ou não aprovada.' });
+
+    const data_comentario = new Date().toISOString();
+    const stmt = db.prepare('INSERT INTO comentarios (noticia_id, usuario_id, texto, status, data_comentario) VALUES (?, ?, ?, ?, ?)');
+    const result = stmt.run(noticia_id, usuario_id, texto.trim(), 'ativo', data_comentario);
+    res.status(201).json({ message: 'Comentário enviado!', id: result.lastInsertRowid });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao enviar comentário.' });
+  }
+});
+
+// Listar comentários ativos de uma notícia (público)
+app.get('/comentarios/:noticiaId', (req, res) => {
+  try {
+    const rows = db.prepare(`
+      SELECT comentarios.*, usuarios.username as autor
+      FROM comentarios
+      LEFT JOIN usuarios ON comentarios.usuario_id = usuarios.id
+      WHERE comentarios.noticia_id = ? AND comentarios.status = 'ativo'
+      ORDER BY comentarios.data_comentario ASC
+    `).all(req.params.noticiaId);
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar comentários.' });
+  }
+});
+
+// Deletar próprio comentário (exige login + ser o dono)
+app.delete('/comentarios/:id', authenticateToken, (req, res) => {
+  try {
+    const comentario = db.prepare('SELECT usuario_id FROM comentarios WHERE id = ?').get(req.params.id);
+    if (!comentario) return res.status(404).json({ error: 'Comentário não encontrado.' });
+    if (comentario.usuario_id !== req.user.id) return res.status(403).json({ error: 'Você só pode excluir seus próprios comentários.' });
+    db.prepare('DELETE FROM comentarios WHERE id = ?').run(req.params.id);
+    res.json({ message: 'Comentário excluído.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao excluir comentário.' });
+  }
+});
+
+// Meus comentários (exige login)
+app.get('/meus-comentarios', authenticateToken, (req, res) => {
+  try {
+    const rows = db.prepare(`
+      SELECT comentarios.*, sugestoes.titulo as noticia_titulo
+      FROM comentarios
+      LEFT JOIN sugestoes ON comentarios.noticia_id = sugestoes.id
+      WHERE comentarios.usuario_id = ?
+      ORDER BY comentarios.data_comentario DESC
+    `).all(req.user.id);
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar seus comentários.' });
+  }
+});
+
+// ========================
+// ROTAS ADMIN DE COMENTÁRIOS
+// ========================
+
+// Listar todos os comentários (admin)
+app.get('/admin/comentarios', authenticateAdmin, (req, res) => {
+  try {
+    const rows = db.prepare(`
+      SELECT comentarios.*, usuarios.username as autor, sugestoes.titulo as noticia_titulo
+      FROM comentarios
+      LEFT JOIN usuarios ON comentarios.usuario_id = usuarios.id
+      LEFT JOIN sugestoes ON comentarios.noticia_id = sugestoes.id
+      ORDER BY comentarios.data_comentario DESC
+    `).all();
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar comentários.' });
+  }
+});
+
+// Remover comentário com motivo (admin — soft delete)
+app.put('/admin/comentarios/:id/remover', authenticateAdmin, (req, res) => {
+  const { motivo_remocao } = req.body;
+  if (!motivo_remocao) return res.status(400).json({ error: 'Motivo da remoção é obrigatório.' });
+  try {
+    db.prepare('UPDATE comentarios SET status = ?, motivo_remocao = ? WHERE id = ?').run('removido', motivo_remocao, req.params.id);
+    res.json({ message: 'Comentário removido.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao remover comentário.' });
+  }
+});
+
+// Excluir comentário permanentemente (admin)
+app.delete('/admin/comentarios/:id', authenticateAdmin, (req, res) => {
+  try {
+    db.prepare('DELETE FROM comentarios WHERE id = ?').run(req.params.id);
+    res.json({ message: 'Comentário excluído permanentemente.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao excluir comentário.' });
   }
 });
 

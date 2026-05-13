@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import ErasCarousel from "../../components/ErasCarousel/ErasCarousel";
 import Timeline from "../../components/Timeline/Timeline";
 import NoticiasSection from "../../components/NoticiasSection/NoticiasSection";
+import SugestoesSection from "../../components/SugestoesSection/SugestoesSection";
 // Importo o modal de login/cadastro e o hook de autenticação
 import AuthModal from "../../components/AuthModal/AuthModal";
 import { useAuth } from "../../context/AuthContext";
@@ -248,6 +249,9 @@ function Home() {
 
             {/* Seção de notícias — consome a API PHP na porta 3002 */}
             <NoticiasSection />
+
+            {/* Seção de Notícias da Comunidade — sugestões aprovadas com comentários moderados */}
+            <SugestoesSection />
 
             {/* Carrossel + Timeline — ambos compartilham o currentIndex */}
             <div className="home-carousel-wrap">

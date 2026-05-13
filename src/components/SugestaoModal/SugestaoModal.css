@@ -1,0 +1,193 @@
+.sugestao-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.sugestao-modal-content {
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  padding: 35px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease-out;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.sugestao-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.sugestao-modal-close:hover {
+  color: #fff;
+}
+
+.sugestao-modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #f0ece6;
+  margin: 0 0 6px;
+}
+
+.sugestao-modal-desc {
+  font-size: 0.85rem;
+  color: rgba(240, 236, 230, 0.4);
+  margin: 0 0 25px;
+}
+
+.sugestao-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sugestao-feedback {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  text-align: center;
+  animation: slideUp 0.3s ease-out;
+}
+
+.sugestao-feedback.success {
+  background: rgba(0, 255, 0, 0.08);
+  border: 1px solid rgba(0, 255, 0, 0.2);
+  color: #51cf66;
+}
+
+.sugestao-feedback.error {
+  background: rgba(255, 0, 0, 0.08);
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  color: #ff6b6b;
+}
+
+.sugestao-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sugestao-input-group label {
+  color: rgba(240, 236, 230, 0.6);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.sugestao-input-group input,
+.sugestao-input-group select,
+.sugestao-input-group textarea {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: #f0ece6;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.sugestao-input-group input:focus,
+.sugestao-input-group select:focus,
+.sugestao-input-group textarea:focus {
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.sugestao-input-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+.sugestao-input-group select option {
+  background: #111;
+  color: #f0ece6;
+}
+
+.sugestao-input-group textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+
+.sugestao-submit-btn {
+  background: linear-gradient(135deg, #a855f7, #7b8aff);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.sugestao-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.3);
+}
+
+.sugestao-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+  .sugestao-modal-content {
+    width: 94%;
+    padding: 20px;
+    border-radius: 12px;
+    max-height: 85vh;
+  }
+  .sugestao-modal-title {
+    font-size: 1.3rem;
+  }
+  .sugestao-input-group input,
+  .sugestao-input-group select,
+  .sugestao-input-group textarea {
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+  .sugestao-submit-btn {
+    padding: 12px;
+  }
+}

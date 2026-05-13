@@ -1106,6 +1106,22 @@
     font-style: italic;
     color: #3a3a3a;
 }
+/* Rating section — herda o fundo da seção "eras" acima */
+.era-folk-page .rv-root {
+    background: #999999;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    max-width: 100%;
+    margin: 0;
+    position: relative;
+    z-index: 2;
+}
+.era-folk-page .rv-root > * {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .folk-footer {
     position: relative;
     z-index: 2;

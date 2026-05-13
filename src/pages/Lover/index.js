@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './lover.css';
+import RatingSection from '../../components/RatingSection/RatingSection';
+import { eraThemes } from '../../utils/eraThemes';
 
 import loverCover from '../../imagens/lover.jpg';
 
@@ -482,6 +484,9 @@ const Lover = () => {
                     ))}
                 </div>
             </section>
+
+            {/* ═══ RATING ═══ */}
+            <RatingSection era="lover" tracks={tracks} theme={eraThemes.lover} />
 
             {/* ═══ FOOTER ═══ */}
             <footer className="lover-footer">

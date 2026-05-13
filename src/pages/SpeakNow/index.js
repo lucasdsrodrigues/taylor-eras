@@ -73,12 +73,10 @@ const SpeakNow = () => {
   const tourScrollRef = useRef(null);
   const photoScrollRef = useRef(null);
   // Cada seção tem seu próprio observer via useInView pra animar independentemente
-  const [storyRef, storyInView] = useInView();
+  const [storyRef] = useInView();
   const [tracklistRef, tracklistInView] = useInView();
   const [tourRef, tourInView] = useInView();
   const [timelineRef, timelineInView] = useInView();
-  const [mvRef, mvInView] = useInView();
-  const [concertRef, concertInView] = useInView();
   const scrollToPage = (index) => {
     setActivePage(index);
     if (tourScrollRef.current) {
