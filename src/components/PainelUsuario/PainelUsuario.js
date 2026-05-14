@@ -94,8 +94,10 @@ const PainelUsuario = () => {
       const res = await fetch('http://localhost:3001/meus-comentarios', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      const data = await res.json();
-      setComentarios(data);
+      if (res.ok) {
+        const data = await res.json();
+        setComentarios(data);
+      }
     } catch (error) {
       console.error('Erro ao buscar comentários:', error);
     }
@@ -462,7 +464,7 @@ const PainelUsuario = () => {
                   <div className="empty-state">Você ainda não fez nenhum comentário.</div>
                 ) : (
                   comentarios.map(c => (
-                    <div key={c.id} className="era-group-card" style={{ '--era-primary': c.status === 'ativo' ? '#7b8aff' : '#ff6b6b' }}>
+                    <div key={`${c.origem || 'com'}_${c.id}`} className="era-group-card" style={{ '--era-primary': c.status === 'ativo' ? '#7b8aff' : '#ff6b6b' }}>
                       <div className="era-group-header">
                         <h3 style={{ fontSize: '1rem' }}>{c.noticia_titulo || 'Notícia removida'}</h3>
                         <div className="era-stats">

@@ -113,9 +113,11 @@ db.exec(`
 console.log('Tabela "sugestoes" pronta.');
 
 // ========================
-// TABELA DE COMENTÁRIOS MODERADOS
+// TABELA UNIFICADA DE COMENTÁRIOS
 // ========================
-// Comentários em notícias aprovadas — podem ser removidos por admins com motivo
+// Todos os comentários (comunidade + PHP) ficam na mesma tabela
+// O campo 'tipo' diferencia: 'comunidade' ou 'php'
+// O campo 'noticia_titulo' armazena o título da notícia pra exibição nos painéis
 db.exec(`
   CREATE TABLE IF NOT EXISTS comentarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -125,11 +127,30 @@ db.exec(`
     status TEXT DEFAULT 'ativo',
     motivo_remocao TEXT NULL,
     data_comentario TEXT,
-    FOREIGN KEY (noticia_id) REFERENCES sugestoes(id),
+    tipo TEXT DEFAULT 'comunidade',
+    noticia_titulo TEXT,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
   )
 `);
-console.log('Tabela "comentarios" pronta.');
+// Adiciona colunas novas caso a tabela já exista sem elas
+try { db.exec("ALTER TABLE comentarios ADD COLUMN tipo TEXT DEFAULT 'comunidade'"); } catch (e) { }
+try { db.exec("ALTER TABLE comentarios ADD COLUMN noticia_titulo TEXT"); } catch (e) { }
+
+// Migra dados antigos de comentarios_php para comentarios (se existir)
+try {
+  const phpRows = db.prepare('SELECT * FROM comentarios_php').all();
+  if (phpRows.length > 0) {
+    const insert = db.prepare('INSERT INTO comentarios (noticia_id, usuario_id, texto, status, motivo_remocao, data_comentario, tipo, noticia_titulo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+    for (const r of phpRows) {
+      insert.run(r.noticia_php_id, r.usuario_id, r.texto, r.status, r.motivo_remocao, r.data_comentario, 'php', r.noticia_titulo);
+    }
+    console.log(`Migrados ${phpRows.length} comentários PHP para tabela unificada.`);
+  }
+  db.exec('DROP TABLE IF EXISTS comentarios_php');
+  db.exec('DROP TABLE IF EXISTS comentarios_oficiais');
+} catch (e) { }
+
+console.log('Tabela "comentarios" (unificada) pronta.');
 
 // ========================
 // MIDDLEWARE DE AUTENTICAÇÃO
@@ -564,12 +585,12 @@ app.put('/admin/sugestoes/:id/rejeitar-exclusao', authenticateAdmin, (req, res) 
 });
 
 // ========================
-// ROTAS DE COMENTÁRIOS
+// ROTAS DE COMENTÁRIOS (tabela unificada)
 // ========================
 
-// Enviar comentário em notícia aprovada (exige login)
+// Enviar comentário (exige login) — funciona para comunidade e PHP
 app.post('/comentarios', authenticateToken, (req, res) => {
-  const { noticia_id, texto } = req.body;
+  const { noticia_id, texto, tipo, noticia_titulo } = req.body;
   const usuario_id = req.user.id;
 
   if (!texto || !texto.trim()) {
@@ -577,13 +598,20 @@ app.post('/comentarios', authenticateToken, (req, res) => {
   }
 
   try {
-    // Verifico se a notícia existe e está aprovada
-    const noticia = db.prepare('SELECT id FROM sugestoes WHERE id = ? AND status = ?').get(noticia_id, 'aprovado');
-    if (!noticia) return res.status(404).json({ error: 'Notícia não encontrada ou não aprovada.' });
+    // Se for comentário de comunidade, verifico se a notícia está aprovada
+    if (tipo === 'comunidade') {
+      const noticia = db.prepare('SELECT id, titulo FROM sugestoes WHERE id = ? AND status = ?').get(noticia_id, 'aprovado');
+      if (!noticia) return res.status(404).json({ error: 'Notícia não encontrada ou não aprovada.' });
+      const data_comentario = new Date().toISOString();
+      const stmt = db.prepare('INSERT INTO comentarios (noticia_id, usuario_id, texto, status, data_comentario, tipo, noticia_titulo) VALUES (?, ?, ?, ?, ?, ?, ?)');
+      const result = stmt.run(noticia_id, usuario_id, texto.trim(), 'ativo', data_comentario, 'comunidade', noticia.titulo);
+      return res.status(201).json({ message: 'Comentário enviado!', id: result.lastInsertRowid });
+    }
 
+    // Se for comentário PHP, salvo direto com o título
     const data_comentario = new Date().toISOString();
-    const stmt = db.prepare('INSERT INTO comentarios (noticia_id, usuario_id, texto, status, data_comentario) VALUES (?, ?, ?, ?, ?)');
-    const result = stmt.run(noticia_id, usuario_id, texto.trim(), 'ativo', data_comentario);
+    const stmt = db.prepare('INSERT INTO comentarios (noticia_id, usuario_id, texto, status, data_comentario, tipo, noticia_titulo) VALUES (?, ?, ?, ?, ?, ?, ?)');
+    const result = stmt.run(noticia_id, usuario_id, texto.trim(), 'ativo', data_comentario, 'php', noticia_titulo || '');
     res.status(201).json({ message: 'Comentário enviado!', id: result.lastInsertRowid });
   } catch (error) {
     console.error(error);
@@ -591,16 +619,17 @@ app.post('/comentarios', authenticateToken, (req, res) => {
   }
 });
 
-// Listar comentários ativos de uma notícia (público)
+// Listar comentários ativos de uma notícia (público) — usa query ?tipo=php ou ?tipo=comunidade
 app.get('/comentarios/:noticiaId', (req, res) => {
+  const tipo = req.query.tipo || 'comunidade';
   try {
     const rows = db.prepare(`
       SELECT comentarios.*, usuarios.username as autor
       FROM comentarios
       LEFT JOIN usuarios ON comentarios.usuario_id = usuarios.id
-      WHERE comentarios.noticia_id = ? AND comentarios.status = 'ativo'
+      WHERE comentarios.noticia_id = ? AND comentarios.tipo = ? AND comentarios.status = 'ativo'
       ORDER BY comentarios.data_comentario ASC
-    `).all(req.params.noticiaId);
+    `).all(req.params.noticiaId, tipo);
     res.json(rows);
   } catch (error) {
     console.error(error);
@@ -608,12 +637,12 @@ app.get('/comentarios/:noticiaId', (req, res) => {
   }
 });
 
-// Deletar próprio comentário (exige login + ser o dono)
+// Deletar próprio comentário (exige login + ser o dono ou admin)
 app.delete('/comentarios/:id', authenticateToken, (req, res) => {
   try {
     const comentario = db.prepare('SELECT usuario_id FROM comentarios WHERE id = ?').get(req.params.id);
     if (!comentario) return res.status(404).json({ error: 'Comentário não encontrado.' });
-    if (comentario.usuario_id !== req.user.id) return res.status(403).json({ error: 'Você só pode excluir seus próprios comentários.' });
+    if (comentario.usuario_id !== req.user.id && req.user.username !== 'admin') return res.status(403).json({ error: 'Você só pode excluir seus próprios comentários.' });
     db.prepare('DELETE FROM comentarios WHERE id = ?').run(req.params.id);
     res.json({ message: 'Comentário excluído.' });
   } catch (error) {
@@ -622,17 +651,24 @@ app.delete('/comentarios/:id', authenticateToken, (req, res) => {
   }
 });
 
-// Meus comentários (exige login)
+// Meus comentários — retorna TODOS (comunidade + PHP) do usuário logado
 app.get('/meus-comentarios', authenticateToken, (req, res) => {
   try {
     const rows = db.prepare(`
-      SELECT comentarios.*, sugestoes.titulo as noticia_titulo
+      SELECT comentarios.*, usuarios.username as autor,
+        CASE
+          WHEN comentarios.tipo = 'comunidade' THEN COALESCE(sugestoes.titulo, comentarios.noticia_titulo)
+          ELSE comentarios.noticia_titulo
+        END as noticia_titulo_final
       FROM comentarios
-      LEFT JOIN sugestoes ON comentarios.noticia_id = sugestoes.id
+      LEFT JOIN usuarios ON comentarios.usuario_id = usuarios.id
+      LEFT JOIN sugestoes ON comentarios.noticia_id = sugestoes.id AND comentarios.tipo = 'comunidade'
       WHERE comentarios.usuario_id = ?
       ORDER BY comentarios.data_comentario DESC
     `).all(req.user.id);
-    res.json(rows);
+    // Renomeia pra manter compatibilidade
+    const result = rows.map(r => ({ ...r, noticia_titulo: r.noticia_titulo_final }));
+    res.json(result);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro ao buscar seus comentários.' });
@@ -643,17 +679,22 @@ app.get('/meus-comentarios', authenticateToken, (req, res) => {
 // ROTAS ADMIN DE COMENTÁRIOS
 // ========================
 
-// Listar todos os comentários (admin)
+// Listar todos os comentários (admin) — tabela unificada
 app.get('/admin/comentarios', authenticateAdmin, (req, res) => {
   try {
     const rows = db.prepare(`
-      SELECT comentarios.*, usuarios.username as autor, sugestoes.titulo as noticia_titulo
+      SELECT comentarios.*, usuarios.username as autor,
+        CASE
+          WHEN comentarios.tipo = 'comunidade' THEN COALESCE(sugestoes.titulo, comentarios.noticia_titulo)
+          ELSE comentarios.noticia_titulo
+        END as noticia_titulo_final
       FROM comentarios
       LEFT JOIN usuarios ON comentarios.usuario_id = usuarios.id
-      LEFT JOIN sugestoes ON comentarios.noticia_id = sugestoes.id
+      LEFT JOIN sugestoes ON comentarios.noticia_id = sugestoes.id AND comentarios.tipo = 'comunidade'
       ORDER BY comentarios.data_comentario DESC
     `).all();
-    res.json(rows);
+    const result = rows.map(r => ({ ...r, noticia_titulo: r.noticia_titulo_final }));
+    res.json(result);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro ao buscar comentários.' });
@@ -684,8 +725,10 @@ app.delete('/admin/comentarios/:id', authenticateAdmin, (req, res) => {
   }
 });
 
+
 // Defino a porta 3001 e inicio o servidor
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Backend seguro rodando na porta ${PORT}`);
 });
+

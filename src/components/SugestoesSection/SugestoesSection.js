@@ -210,11 +210,11 @@ const SugestoesSection = () => {
                                   <span className="comentario-autor">@{c.autor}</span>
                                   <div className="comentario-header-right">
                                     <span className="comentario-data">{formatarData(c.data_comentario)}</span>
-                                    {isLoggedIn && c.autor === username && (
+                                    {isLoggedIn && (c.autor === username || username === 'admin') && (
                                       <button
                                         className="comentario-delete-btn"
                                         onClick={() => handleDeletarComentario(c.id, noticia.id)}
-                                        title="Excluir comentário"
+                                        title={username === 'admin' && c.autor !== username ? "Excluir comentário (Admin)" : "Excluir comentário"}
                                       >✕</button>
                                     )}
                                   </div>

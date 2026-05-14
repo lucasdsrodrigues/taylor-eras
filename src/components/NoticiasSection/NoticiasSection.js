@@ -15,11 +15,8 @@ const CATEGORIA_CORES = {
 };
 
 // ==========================================
-// FUNÇÕES HELPER para localStorage
+// FUNÇÕES HELPER para localStorage (likes e salvos continuam locais)
 // ==========================================
-// Essas funções centralizam o acesso ao localStorage pra likes, comentários e salvos.
-// Uso localStorage (não sessionStorage) porque quero que curtidas e comentários
-// persistam mesmo fechando o navegador — diferente do login que é temporário.
 
 // Pega os IDs dos posts curtidos do localStorage
 const getLikes = () => {
@@ -31,18 +28,6 @@ const getLikes = () => {
 // Salva os IDs dos posts curtidos no localStorage
 const setLikes = (likes) => {
   localStorage.setItem('noticias_likes', JSON.stringify(likes));
-};
-
-// Pega os comentários do localStorage — estrutura: { postId: [{ texto, autor, data }] }
-const getComentarios = () => {
-  try {
-    return JSON.parse(localStorage.getItem('noticias_comentarios') || '{}');
-  } catch { return {}; }
-};
-
-// Salva os comentários no localStorage
-const setComentariosStorage = (comentarios) => {
-  localStorage.setItem('noticias_comentarios', JSON.stringify(comentarios));
 };
 
 // Pega os IDs dos posts salvos do localStorage
@@ -79,15 +64,15 @@ const NoticiasSection = () => {
   const [curtidos, setCurtidos] = useState(getLikes);
   // Salvos: array de IDs de posts salvos/favoritados pelo usuário
   const [salvos, setSalvosState] = useState(getSalvos);
-  // Comentários: objeto { postId: [{ texto, autor, data }] }
-  const [comentarios, setComentarios] = useState(getComentarios);
+  // Comentários: objeto { postId: [array de comentários do backend] }
+  const [comentarios, setComentarios] = useState({});
   // Controla qual card está com a seção de comentários aberta
   const [comentarioAberto, setComentarioAberto] = useState(null);
   // Texto que o usuário está digitando no campo de comentário
   const [textoComentario, setTextoComentario] = useState('');
 
   // Pego o estado de autenticação — preciso saber se tá logado pra permitir interações
-  const { isLoggedIn, username } = useAuth();
+  const { isLoggedIn, username, token } = useAuth();
 
   // Efeito que busca as notícias da API PHP assim que o componente monta
   useEffect(() => {
@@ -136,6 +121,21 @@ const NoticiasSection = () => {
   };
 
   // ==========================================
+  // FUNÇÕES DE COMENTÁRIOS (agora via backend)
+  // ==========================================
+
+  // Busca comentários de uma notícia PHP do backend (tabela unificada)
+  const fetchComentarios = async (noticiaId) => {
+    try {
+      const res = await fetch(`http://localhost:3001/comentarios/${noticiaId}?tipo=php`);
+      const data = await res.json();
+      setComentarios(prev => ({ ...prev, [noticiaId]: data }));
+    } catch (err) {
+      console.error('Erro ao buscar comentários:', err);
+    }
+  };
+
+  // ==========================================
   // HANDLERS DE INTERAÇÃO
   // ==========================================
 
@@ -173,52 +173,47 @@ const NoticiasSection = () => {
     });
   };
 
-  // ENVIAR COMENTÁRIO — adiciona um novo comentário ao post
-  const handleComentar = (postId) => {
+  // ENVIAR COMENTÁRIO — salva no backend via API (tabela unificada com tipo=php)
+  const handleComentar = async (postId, postTitulo) => {
     if (!isLoggedIn || !textoComentario.trim()) return;
-    setComentarios(prev => {
-      // Pego os comentários existentes do post (ou array vazio se é o primeiro)
-      const existentes = prev[postId] || [];
-      const novosComentarios = {
-        ...prev,
-        [postId]: [
-          ...existentes,
-          {
-            texto: textoComentario.trim(),
-            autor: username || 'Anônimo',
-            data: new Date().toLocaleString('pt-BR'),
-          }
-        ]
-      };
-      // Salvo no localStorage
-      setComentariosStorage(novosComentarios);
-      return novosComentarios;
-    });
-    // Limpo o campo de texto após enviar
-    setTextoComentario('');
+    try {
+      const res = await fetch('http://localhost:3001/comentarios', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ noticia_id: postId, noticia_titulo: postTitulo, texto: textoComentario.trim(), tipo: 'php' })
+      });
+      if (res.ok) {
+        setTextoComentario('');
+        fetchComentarios(postId);
+      }
+    } catch (err) {
+      console.error('Erro ao comentar:', err);
+    }
   };
 
   // ABRIR/FECHAR seção de comentários de um post
   const toggleComentarios = (postId) => {
-    setComentarioAberto(prev => prev === postId ? null : postId);
+    if (comentarioAberto === postId) {
+      setComentarioAberto(null);
+    } else {
+      setComentarioAberto(postId);
+      fetchComentarios(postId);
+    }
     setTextoComentario('');
   };
 
-  // EXCLUIR COMENTÁRIO — remove pelo índice, só se o autor for o usuário logado
-  const handleDeletarComentario = (postId, index) => {
+  // EXCLUIR COMENTÁRIO — deleta pelo ID via backend (rota unificada)
+  const handleDeletarComentario = async (comentarioId, postId) => {
     if (!isLoggedIn) return;
-    setComentarios(prev => {
-      const existentes = prev[postId] || [];
-      // Verifico se o autor do comentário é o usuário logado (segurança)
-      if (existentes[index]?.autor !== username) return prev;
-      // Crio novo array sem o comentário deletado usando filter por índice
-      const novosComentarios = {
-        ...prev,
-        [postId]: existentes.filter((_, i) => i !== index)
-      };
-      setComentariosStorage(novosComentarios);
-      return novosComentarios;
-    });
+    try {
+      const res = await fetch(`http://localhost:3001/comentarios/${comentarioId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) fetchComentarios(postId);
+    } catch (err) {
+      console.error('Erro ao deletar comentário:', err);
+    }
   };
 
   // Crio a lista de categorias únicas a partir das notícias, com "Todas" no início
@@ -230,7 +225,6 @@ const NoticiasSection = () => {
     : noticias.filter(n => n.categoria === categoriaAtiva);
 
   // Conta quantos likes um post tem (simulação — em produção viria do backend)
-  // Aqui conto 1 se o usuário curtiu, poderia somar com likes de outros usuários do backend
   const contarLikes = (postId) => {
     return curtidos.includes(postId) ? 1 : 0;
   };
@@ -344,18 +338,18 @@ const NoticiasSection = () => {
                       {/* Lista de comentários existentes */}
                       {(comentarios[noticia.id] || []).length > 0 ? (
                         <div className="comentarios-lista">
-                          {(comentarios[noticia.id] || []).map((c, i) => (
-                            <div key={i} className="comentario-item">
+                          {(comentarios[noticia.id] || []).map((c) => (
+                            <div key={c.id} className="comentario-item">
                               <div className="comentario-header">
                                 <span className="comentario-autor">@{c.autor}</span>
                                 <div className="comentario-header-right">
-                                  <span className="comentario-data">{c.data}</span>
-                                  {/* Botão de excluir — só aparece se o comentário é do usuário logado */}
-                                  {isLoggedIn && c.autor === username && (
+                                  <span className="comentario-data">{c.data_comentario ? new Date(c.data_comentario).toLocaleDateString('pt-BR') : ''}</span>
+                                  {/* Botão de excluir — só aparece se o comentário é do usuário logado ou admin */}
+                                  {isLoggedIn && (c.autor === username || username === 'admin') && (
                                     <button
                                       className="comentario-delete-btn"
-                                      onClick={() => handleDeletarComentario(noticia.id, i)}
-                                      title="Excluir comentário"
+                                      onClick={() => handleDeletarComentario(c.id, noticia.id)}
+                                      title={username === 'admin' && c.autor !== username ? "Excluir comentário (Admin)" : "Excluir comentário"}
                                     >
                                       ✕
                                     </button>
@@ -381,13 +375,13 @@ const NoticiasSection = () => {
                             onChange={(e) => setTextoComentario(e.target.value)}
                             onKeyDown={(e) => {
                               // Enter envia o comentário (sem precisar clicar no botão)
-                              if (e.key === 'Enter') handleComentar(noticia.id);
+                              if (e.key === 'Enter') handleComentar(noticia.id, noticia.titulo);
                             }}
                             maxLength={200}
                           />
                           <button
                             className="comentario-enviar"
-                            onClick={() => handleComentar(noticia.id)}
+                            onClick={() => handleComentar(noticia.id, noticia.titulo)}
                             disabled={!textoComentario.trim()}
                           >
                             Enviar

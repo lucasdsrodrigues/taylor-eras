@@ -124,7 +124,10 @@ const PainelAvaliacoes = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Tem certeza que deseja excluir esta avaliação?")) return;
     try {
-      const res = await fetch(`http://localhost:3001/avaliacoes/${id}`, { method: 'DELETE' });
+      const res = await fetch(`http://localhost:3001/avaliacoes/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       if (res.ok) fetchAvaliacoes();
     } catch (error) {
       console.error('Erro ao deletar:', error);
@@ -140,7 +143,7 @@ const PainelAvaliacoes = () => {
     try {
       const res = await fetch(`http://localhost:3001/avaliacoes/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ nota: editNota })
       });
       if (res.ok) {
